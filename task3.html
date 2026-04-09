@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务三：搜索页面 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '💻'; }
+        .code-editor { width: 100%; min-height: 280px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-editor:focus { border-color: #f97316; box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1); }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 280px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #f97316; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #f97316; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(249, 115, 22, 0.08) 0%, rgba(249, 115, 22, 0.02) 100%); border: 1px solid rgba(249, 115, 22, 0.15); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #f97316; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #f97316; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item .highlight { display: inline-block; font-size: 0.75rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.25rem; background: rgba(59, 130, 246, 0.1); padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.02) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #3b82f6; flex-shrink: 0; }
+        .hbuilder-tips-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, rgba(99, 102, 241, 0.04) 100%); border: 1px solid rgba(168, 85, 247, 0.15); border-radius: 0.75rem; }
+        .hbuilder-tips-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .hbuilder-tips-box h5::before { content: '⚡'; }
+        .hbuilder-tips-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .hbuilder-tips-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: center; gap: 0.5rem; line-height: 1.5; }
+        .hbuilder-tips-box li::before { content: '→'; color: #a855f7; }
+        .hbuilder-tips-box li code { background: rgba(168, 85, 247, 0.1); padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.8125rem; color: #a855f7; font-family: 'JetBrains Mono', monospace; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item active" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer"><div class="tool-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>HBuilderX</div></div>
+    </aside>
+    <button class="mobile-menu-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <section id="task3" class="task-section active">
+            <div class="task-header"><span class="task-badge">任务三</span><h1 class="task-title">搜索页面</h1><p class="task-subtitle">掌握CSS复合选择器的使用方法</p></div>
+            <div class="task-meta">
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>预计学习时长：60分钟</span></div>
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span>选择器与层叠性</span></div>
+            </div>
+            <div class="objectives-card">
+                <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>学习目标</h3>
+                <ul class="objectives-list"><li>掌握CSS复合选择器的使用方法</li><li>理解CSS三大特性（层叠性、继承性、优先级）</li><li>能够运用选择器解决实际页面样式问题</li></ul>
+            </div>
+
+            <!-- HBuilderX 使用技巧 - 任务三专属：查找替换与选择器调试 -->
+            <div class="hbuilder-tips-section">
+                <div class="hts-header">
+                    <span class="hts-icon">⚡</span>
+                    <span class="hts-title">HBuilderX 使用技巧 · 本节专属</span>
+                    <span class="hts-badge">查找替换 &amp; 选择器调试</span>
+                </div>
+                <div class="hbuilder-tips-grid">
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔍</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Ctrl + H</span>
+                            <p class="tip-desc">打开"查找替换"对话框。当你要把页面中所有 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">.old-class</code> 更名为 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">.new-class</code> 时，一次性全部替换，避免遗漏。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🧩</span>
+                        <div class="tip-body">
+                            <span class="tip-key">ul&gt;li*3 按 Tab</span>
+                            <p class="tip-desc">Emmet 语法：输入 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">ul&gt;li*3</code> 按 Tab，一键生成含 3 个 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">&lt;li&gt;</code> 的无序列表，快速构建搜索结果结构。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🎨</span>
+                        <div class="tip-body">
+                            <span class="tip-key">颜色选择器</span>
+                            <p class="tip-desc">在 CSS 中输入颜色值时，HBuilderX 会弹出可视化颜色选择器。直接点选颜色，无需记忆十六进制代码，修改搜索页面高亮色非常直观。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📌</span>
+                        <div class="tip-body">
+                            <span class="tip-key">div.header&gt;h2+p 按 Tab</span>
+                            <p class="tip-desc">Emmet 组合写法：生成一个 class 为 header 的 div，内含 h2 和 p 标签。构建搜索页面 HTML 结构时，用这种方式可以几秒内完成骨架搭建。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🐞</span>
+                        <div class="tip-body">
+                            <span class="tip-key">右键 → 检查元素</span>
+                            <p class="tip-desc">在浏览器预览中右键任意元素点"检查"，可以看到该元素实际生效的 CSS 规则及其来源选择器，是理解层叠性和优先级的最佳工具。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📂</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Ctrl + Shift + F（全局查找）</span>
+                            <p class="tip-desc">在整个项目中搜索某个选择器（如 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">.special</code>），快速定位它在哪些 HTML 和 CSS 文件中被使用，理清选择器的使用范围。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 17: 标签指定式选择器 -->
+            <div class="example-card" data-example="ex3-17">
+                <div class="example-header"><span class="example-number">17</span><h4>标签指定式选择器的应用</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握标签指定式选择器的定义和应用</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex17" spellcheck="false"><!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>标签指定式选择器的应用</title>
+    <style type="text/css">
+        p { color: blue; }
+        .special { color: green; }
+        p.special { color: red; }
+    </style>
+</head>
+<body>
+    <p>普通段落文本(蓝色)</p>
+    <p class="special">指定了special类的段落文本(红色)</p>
+    <h3 class="special">指定了special类的标题文本(绿色)</h3>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex17"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>p.special</code><p>标签指定式：标签+类，中间无空格</p></div><div class="knowledge-item"><code>优先级</code><p>标签指定式 > 单一标签/类选择器</p></div><div class="knowledge-item"><code>应用场景</code><p>当需要为特定标签应用特定样式时使用</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>创建一个div.special样式，观察效果</li><li>比较不同选择器的优先级</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 18: 后代选择器 -->
+            <div class="example-card" data-example="ex3-18">
+                <div class="example-header"><span class="example-number">18</span><h4>后代选择器</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握后代选择器的使用方法</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex18" spellcheck="false"><!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>后代选择器</title>
+    <style type="text/css">
+        p strong { color: red; }
+        strong { color: blue; }
+    </style>
+</head>
+<body>
+    <p>段落文本<strong>嵌套在段落中,使用strong标签定义的文本(红色)。</strong></p>
+    <strong>嵌套之外由strong标签定义的文本(蓝色)。</strong>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex18"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>父 后代</code><p>用空格连接，表示后代关系</p></div><div class="knowledge-item"><code>作用范围</code><p>作用于指定元素内部的所有后代元素</p></div><div class="knowledge-item"><code>vs子选择器</code><p>后代包含所有层级，子选择器只包含直接子元素</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>尝试div p strong选择器</li><li>创建多层级嵌套测试</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 19: 并集选择器 -->
+            <div class="example-card" data-example="ex3-19">
+                <div class="example-header"><span class="example-number">19</span><h4>并集选择器</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握并集选择器的使用方法</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex19" spellcheck="false"><!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>并集选择器</title>
+    <style type="text/css">
+        h2, h3, p { color: red; font-size: 14px; }
+        h3, .special, #one { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h2>二级标题文本。</h2>
+    <h3>三级标题文本,加下画线。</h3>
+    <p class="special">段落文本1, 加下画线。</p>
+    <p>段落文本2,普通文本。</p>
+    <p id="one">段落文本3, 加下画线。</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex19"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>逗号连接</code><p>各个选择器通过逗号连接</p></div><div class="knowledge-item"><code>代码优化</code><p>为多个元素定义相同样式，减少重复</p></div><div class="knowledge-item"><code>混合使用</code><p>标签、类、ID选择器可混合使用</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>在并集选择器中添加h4</li><li>创建.error, #warning样式</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 20: CSS层叠性 -->
+            <div class="example-card" data-example="ex3-20">
+                <div class="example-header"><span class="example-number">20</span><h4>CSS层叠性</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>理解CSS层叠性的原理</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex20" spellcheck="false"><!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>CSS层叠性</title>
+    <style type="text/css">
+        p {
+            font-size: 12px;
+            font-family: "楷体";
+        }
+        #one { color: red; }
+        .special { font-size: 16px; }
+    </style>
+</head>
+<body>
+    <p id="one" class="special">段落文本1</p>
+    <p>段落文本2</p>
+    <p>段落文本3</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex20"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>层叠性</code><p>多种样式叠加，根据优先级处理冲突</p></div><div class="knowledge-item"><code>样式合并</code><p>不冲突的样式会全部显示</p></div><div class="knowledge-item"><code>优先级</code><p>ID(100) > class(10) > 标签(1)</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>添加!important观察效果</li><li>比较不同选择器组合的优先级</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 21: 复合选择器权重的叠加 -->
+            <div class="example-card" data-example="ex3-21">
+                <div class="example-header"><span class="example-number">21</span><h4>复合选择器权重的叠加</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>理解权重叠加计算规则</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex21" spellcheck="false"><!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>复合选择器权重的叠加</title>
+    <style type="text/css">
+        .inner { text-decoration: line-through; }
+        div div div div div div div div div div div div { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div>
+        <div><div><div><div><div><div><div><div><div>
+            <div class="inner">文本的样式</div>
+        </div></div></div></div></div></div></div></div></div>
+    </div>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex21"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>权重计算</code><p>类选择器权重(10) > 标签选择器权重(1)</p></div><div class="knowledge-item"><code>不进位规则</code><p>权重不会进位，无数标签叠加也不大于类选择器</p></div><div class="knowledge-item"><code>就近原则</code><p>权重相同时，后定义的样式生效</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>计算.container .box p的权重</li><li>对比100个class vs 1个ID</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 22: 搜索页面案例 -->
+            <div class="example-card" data-example="ex3-22">
+                <div class="example-header"><span class="example-number">22</span><h4>搜索页面（案例实现）</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>综合运用选择器和层叠性制作搜索页面</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex22" spellcheck="false"><!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>搜索页面</title>
+    <style type="text/css">
+        body { font-family: "微软雅黑"; font-size: 14px; color: #333; }
+        em { font-style: normal; }
+        
+        .header { 
+            font-size: 18px; 
+            color: #D52D2D; 
+            text-decoration: underline; 
+            font-weight: normal; 
+        }
+        .header em { 
+            color: #2525D3; 
+            text-decoration: underline; 
+        }
+        
+        .red { color: #D52D2D; }
+        .green { color: #015A16; }
+        .gray { 
+            color: #595959; 
+            text-decoration: underline; 
+        }
+    </style>
+</head>
+<body>
+    <h2 class="header">
+        什么是CSS<em>?——CSS教程</em>
+    </h2>
+    <p>
+        猴子提示：可以通过简单更改<em class="red">CSS</em>文件，改变网页的整体表现形式，从而减少我们的工作量，所以它是每个网页设计人员的必修课。知道什么是<em class="red">CSS</em>了，现在就开始学习<em class="red">CSS</em>吧……
+    </p>
+    <p>
+        <em class="green">www.dreamdu.com/css/wh...</em>-<em class="gray">百度快照</em>-<em class="gray">85%好评</em>
+    </p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex22"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>.header em</code><p>后代选择器：header内的em元素</p></div><div class="knowledge-item"><code>层叠性应用</code><p>综合运用多种选择器和样式</p></div><div class="knowledge-item"><code>em标签</code><p>默认斜体，通过font-style: normal去除</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>修改搜索结果的颜色样式</li><li>添加新的搜索结果条目</li></ul></div>
+                </div>
+            </div>
+
+            <!-- 扩展任务: 个人简历页面 -->
+            <div class="example-card advanced" data-example="ex3-ext">
+                <div class="example-header"><span class="example-number advanced-badge">扩展</span><h4>个人简历页面</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>任务描述：</strong>创建一个"个人简历"页面，要求使用多种CSS选择器（标签选择器、类选择器、ID选择器、后代选择器、并集选择器），体现CSS三大特性（层叠性、继承性、优先级）。</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex-ext3" spellcheck="false"><!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>个人简历</title>
+    <style type="text/css">
+        body {
+            font-family: "微软雅黑";
+            background: #f5f5f5;
+            padding: 40px 20px;
+        }
+        #resume {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 28px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            color: #f97316;
+            border-bottom: 2px solid #f97316;
+            padding-bottom: 10px;
+        }
+        .section p, .section li {
+            color: #666;
+            line-height: 1.8;
+        }
+        #resume ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        #resume ul li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        #resume ul li:last-child {
+            border-bottom: none;
+        }
+        .highlight {
+            color: #f97316;
+            font-weight: bold;
+        }
+        h1, h2, .section {
+            font-family: "微软雅黑";
+        }
+    </style>
+</head>
+<body>
+    <div id="resume">
+        <h1>个人简历</h1>
+        <div class="section">
+            <h2>基本信息</h2>
+            <p>姓名：张三 | 年龄：25岁 | 学历：本科</p>
+        </div>
+        <div class="section">
+            <h2>教育背景</h2>
+            <ul>
+                <li>2018-2022 <span class="highlight">XX大学</span> 计算机科学与技术</li>
+                <li>GPA: 3.8/4.0</li>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>工作经历</h2>
+            <ul>
+                <li><span class="highlight">2022-至今</span> 前端开发工程师</li>
+                <li>负责公司官网开发与维护</li>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>技能特长</h2>
+            <ul>
+                <li>HTML5 + CSS3</li>
+                <li>JavaScript + Vue.js</li>
+                <li>React</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex-ext3"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>本案例涉及的选择器</h5><div class="knowledge-grid"><div class="knowledge-item"><code>标签选择器</code><p>body, h1, h2, p, ul, li</p></div><div class="knowledge-item"><code>类选择器</code><p>.section, .highlight</p></div><div class="knowledge-item"><code>ID选择器</code><p>#resume</p></div><div class="knowledge-item"><code>后代选择器</code><p>#resume ul li</p></div><div class="knowledge-item"><code>并集选择器</code><p>h1, h2, .section</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>添加更多个人信息</li><li>修改.section的边框颜色</li><li>添加新的技能条目</li></ul></div>
+                    <div class="hbuilder-tips-box"><h5>HBuilderX 使用技巧</h5><ul><li><code>Ctrl+F</code> 查找内容</li><li><code>Ctrl+H</code> 查找替换</li><li><code>Ctrl+Shift+F</code> 格式化代码</li><li><code>F12</code> 开发者工具调试</li></ul></div>
+                </div>
+            </div>
+
+            <div class="task-complete-section"><h3>任务三完成</h3><p>恭喜完成所有实训任务！</p></div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

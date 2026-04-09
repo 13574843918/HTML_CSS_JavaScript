@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务一：CSS基础与选择器 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '💻'; }
+        .code-editor { width: 100%; min-height: 250px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-editor:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 250px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #667eea; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #667eea; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(102, 126, 234, 0.02) 100%); border: 1px solid rgba(102, 126, 234, 0.15); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #667eea; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #667eea; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item .highlight { display: inline-block; font-size: 0.75rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.25rem; background: rgba(59, 130, 246, 0.1); padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.02) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #3b82f6; flex-shrink: 0; }
+        .hbuilder-tips-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, rgba(99, 102, 241, 0.04) 100%); border: 1px solid rgba(168, 85, 247, 0.15); border-radius: 0.75rem; }
+        .hbuilder-tips-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .hbuilder-tips-box h5::before { content: '⚡'; }
+        .hbuilder-tips-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .hbuilder-tips-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: center; gap: 0.5rem; line-height: 1.5; }
+        .hbuilder-tips-box li::before { content: '→'; color: #a855f7; }
+        .hbuilder-tips-box li code { background: rgba(168, 85, 247, 0.1); padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.8125rem; color: #a855f7; font-family: 'JetBrains Mono', monospace; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item active" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer"><div class="tool-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>HBuilderX</div></div>
+    </aside>
+    <button class="mobile-menu-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <section id="task1" class="task-section active">
+            <div class="task-header"><span class="task-badge">任务一</span><h1 class="task-title">CSS基础与选择器</h1><p class="task-subtitle">掌握CSS选择器的基本使用方法</p></div>
+            <div class="task-meta">
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>预计学习时长：60分钟</span></div>
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span>CSS基础与选择器</span></div>
+            </div>
+            <div class="objectives-card">
+                <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>学习目标</h3>
+                <ul class="objectives-list"><li>掌握CSS样式的三种引入方式</li><li>熟练使用标签选择器、类选择器和ID选择器</li><li>理解选择器的优先级关系</li><li>综合运用选择器制作文字Logo效果</li></ul>
+            </div>
+
+            <!-- HBuilderX 使用技巧 - 任务一专属：新建项目与快速预览 -->
+            <div class="hbuilder-tips-section">
+                <div class="hts-header">
+                    <span class="hts-icon">⚡</span>
+                    <span class="hts-title">HBuilderX 使用技巧 · 本节专属</span>
+                    <span class="hts-badge">新建项目 &amp; 快速预览</span>
+                </div>
+                <div class="hbuilder-tips-grid">
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🗂️</span>
+                        <div class="tip-body">
+                            <span class="tip-key">文件 → 新建 → 项目</span>
+                            <p class="tip-desc">选择"普通项目"类型，类型选 <strong style="color:#c084fc">Web</strong>，自动生成 index.html 入口文件，省去手动创建的步骤。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📄</span>
+                        <div class="tip-body">
+                            <span class="tip-key">输入 html 按 Tab</span>
+                            <p class="tip-desc">在空白 .html 文件中输入 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">html</code> 再按 Tab，瞬间生成完整的 HTML5 文档结构，含 charset、viewport 等必要 meta。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔗</span>
+                        <div class="tip-body">
+                            <span class="tip-key">输入 link:css 按 Tab</span>
+                            <p class="tip-desc">快速生成 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">&lt;link rel="stylesheet" href="style.css"&gt;</code>，立即链接外部样式表，无需记忆完整写法。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🖥️</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Ctrl + R</span>
+                            <p class="tip-desc">保存后按 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">Ctrl+R</code> 在浏览器中实时预览，修改 CSS 立刻看到效果变化，无需手动刷新浏览器。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">✏️</span>
+                        <div class="tip-body">
+                            <span class="tip-key">输入 .className 按 Tab</span>
+                            <p class="tip-desc">在 CSS 文件中输入 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">.red</code> 再按 Tab，自动补全为 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">.red { }</code> 并将光标置于花括号内，高效书写类选择器。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">💡</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Ctrl + /</span>
+                            <p class="tip-desc">选中一行或多行代码后按 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">Ctrl+/</code> 可快速切换注释（<code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">/* */</code>），调试 CSS 时非常实用。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 01: 内嵌式CSS -->
+            <div class="example-card" data-example="ex1-01">
+                <div class="example-header"><span class="example-number">01</span><h4>内嵌式引入CSS样式表</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握内嵌式CSS的使用方法</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex1-01" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>内嵌式引入CSS样式表</title>
+    <style type="text/css">
+        /* 定义段落标签的样式 */
+        p {
+            font-size: 16px;
+            font-family: "楷体";
+            color: purple;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>内嵌式CSS样式</h2>
+    <p>使用style标签可定义内嵌式CSS样式表，style标签一般位于head头部标签中，title标签之后。</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex1-01"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>&lt;style&gt;</code><p>标签用于定义内嵌式CSS</p></div><div class="knowledge-item"><code>&lt;head&gt;</code><p>CSS代码应放在head标签内</p></div><div class="knowledge-item"><code>选择器{属性:值;}</code><p>是CSS基本语法</p></div><div class="knowledge-item"><code>分号分隔</code><p>多个声明用分号分隔</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>将font-size: 16px改为20px</li><li>将color: purple改为red</li><li>将text-decoration: underline改为overline</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 02: 外链式CSS -->
+            <div class="example-card" data-example="ex1-02">
+                <div class="example-header"><span class="example-number">02</span><h4>外链式引入CSS样式表</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握外部样式表的创建与链接方法</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex1-02" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>外链式引入CSS样式表</title>
+    <link href="style.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+    <h2>外链式CSS样式</h2>
+    <p>通过link标签可以将扩展名为.css的外部样式表文件链接到HTML文档中。</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex1-02"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>&lt;link&gt;</code><p>标签用于链接外部样式表</p></div><div class="knowledge-item"><code>href</code><p>属性指定CSS文件路径</p></div><div class="knowledge-item"><code>rel="stylesheet"</code><p>定义关系为样式表</p></div><div class="knowledge-item"><code>type="text/css"</code><p>指定MIME类型</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>将href改为其他CSS文件路径</li><li>尝试不同的rel属性值</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 03: 类选择器 -->
+            <div class="example-card" data-example="ex1-03">
+                <div class="example-header"><span class="example-number">03</span><h4>类选择器的使用</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握类选择器的定义和应用</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex1-03" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>类选择器</title>
+    <style type="text/css">
+        .red { color: red; }
+        .green { color: green; }
+        .font22 { font-size: 22px; }
+        p {
+            text-decoration: underline;
+            font-family: "微软雅黑";
+        }
+    </style>
+</head>
+<body>
+    <h2 class="red">二级标题文本</h2>
+    <p class="font22">段落一文本内容</p>
+    <p class="red font22">段落二文本内容</p>
+    <p>段落三文本内容</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex1-03"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>.className</code><p>类选择器以点号开头定义</p></div><div class="knowledge-item"><code>class="name"</code><p>HTML元素通过class属性调用</p></div><div class="knowledge-item"><code>空格分隔</code><p>一个元素可应用多个类</p></div><div class="knowledge-item"><code>复用性高</code><p>类选择器可重复使用</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>创建新类选择器.blue { color: blue; }</li><li>将red和font22同时应用到同一元素</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 04: ID选择器 -->
+            <div class="example-card" data-example="ex1-04">
+                <div class="example-header"><span class="example-number">04</span><h4>ID选择器的使用</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握ID选择器的定义和应用</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex1-04" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ID选择器</title>
+    <style type="text/css">
+        #bold { font-weight: bold; }
+        #font24 { font-size: 24px; }
+        #blue { color: blue; }
+    </style>
+</head>
+<body>
+    <p id="bold">段落1: id="bold", 设置粗体文字。</p>
+    <p id="font24">段落2: id="font24", 设置字号为24px。</p>
+    <p id="blue">段落3: id="blue", 设置文字为蓝色。</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex1-04"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>#idName</code><p>ID选择器以井号开头定义</p></div><div class="knowledge-item"><code>id="name"</code><p>HTML元素通过id属性调用</p></div><div class="knowledge-item"><code>唯一性</code><p>同一页面中ID名应唯一</p></div><div class="knowledge-item"><code>优先级高</code><p>ID选择器优先级高于类选择器</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>创建新ID选择器#italic { font-style: italic; }</li><li>将多个ID样式应用到同一段落</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 05: 文字Logo -->
+            <div class="example-card" data-example="ex1-05">
+                <div class="example-header"><span class="example-number">05</span><h4>文字Logo制作</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>综合运用CSS选择器制作文字效果</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex1-05" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>文字Logo</title>
+    <style type="text/css">
+        strong {
+            font-size: 100px;
+        }
+        .blue { color: #4285f4; }
+        .red { color: #ea4335; }
+        .yellow { color: #fbbc05; }
+        .green { color: #34a853; }
+    </style>
+</head>
+<body>
+    <strong class="blue">G</strong>
+    <strong class="red">o</strong>
+    <strong class="yellow">o</strong>
+    <strong class="blue">g</strong>
+    <strong class="green">l</strong>
+    <strong class="red">e</strong>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex1-05"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>标签选择器</code><p>直接使用标签名作为选择器</p></div><div class="knowledge-item"><code>类选择器</code><p>使用.类名定义样式</p></div><div class="knowledge-item"><code>组合使用</code><p>标签选择器限制范围，类选择器设置具体样式</p></div><div class="knowledge-item"><code>十六进制颜色</code><p>使用#RRGGBB格式定义颜色</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>修改字体大小为80px</li><li>更换其他字母颜色组合</li><li>尝试使用span标签替代strong</li></ul></div>
+                </div>
+            </div>
+
+            <!-- 扩展任务: CSS3炫彩文字Logo -->
+            <div class="example-card advanced" data-example="ex1-ext">
+                <div class="example-header"><span class="example-number advanced-badge">扩展</span><h4>CSS3炫彩文字Logo</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>任务描述：</strong>使用CSS3新特性制作立体效果的文字Logo，综合运用text-shadow、transform和border-radius。</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex1-ext" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>CSS3炫彩文字Logo</title>
+    <style type="text/css">
+        body {
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .logo {
+            font-size: 80px;
+            font-weight: bold;
+            font-family: "Arial Black", sans-serif;
+            display: inline-block;
+            margin: 0 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            transform: rotate(-5deg);
+            border-radius: 15px;
+            padding: 10px 20px;
+        }
+        .g1 { 
+            color: #4285F4; 
+            background: linear-gradient(135deg, #4285F4 0%, #3367D6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .o1 { 
+            color: #EA4335; 
+            background: linear-gradient(135deg, #EA4335 0%, #C53125 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .o2 { 
+            color: #FBBC05; 
+            background: linear-gradient(135deg, #FBBC05 0%, #E5A800 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .l { 
+            color: #34A853; 
+            background: linear-gradient(135deg, #34A853 0%, #2D9146 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .e { 
+            color: #EA4335; 
+            background: linear-gradient(135deg, #EA4335 0%, #C53125 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo g1">G</div>
+    <div class="logo o1">o</div>
+    <div class="logo o2">o</div>
+    <div class="logo l">g</div>
+    <div class="logo l">l</div>
+    <div class="logo e">e</div>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex1-ext"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>知识点拓展</h5><div class="knowledge-grid"><div class="knowledge-item"><code>text-shadow</code><p>制作文字阴影效果</p></div><div class="knowledge-item"><code>transform: rotate()</code><p>实现文字旋转</p></div><div class="knowledge-item"><code>border-radius</code><p>添加圆角效果</p></div><div class="knowledge-item"><code>linear-gradient</code><p>创建渐变背景</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>修改渐变颜色组合</li><li>调整旋转角度</li><li>修改字体大小观察效果</li></ul></div>
+                    <div class="hbuilder-tips-box"><h5>HBuilderX 操作技巧</h5><ul><li><code>Ctrl+/</code> 快速添加/取消注释</li><li><code>Ctrl+Shift+F</code> 格式化代码</li><li><code>Alt+点击</code> 多光标编辑</li><li><code>Ctrl+D</code> 依次选中相同词</li></ul></div>
+                </div>
+            </div>
+
+            <div class="task-complete-section"><h3>任务一完成</h3><p>恭喜完成CSS基础与选择器！</p><a href="task2.html" class="next-task-btn">继续学习任务二<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

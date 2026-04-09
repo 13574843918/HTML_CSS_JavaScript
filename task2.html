@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务二：美食专题栏目 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '💻'; }
+        .code-editor { width: 100%; min-height: 250px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-editor:focus { border-color: #f97316; box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1); }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 250px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #f97316; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #f97316; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(249, 115, 22, 0.08) 0%, rgba(249, 115, 22, 0.02) 100%); border: 1px solid rgba(249, 115, 22, 0.15); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #f97316; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #f97316; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item .highlight { display: inline-block; font-size: 0.75rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.25rem; background: rgba(59, 130, 246, 0.1); padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.02) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #3b82f6; flex-shrink: 0; }
+        .hbuilder-tips-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, rgba(99, 102, 241, 0.04) 100%); border: 1px solid rgba(168, 85, 247, 0.15); border-radius: 0.75rem; }
+        .hbuilder-tips-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .hbuilder-tips-box h5::before { content: '⚡'; }
+        .hbuilder-tips-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .hbuilder-tips-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: center; gap: 0.5rem; line-height: 1.5; }
+        .hbuilder-tips-box li::before { content: '→'; color: #a855f7; }
+        .hbuilder-tips-box li code { background: rgba(168, 85, 247, 0.1); padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.8125rem; color: #a855f7; font-family: 'JetBrains Mono', monospace; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item active" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer"><div class="tool-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>HBuilderX</div></div>
+    </aside>
+    <button class="mobile-menu-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <section id="task2" class="task-section active">
+            <div class="task-header"><span class="task-badge">任务二</span><h1 class="task-title">美食专题栏目</h1><p class="task-subtitle">从字体控制到文本排版的完整实践</p></div>
+            <div class="task-meta">
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>预计学习时长：90分钟</span></div>
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span>字体与文本样式</span></div>
+            </div>
+            <div class="objectives-card">
+                <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>学习目标</h3>
+                <ul class="objectives-list"><li>掌握CSS字体属性的综合设置方法</li><li>熟练运用各种文本外观属性美化网页</li><li>理解并应用CSS3新增的文本特效</li><li>完成美食专题栏目的实战项目</li></ul>
+            </div>
+
+            <!-- HBuilderX 使用技巧 - 任务二专属：多光标编辑与代码格式化 -->
+            <div class="hbuilder-tips-section">
+                <div class="hts-header">
+                    <span class="hts-icon">⚡</span>
+                    <span class="hts-title">HBuilderX 使用技巧 · 本节专属</span>
+                    <span class="hts-badge">多光标编辑 &amp; 代码格式化</span>
+                </div>
+                <div class="hbuilder-tips-grid">
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🖱️</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Alt + 点击</span>
+                            <p class="tip-desc">在代码中按住 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">Alt</code> 再点击多处，可同时添加多个光标。一次修改所有段落的 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">font-size</code>，效率翻倍。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🎯</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Ctrl + D</span>
+                            <p class="tip-desc">选中一段文字后按 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">Ctrl+D</code>，依次选中下一个相同的词。批量修改多处相同的属性值（如颜色值 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">purple</code>）时非常方便。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔧</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Ctrl + Shift + F</span>
+                            <p class="tip-desc">一键格式化代码，自动整理缩进和空格。写完字体样式后用它让代码立刻变整洁，特别适合 CSS 属性较多时使用。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">💬</span>
+                        <div class="tip-body">
+                            <span class="tip-key">输入属性名按 Tab</span>
+                            <p class="tip-desc">在 CSS 中输入 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">fs</code> 按 Tab，自动补全 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">font-size: ;</code>；输入 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">lh</code> 补全 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">line-height:</code>，记住常见缩写可大幅提速。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📋</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Ctrl + Shift + R</span>
+                            <p class="tip-desc">复制当前行到下一行。写多个具有相似结构的 CSS 规则时，先写一条再用此快捷键复制，比重新输入快很多。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔍</span>
+                        <div class="tip-body">
+                            <span class="tip-key">F12 开发者工具</span>
+                            <p class="tip-desc">在浏览器预览页面后按 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">F12</code> 打开开发者工具，在"元素"面板可实时修改 <code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">font-family</code>、<code style="color:#c084fc;background:rgba(168,85,247,.1);padding:0 4px;border-radius:3px">color</code> 等属性并立即预览效果。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 06: 字体属性综合设置 -->
+            <div class="example-card" data-example="ex2-06">
+                <div class="example-header"><span class="example-number">06</span><h4>字体属性综合设置</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握font属性的简写规则</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex6" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>font属性</title>
+    <style type="text/css">
+        .one {
+            font-family:"隶书";
+            font-size: 18px;
+            line-height: 30px;
+        }
+        .two {
+            font: italic 18px/30px "宋体";
+        }
+    </style>
+</head>
+<body>
+    <p class="one">段落1：使用font属性综合设置段落文本的字体风格、字号、行高和字体。</p>
+    <p class="two">段落2：使用font属性综合设置段落文本的字体风格、字号和行高。</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex6"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>font-family</code><p>设置字体类型</p></div><div class="knowledge-item"><code>font-size</code><p>设置字体大小</p></div><div class="knowledge-item"><code>font-style</code><p>italic设置斜体</p></div><div class="knowledge-item"><code>font简写</code><p>顺序：style→weight→size/line-height→family</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>将第二个段落的font-family改为"微软雅黑"</li><li>修改line-height为40px</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 07: 服务器字体引入 -->
+            <div class="example-card" data-example="ex2-07">
+                <div class="example-header"><span class="example-number">07</span><h4>服务器字体引入</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>学习使用@font-face引入自定义字体</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex7" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>马善政字体</title>
+    <style type="text/css">
+        @font-face {
+            font-family: 'jianzhi';
+            src: url('https://cdn.jsdelivr.net/gh/wordshub/free-font/assets/font/ma-shan-zheng/MaShanZheng-Regular.ttf') format('truetype');
+        }
+        p {
+            font-family: 'jianzhi', cursive !important;
+            font-size: 40px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <p>为莘莘学子改变命运而讲课</p>
+    <p>为千万学生少走弯路而著书</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex7"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>@font-face</code><p>CSS3新增规则，允许使用服务器字体</p></div><div class="knowledge-item"><code>font-family</code><p>自定义字体名称</p></div><div class="knowledge-item"><code>src: url(...)</code><p>指定字体文件路径</p></div><div class="knowledge-item"><code>format()</code><p>声明字体格式，支持ttf、otf、woff</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>修改字体大小为60px</li><li>将字体颜色改为#f97316</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 08: 字间距与词间距 -->
+            <div class="example-card" data-example="ex2-08">
+                <div class="example-header"><span class="example-number">08</span><h4>字间距与词间距</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>区分letter-spacing和word-spacing的应用场景</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex8" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>字间距与词间距</title>
+    <style type="text/css">
+        .letter {
+            letter-spacing: 20px;
+        }
+        .word {
+            word-spacing: 20px;
+        }
+    </style>
+</head>
+<body>
+    <p class="letter">letter spacing(字母间距)</p>
+    <p class="word">word spacing word spacing(单词间距)</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex8"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>letter-spacing</code><p>设置字符间的间距，对中英文都有效</p></div><div class="knowledge-item"><code>word-spacing</code><p>设置单词间的间距，仅对英文有效</p></div><div class="knowledge-item"><code>支持单位</code><p>像素(px)、相对单位(em)、百分比(%)</p></div><div class="knowledge-item"><code>负值效果</code><p>可缩小间距，创造特殊排版</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>将letter-spacing改为30px</li><li>尝试使用负值</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 09: 行高设置 -->
+            <div class="example-card" data-example="ex2-09">
+                <div class="example-header"><span class="example-number">09</span><h4>行高设置</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握line-height的三种单位设置方法</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex9" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>行高设置</title>
+    <style type="text/css">
+        .one {
+            font-size: 16px;
+            line-height: 18px;
+        }
+        .two {
+            font-size: 12px;
+            line-height: 2em;
+        }
+        .three {
+            font-size: 14px;
+            line-height: 150%;
+        }
+    </style>
+</head>
+<body>
+    <p class="one">段落1：使用像素px设置line-height...</p>
+    <p class="two">段落2：使用相对值em设置line-height...</p>
+    <p class="three">段落3：使用百分比%设置line-height...</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex9"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>px像素</code><p>固定行高，不受字体大小影响</p></div><div class="knowledge-item"><code>em相对值</code><p>相对于当前字体大小计算</p></div><div class="knowledge-item"><code>%百分比</code><p>相对于父元素字体大小计算</p></div><div class="knowledge-item"><code>推荐写法</code><p>使用无单位数值实现更好的继承效果</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>将第二个段落的line-height改为1.8</li><li>修改font-size为18px观察效果</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 10: 文本装饰 -->
+            <div class="example-card" data-example="ex2-10">
+                <div class="example-header"><span class="example-number">10</span><h4>文本装饰</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握text-decoration的各种装饰效果</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex10" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>文本装饰</title>
+    <style type="text/css">
+        .one {
+            text-decoration: underline;
+        }
+        .two {
+            text-decoration: overline;
+        }
+        .three {
+            text-decoration: line-through;
+        }
+        .four {
+            text-decoration: underline line-through;
+        }
+    </style>
+</head>
+<body>
+    <p class="one">设置下划线(underline)</p>
+    <p class="two">设置上划线(overline)</p>
+    <p class="three">设置删除线(line-through)</p>
+    <p class="four">同时设置下划线和删除线</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex10"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>underline</code><p>下划线</p></div><div class="knowledge-item"><code>overline</code><p>上划线</p></div><div class="knowledge-item"><code>line-through</code><p>删除线</p></div><div class="knowledge-item"><code>none</code><p>无装饰，常用于去除链接下划线</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>为链接添加text-decoration: none样式</li><li>尝试组合多种装饰效果</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 11: 首行缩进 -->
+            <div class="example-card" data-example="ex2-11">
+                <div class="example-header"><span class="example-number">11</span><h4>首行缩进</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>学习使用text-indent实现段落首行缩进</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex11" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首行缩进</title>
+    <style type="text/css">
+        p {
+            font-size: 14px;
+        }
+        .one {
+            text-indent: 2em;
+        }
+        .two {
+            text-indent: 50px;
+        }
+    </style>
+</head>
+<body>
+    <p class="one">这是段落1中的文本... text-indent:2em;。</p>
+    <p class="two">这是段落2中的文本... text-indent:50px;。</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex11"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>text-indent</code><p>用于设置段落首行缩进</p></div><div class="knowledge-item"><code>em单位</code><p>推荐使用em单位实现相对缩进</p></div><div class="knowledge-item"><code>负值效果</code><p>支持负值，可实现悬挂缩进效果</p></div><div class="knowledge-item"><code>作用范围</code><p>只影响段落的第一行</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>将段落1的text-indent改为4em</li><li>尝试负值实现悬挂缩进</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 12: 空白符处理 -->
+            <div class="example-card" data-example="ex2-12">
+                <div class="example-header"><span class="example-number">12</span><h4>空白符处理</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握white-space属性控制空白符显示</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex12" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>空白符处理</title>
+    <style type="text/css">
+        .one {
+            white-space: normal;
+        }
+        .two {
+            white-space: pre;
+        }
+        .three {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <p class="one">这个      段落中      有很多 空格</p>
+    <p class="two">这个      段落中      有很多 空格</p>
+    <p class="three">这个段落文本不会换行直到遇到br标签...</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex12"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>normal</code><p>合并连续空格和换行（默认值）</p></div><div class="knowledge-item"><code>pre</code><p>保留原始空格和换行，类似pre标签</p></div><div class="knowledge-item"><code>nowrap</code><p>强制不换行，直到遇到br标签</p></div><div class="knowledge-item"><code>pre-wrap/pre-line</code><p>CSS3新增值</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>尝试pre-wrap值的效果</li><li>对比三种值的区别</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 13: 文本阴影 -->
+            <div class="example-card" data-example="ex2-13">
+                <div class="example-header"><span class="example-number">13</span><h4>文本阴影</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>学习使用text-shadow创建阴影效果</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex13" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>文本阴影</title>
+    <style type="text/css">
+        body { background: #333; }
+        p {
+            font-size: 50px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 10px 10px 10px red;
+        }
+    </style>
+</head>
+<body>
+    <p>Hello CSS3</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex13"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>text-shadow</code><p>语法：h-shadow v-shadow blur color</p></div><div class="knowledge-item"><code>h-shadow</code><p>水平阴影位置（正右负左）</p></div><div class="knowledge-item"><code>v-shadow</code><p>垂直阴影位置（正下负上）</p></div><div class="knowledge-item"><code>blur</code><p>模糊半径（越大越模糊）</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>修改阴影颜色为蓝色</li><li>添加多组阴影效果</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 14: 文本溢出省略 -->
+            <div class="example-card" data-example="ex2-14">
+                <div class="example-header"><span class="example-number">14</span><h4>文本溢出省略</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>实现文本溢出显示省略号效果</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex14" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>文本溢出省略</title>
+    <style type="text/css">
+        p {
+            width: 200px;
+            height: 100px;
+            border: 1px solid #000;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <p>把很长的一段文本中溢出的内容隐藏，出现省略号</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex14"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>white-space: nowrap</code><p>强制不换行</p></div><div class="knowledge-item"><code>overflow: hidden</code><p>隐藏溢出内容</p></div><div class="knowledge-item"><code>text-overflow: ellipsis</code><p>显示省略号</p></div><div class="knowledge-item"><code>三要素</code><p>必须同时设置这三个属性</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>修改width为300px观察效果</li><li>尝试改变border样式</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 15: 自动换行 -->
+            <div class="example-card" data-example="ex2-15">
+                <div class="example-header"><span class="example-number">15</span><h4>自动换行</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>解决长单词或URL溢出问题</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex15" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>自动换行</title>
+    <style type="text/css">
+        p {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+        }
+        .break_word {
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <span>word-wrap: normal;</span>
+    <p>网页平面ui设计学院http://icd.xxxxxxx.cn/</p>
+    <span>word-wrap: break-word;</span>
+    <p class="break_word">网页平面ui设计学院http://icd.xxxxxxx.cn/</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex15"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>normal</code><p>浏览器默认处理，长单词不换行</p></div><div class="knowledge-item"><code>break-word</code><p>允许在长单词或URL内部换行</p></div><div class="knowledge-item"><code>word-break</code><p>CSS3新增，提供更多断词选项</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>添加更多长单词测试</li><li>尝试word-break: break-all</li></ul></div>
+                </div>
+            </div>
+
+            <!-- Example 16: 美食专题栏目实战项目 -->
+            <div class="example-card" data-example="ex2-16">
+                <div class="example-header"><span class="example-number">16</span><h4>美食专题栏目（实战项目）</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>综合运用所学知识完成实战项目</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex16" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>美食专题栏目</title>
+    <style type="text/css">
+        body {
+            font-family: "微软雅黑";
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        p {
+            font-size: 16px;
+            line-height: 28px;
+            text-indent: 2em;
+        }
+        .blue {
+            color: #33F;
+        }
+        .red {
+            color: #F00;
+        }
+        .money {
+            font-size: 26px;
+            font-weight: bold;
+        }
+        .highlight {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://via.placeholder.com/600x200/f97316/fff?text=跳槽有道" alt="美食图片" style="width:100%;max-width:600px;border-radius:12px;">
+    <p>
+        <em class="blue">导语</em>：臭豆腐是<strong class="red">长沙</strong>有名的小吃，属于<em class="blue highlight">湘菜</em>的一种...
+        <em class="blue">【详情】</em>
+    </p>
+    <p>
+        <em class="blue">火宫殿臭豆腐</em>：价格<strong class="red money">18</strong>元
+    </p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex16"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>本案例涉及的核心知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>外链式CSS</code><p>CSS样式与HTML分离</p></div><div class="knowledge-item"><code>类选择器复用</code><p>多次使用相同样式</p></div><div class="knowledge-item"><code>text-indent</code><p>首行缩进2em</p></div><div class="knowledge-item"><code>综合排版</code><p>字体、颜色、装饰组合</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>添加更多美食描述段落</li><li>创建新的价格标签样式</li></ul></div>
+                </div>
+            </div>
+
+            <!-- 扩展任务: CSS3文本特效综合应用 -->
+            <div class="example-card advanced" data-example="ex2-ext">
+                <div class="example-header"><span class="example-number advanced-badge">扩展</span><h4>CSS3文本特效综合应用</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>任务描述：</strong>制作一个具有现代感的个人简历标题，综合运用本章所学的CSS3文本特效。</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex-ext2" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>CSS3文本特效</title>
+    <style type="text/css">
+        body {
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .resume-title {
+            font-size: 48px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            transform: rotate(-2deg);
+            display: inline-block;
+            padding: 20px;
+            border: 3px dashed #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="resume-title">个人简历</h1>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex-ext2"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>知识点拓展</h5><div class="knowledge-grid"><div class="knowledge-item"><code>background-clip: text</code><p>将背景裁剪为文字形状</p></div><div class="knowledge-item"><code>-webkit-text-fill-color</code><p>设置文字填充颜色为透明</p></div><div class="knowledge-item"><code>linear-gradient</code><p>创建线性渐变背景</p></div><div class="knowledge-item"><code>transform: rotate()</code><p>对元素进行旋转</p></div></div></div>
+                    <div class="practice-box"><h5>动手练练</h5><ul><li>修改渐变颜色组合</li><li>调整旋转角度</li><li>添加更多文字特效</li></ul></div>
+                    <div class="hbuilder-tips-box"><h5>HBuilderX 操作技巧</h5><ul><li><code>Ctrl+/</code> 快速添加/取消注释</li><li><code>Ctrl+Shift+F</code> 格式化代码</li><li><code>Alt+点击</code> 多光标编辑</li><li><code>Ctrl+D</code> 依次选中相同词</li></ul></div>
+                </div>
+            </div>
+
+            <div class="task-complete-section"><h3>任务二完成</h3><p>恭喜完成美食专题栏目！</p><a href="task3.html" class="next-task-btn">继续学习任务三<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
