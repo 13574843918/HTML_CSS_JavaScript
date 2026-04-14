@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务五：用户中心 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '💻'; }
+        .code-editor { width: 100%; min-height: 280px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-editor:focus { border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1); }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 280px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #8b5cf6; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #8b5cf6; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(139, 92, 246, 0.02) 100%); border: 1px solid rgba(139, 92, 246, 0.15); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #8b5cf6; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #8b5cf6; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.02) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #3b82f6; flex-shrink: 0; }
+        .practice-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #8b5cf6; font-size: 0.8125rem; }
+        .practice-box .challenge { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(59, 130, 246, 0.3); }
+        .practice-box .challenge-title { font-size: 0.8125rem; font-weight: 600; color: #f59e0b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box .challenge-title::before { content: '🔥'; }
+        .challenge-box { margin-top: 1.5rem; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.02) 100%); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 0.75rem; }
+        .challenge-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .challenge-box h5::before { content: '🚀'; }
+        .challenge-box .challenge-desc { font-size: 0.875rem; color: #94a3b8; line-height: 1.7; margin-bottom: 1rem; }
+        .challenge-box .challenge-task { font-size: 0.8125rem; color: #f59e0b; line-height: 1.6; }
+        .challenge-box .challenge-task li { color: #f59e0b; }
+        .challenge-box .challenge-task li::before { content: '⭐'; color: #a855f7; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+                <li class="nav-item" data-task="task4"><span class="nav-number">04</span><div class="nav-content"><span class="nav-title">音乐盒</span><span class="nav-desc">盒子模型基础</span></div></li>
+                <li class="nav-item active" data-task="task5"><span class="nav-number">05</span><div class="nav-content"><span class="nav-title">用户中心</span><span class="nav-desc">内边距与外边距</span></div></li>
+                <li class="nav-item" data-task="task6"><span class="nav-number">06</span><div class="nav-content"><span class="nav-title">咖啡店banner</span><span class="nav-desc">背景属性</span></div></li>
+                <li class="nav-item" data-task="task7"><span class="nav-number">07</span><div class="nav-content"><span class="nav-title">图标导航栏</span><span class="nav-desc">display属性</span></div></li>
+                <li class="nav-item" data-task="task8"><span class="nav-number">08</span><div class="nav-content"><span class="nav-title">创意画框</span><span class="nav-desc">渐变与阴影</span></div></li>
+                <li class="nav-item" data-task="task9"><span class="nav-number">09</span><div class="nav-content"><span class="nav-title">拼图效果</span><span class="nav-desc">圆角与多背景</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer"><div class="tool-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>HBuilderX</div></div>
+    </aside>
+    <button class="mobile-menu-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <section id="task5" class="task-section active">
+            <div class="task-header"><span class="task-badge">任务五</span><h1 class="task-title">用户中心</h1><p class="task-subtitle">掌握内边距与外边距的使用</p></div>
+            <div class="task-meta">
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>预计学习时长：60分钟</span></div>
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span>内边距与外边距</span></div>
+            </div>
+            <div class="objectives-card">
+                <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>学习目标</h3>
+                <ul class="objectives-list"><li>掌握padding内边距的设置方法</li><li>掌握margin外边距的设置方法</li><li>理解盒子尺寸的实际计算</li></ul>
+            </div>
+
+            <!-- HBuilderX 使用技巧 -->
+            <div class="hbuilder-tips-section">
+                <div class="hts-header">
+                    <span class="hts-icon">⚡</span>
+                    <span class="hts-title">HBuilderX 使用技巧 · 本节专属</span>
+                    <span class="hts-badge">边距调试 &amp; 代码补全</span>
+                </div>
+                <div class="hbuilder-tips-grid">
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📏</span>
+                        <div class="tip-body">
+                            <span class="tip-key">快速边距</span>
+                            <p class="tip-desc">输入 <code>m10</code> 按 Tab 生成 <code>margin: 10px;</code>，输入 <code>p20</code> 生成 <code>padding: 20px;</code>。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🎯</span>
+                        <div class="tip-body">
+                            <span class="tip-key">居中技巧</span>
+                            <p class="tip-desc">输入 <code>ma</code> 按 Tab 自动补全 <code>margin: auto;</code>，配合块级元素实现水平居中。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📐</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Ctrl+Alt+D</span>
+                            <p class="tip-desc">打开元素检查视图，直观看到 padding（内边距）和 margin（外边距）的区域分布。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔄</span>
+                        <div class="tip-body">
+                            <span class="tip-key">边距缩写</span>
+                            <p class="tip-desc"><code>margin: 10px 20px;</code> 表示上下10px，左右20px。HBuilderX 会智能提示。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📋</span>
+                        <div class="tip-body">
+                            <span class="tip-key">复制样式</span>
+                            <p class="tip-desc">选中 CSS 属性行按 <code>Ctrl+Shift+D</code> 复制到下一行，快速调整数值。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔍</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Ctrl+/</span>
+                            <p class="tip-desc">快速注释/取消注释 CSS 代码，便于对比有边距和无边距的效果。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例4-6：内边距设置 -->
+            <div class="example-card" data-example="ex4-6">
+                <div class="example-header"><span class="example-number">4-6</span><h4>内边距设置</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握padding内边距的设置方法，理解像素值和百分比值的区别</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex4-6" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>内边距</title>
+    <style type="text/css">
+        img {
+            padding: 20px;
+        }
+        p {
+            padding: 5%;
+            background: aqua;
+        }
+    </style>
+</head>
+<body>
+    <img src="images/longmao.png" alt="龙猫"/>
+    <p>段落文本内容，内边距使用百分比数值</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex4-6"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>padding</code><p>元素内容与边框之间的距离</p></div><div class="knowledge-item"><code>像素值</code><p>padding: 20px，固定数值</p></div><div class="knowledge-item"><code>百分比</code><p>padding: 5%，相对于父元素宽度</p></div><div class="knowledge-item"><code>注意</code><p>padding不允许使用负值</p></div></div></div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>img</code> 的 <code>padding</code> 改为 <code>40px</code>，观察内边距增大效果</li>
+                            <li>将 <code>p</code> 的 <code>padding: 5%</code> 改为 <code>padding: 20px</code>，对比固定值和百分比</li>
+                            <li>尝试添加 <code>padding-top</code>、<code>padding-bottom</code> 等单侧内边距</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>给 <code>img</code> 添加 <code>border: 2px solid #8b5cf6;</code>，观察padding与border的关系</li>
+                                <li>将 <code>p</code> 的 <code>padding</code> 设为 <code>10px 30px</code>，理解值复制原则</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例4-7：外边距设置 -->
+            <div class="example-card" data-example="ex4-7">
+                <div class="example-header"><span class="example-number">4-7</span><h4>外边距设置</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握margin外边距的设置方法，理解margin与padding的区别</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex4-7" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>外边距</title>
+    <style type="text/css">
+        img {
+            border: 5px solid green;
+            float: left;
+            margin-right: 50px;
+            margin-left: 30px;
+        }
+        p {
+            text-indent: 2em;
+        }
+    </style>
+</head>
+<body>
+    <img src="images/longmao.png" alt="龙猫"/>
+    <p>龙猫剧情简介：小月的母亲生病住院了，父亲带着她和妹妹到乡下居住。她们在乡下遇到了很多小精灵，更与一只大大胖胖的龙猫成为了朋友...</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex4-7"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>margin</code><p>元素边框与相邻元素的距离</p></div><div class="knowledge-item"><code>vs padding</code><p>margin是外部距离，padding是内部距离</p></div><div class="knowledge-item"><code>负值</code><p>margin可以使用负值实现重叠</p></div><div class="knowledge-item"><code>auto居中</code><p>margin: 0 auto; 水平居中块级元素</p></div></div></div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>margin-right</code> 改为 <code>100px</code>，观察与文字的距离变化</li>
+                            <li>将 <code>margin-left</code> 改为 <code>0</code>，观察图片位置变化</li>
+                            <li>尝试添加 <code>margin-top: 20px;</code>，观察与其他元素的距离</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>将 <code>margin-right</code> 改为 <code>-30px</code>（负值），观察文字与图片重叠效果</li>
+                                <li>删除 <code>float: left;</code>，观察块级元素默认的外边距行为</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例4-8：盒子宽高控制 -->
+            <div class="example-card" data-example="ex4-8">
+                <div class="example-header"><span class="example-number">4-8</span><h4>盒子宽高控制</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握width和height属性的设置，理解盒子总尺寸的计算公式</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex4-8" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>盒子宽高</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        p {
+            width: 200px;
+            height: 100px;
+            padding: 20px;
+            border: 5px solid red;
+            margin: 10px;
+            background: pink;
+        }
+    </style>
+</head>
+<body>
+    <p>段落文本内容</p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex4-8"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>width</code><p>设置内容区域宽度</p></div><div class="knowledge-item"><code>height</code><p>设置内容区域高度</p></div><div class="knowledge-item"><code>总尺寸</code><p>内容+padding+border+margin</p></div><div class="knowledge-item"><code>适用性</code><p>width/height仅对块级元素有效</p></div></div></div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>width</code> 改为 <code>300px</code>，观察盒子宽度变化</li>
+                            <li>将 <code>padding</code> 改为 <code>40px</code>，观察盒子实际尺寸增大</li>
+                            <li>将 <code>border</code> 改为 <code>10px solid red</code>，观察边框对尺寸的影响</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>计算当前盒子的实际总宽度：200 + 40 + 10 + 20 = 270px（验证一下！）</li>
+                                <li>使用 <code>box-sizing: border-box;</code> 改变盒模型计算方式，观察效果</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例4-9：用户中心完整代码 -->
+            <div class="example-card" data-example="ex4-9">
+                <div class="example-header"><span class="example-number">4-9</span><h4>用户中心（案例实现）</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>综合运用内边距、外边距和div嵌套制作用户中心卡片</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex4-9" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户中心</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .box {
+            width: 200px;
+            height: 300px;
+            margin: 50px auto;
+            background: #2E3138;
+            border-radius: 10px;
+        }
+        .info img {
+            width: 200px;
+            height: 150px;
+        }
+        .info p {
+            width: 138px;
+            line-height: 33px;
+            border: 1px solid #2E3138;
+            margin: 0;
+            margin-top: 2px;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="info">
+            <img src="images/photo.png" alt="用户头像"/>
+        </div>
+        <div class="info">
+            <p>用户资料</p>
+            <p>姓名：张三</p>
+            <p>年龄：25岁</p>
+            <p>职业：设计师</p>
+        </div>
+    </div>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex4-9"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>嵌套div</code><p>外层容器包裹用户头像和资料</p></div><div class="knowledge-item"><code>margin-top</code><p>拉开不同区域之间的距离</p></div><div class="knowledge-item"><code>padding-left</code><p>使内容前留白</p></div><div class="knowledge-item"><code>margin: 0</code><p>清除默认外边距</p></div></div></div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>.box</code> 的 <code>margin: 50px auto</code> 改为 <code>margin: 20px auto</code>，观察间距变化</li>
+                            <li>将 <code>.info p</code> 的 <code>padding-left</code> 改为 <code>30px</code>，观察文字缩进变化</li>
+                            <li>将 <code>.info p</code> 的 <code>margin-top: 2px</code> 改为 <code>5px</code>，观察行间距变化</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>给 <code>.box</code> 添加 <code>padding: 20px;</code>，观察内边距效果</li>
+                                <li>将卡片背景改为渐变色：<code>background: linear-gradient(135deg, #667eea, #764ba2);</code></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 拓展练习 -->
+            <div class="challenge-box">
+                <h5>拓展练习 · 电商商品卡片</h5>
+                <p class="challenge-desc">综合运用本章节学习的内边距和外边距知识，设计一个精美的电商商品卡片。通过合理设置padding和margin，实现专业的卡片布局效果。</p>
+                <div class="code-split-container">
+                    <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-challenge-5" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>拓展练习 - 商品卡片</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 40px;
+            background: #f5f5f5;
+        }
+        .product-card {
+            width: 220px;
+            /* 请在这里添加样式 */
+            /* 1. 背景色设为白色 background: #fff */
+            /* 2. 添加 15px 内边距 padding */
+            /* 3. 添加 0 auto 外边距实现居中 */
+            /* 4. 添加圆角 border-radius: 10px */
+            /* 5. 添加阴影 box-shadow */
+        }
+        .product-img {
+            width: 100%;
+            height: 180px;
+            /* 请在这里添加样式 */
+            /* 1. 背景色设为浅灰色 #eee */
+            /* 2. 底部外边距 margin-bottom: 15px */
+            text-align: center;
+            line-height: 180px;
+            font-size: 48px;
+            color: #ccc;
+        }
+        .product-title {
+            font-size: 16px;
+            /* 请在这里添加样式 */
+            /* 1. 下方外边距 margin-bottom: 10px */
+            color: #333;
+            margin: 0;
+        }
+        .product-price {
+            font-size: 20px;
+            color: #e43961;
+            font-weight: bold;
+            /* 请在这里添加样式 */
+            /* 1. 上方外边距 margin-top */
+            /* 2. 内边距 padding */
+        }
+    </style>
+</head>
+<body>
+    <div class="product-card">
+        <div class="product-img">🛍️</div>
+        <h3 class="product-title">无线蓝牙耳机</h3>
+        <p class="product-price">¥299.00</p>
+    </div>
+</body>
+</html></textarea></div>
+                    <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-challenge-5"></iframe></div>
+                </div>
+                <ul class="challenge-task">
+                    <li>任务一：按照代码注释提示，依次完成各个CSS属性的添加</li>
+                    <li>任务二：修改阴影颜色和模糊度，如 <code>box-shadow: 0 2px 10px rgba(0,0,0,0.1);</code></li>
+                    <li>任务三：调整各个元素的padding和margin，理解它们的作用</li>
+                    <li>任务四（挑战）：为卡片添加hover效果，当鼠标悬停时阴影加深</li>
+                </ul>
+            </div>
+
+            <div class="task-complete-section"><h3>任务五完成</h3><p>恭喜完成所有实训任务！</p></div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

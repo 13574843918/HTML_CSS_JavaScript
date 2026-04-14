@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务七：图标导航栏 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '💻'; }
+        .code-editor { width: 100%; min-height: 280px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-editor:focus { border-color: #f43f5e; box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.1); }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 280px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #f43f5e; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #f43f5e; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(244, 63, 94, 0.08) 0%, rgba(244, 63, 94, 0.02) 100%); border: 1px solid rgba(244, 63, 94, 0.15); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #f43f5e; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #f43f5e; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.02) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #3b82f6; flex-shrink: 0; }
+        .practice-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #f43f5e; font-size: 0.8125rem; }
+        .practice-box .challenge { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(59, 130, 246, 0.3); }
+        .practice-box .challenge-title { font-size: 0.8125rem; font-weight: 600; color: #f59e0b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box .challenge-title::before { content: '🔥'; }
+        .challenge-box { margin-top: 1.5rem; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.02) 100%); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 0.75rem; }
+        .challenge-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .challenge-box h5::before { content: '🚀'; }
+        .challenge-box .challenge-desc { font-size: 0.875rem; color: #94a3b8; line-height: 1.7; margin-bottom: 1rem; }
+        .challenge-box .challenge-task { font-size: 0.8125rem; color: #f59e0b; line-height: 1.6; }
+        .challenge-box .challenge-task li { color: #f59e0b; }
+        .challenge-box .challenge-task li::before { content: '⭐'; color: #a855f7; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+                <li class="nav-item" data-task="task4"><span class="nav-number">04</span><div class="nav-content"><span class="nav-title">音乐盒</span><span class="nav-desc">盒子模型基础</span></div></li>
+                <li class="nav-item" data-task="task5"><span class="nav-number">05</span><div class="nav-content"><span class="nav-title">用户中心</span><span class="nav-desc">内边距与外边距</span></div></li>
+                <li class="nav-item" data-task="task6"><span class="nav-number">06</span><div class="nav-content"><span class="nav-title">咖啡店banner</span><span class="nav-desc">背景属性</span></div></li>
+                <li class="nav-item active" data-task="task7"><span class="nav-number">07</span><div class="nav-content"><span class="nav-title">图标导航栏</span><span class="nav-desc">display属性</span></div></li>
+                <li class="nav-item" data-task="task8"><span class="nav-number">08</span><div class="nav-content"><span class="nav-title">创意画框</span><span class="nav-desc">渐变与阴影</span></div></li>
+                <li class="nav-item" data-task="task9"><span class="nav-number">09</span><div class="nav-content"><span class="nav-title">拼图效果</span><span class="nav-desc">圆角与多背景</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer"><div class="tool-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>HBuilderX</div></div>
+    </aside>
+    <button class="mobile-menu-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <section id="task7" class="task-section active">
+            <div class="task-header"><span class="task-badge">任务七</span><h1 class="task-title">图标导航栏</h1><p class="task-subtitle">掌握display属性转换元素类型</p></div>
+            <div class="task-meta">
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>预计学习时长：60分钟</span></div>
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span>display属性</span></div>
+            </div>
+            <div class="objectives-card">
+                <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>学习目标</h3>
+                <ul class="objectives-list"><li>理解块元素与行内元素的区别</li><li>掌握span标签的用法</li><li>掌握display属性转换元素类型的方法</li></ul>
+            </div>
+
+            <!-- HBuilderX 使用技巧 -->
+            <div class="hbuilder-tips-section">
+                <div class="hts-header">
+                    <span class="hts-icon">⚡</span>
+                    <span class="hts-title">HBuilderX 使用技巧 · 本节专属</span>
+                    <span class="hts-badge">display &amp; 行内块布局</span>
+                </div>
+                <div class="hbuilder-tips-grid">
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📦</span>
+                        <div class="tip-body">
+                            <span class="tip-key">span 按 Tab</span>
+                            <p class="tip-desc">输入 <code>span</code> 按 Tab 生成 <code>&lt;span&gt;&lt;/span&gt;</code>，用于行内文本容器。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔄</span>
+                        <div class="tip-body">
+                            <span class="tip-key">快速display</span>
+                            <p class="tip-desc">输入 <code>d:ib</code> 按 Tab 生成 <code>display: inline-block;</code>，快速设置行内块。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📐</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Ctrl+Alt+D</span>
+                            <p class="tip-desc">打开元素检查视图，查看元素实际显示类型（block/inline/inline-block）。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🧩</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Emmet 导航栏</span>
+                            <p class="tip-desc">输入 <code>nav>span*5</code> 按 Tab 生成 nav 包裹 5 个 span 的结构。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🎯</span>
+                        <div class="tip-body">
+                            <span class="tip-key">对齐技巧</span>
+                            <p class="tip-desc">行内块元素可配合 <code>vertical-align: middle;</code> 实现垂直居中对齐。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔍</span>
+                        <div class="tip-body">
+                            <span class="tip-key">F8 预览</span>
+                            <p class="tip-desc">按 F8 快速预览，检查导航栏图标排列效果。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例4-13：块元素和行内元素 -->
+            <div class="example-card" data-example="ex4-13">
+                <div class="example-header"><span class="example-number">4-13</span><h4>块元素和行内元素</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>理解块元素与行内元素的区别及各自特点</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex4-13" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>块元素和行内元素</title>
+    <style type="text/css">
+        h2, p {
+            background: aqua;
+        }
+        strong, em, del {
+            background: yellow;
+        }
+    </style>
+</head>
+<body>
+    <h2>二级标题（块元素）</h2>
+    <p>段落文本（块元素）</p>
+    <strong>加粗文本（行内元素）</strong>
+    <em>倾斜文本（行内元素）</em>
+    <del>删除线文本（行内元素）</del>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex4-13"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>块元素</code><p>独占一行，可设宽高</p></div><div class="knowledge-item"><code>行内元素</code><p>不独占一行，不可设宽高</p></div><div class="knowledge-item"><code>常见块元素</code><p>div/h1-h6/p/ul/ol/li</p></div><div class="knowledge-item"><code>常见行内元素</code><p>strong/em/del/span</p></div></div></div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>尝试给 <code>strong</code> 添加 <code>width: 200px;</code>，观察宽度设置是否生效</li>
+                            <li>尝试给 <code>h2</code> 添加 <code>display: inline;</code>，观察块元素变行内</li>
+                            <li>观察块元素（h2、p）是否独占一行</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>给 <code>p</code> 添加 <code>display: inline-block;</code>，观察可设宽高的行内块效果</li>
+                                <li>给行内元素添加 <code>padding: 10px;</code>，观察内边距对周围的影响</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例4-14：span标签用法 -->
+            <div class="example-card" data-example="ex4-14">
+                <div class="example-header"><span class="example-number">4-14</span><h4>span标签用法</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握span标签作为行内容器的用法，与div的区别</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex4-14" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>span标签</title>
+    <style type="text/css">
+        span.red {
+            color: red;
+        }
+        span.blue {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h2>京剧</h2>
+    <p>
+        <span class="red">京剧</span>是中国五大戏曲剧种之一，
+        被视为中国国粹，是<span class="blue">中国乡土艺术</span>的瑰宝。
+    </p>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex4-14"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>span</code><p>行内元素，作为文本容器</p></div><div class="knowledge-item"><code>vs div</code><p>span是行内，div是块级</p></div><div class="knowledge-item"><code>用途</code><p>配合class定义特殊文本样式</p></div></div></div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>span.red</code> 的 <code>color: red</code> 改为 <code>background: yellow</code>，为文字添加背景色</li>
+                            <li>添加新的class：<code>span.bold { font-weight: bold; }</code> 并应用</li>
+                            <li>将 <code>span</code> 改为 <code>div</code>，观察布局变化</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>给 <code>span</code> 添加 <code>display: inline-block;</code> 和 <code>padding: 5px;</code></li>
+                                <li>添加 <code>border-radius</code> 创建标签样式效果</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例4-15：display属性转换 -->
+            <div class="example-card" data-example="ex4-15">
+                <div class="example-header"><span class="example-number">4-15</span><h4>display属性转换</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握display属性的四种值：inline、block、inline-block、none</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex4-15" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>display属性</title>
+    <style type="text/css">
+        div {
+            width: 100px;
+            height: 50px;
+            margin: 10px;
+            background: aqua;
+        }
+        span {
+            width: 100px;
+            height: 50px;
+            margin: 10px;
+            background: pink;
+        }
+        .inline {
+            display: inline;
+        }
+        .inline-block {
+            display: inline-block;
+        }
+        .block {
+            display: block;
+        }
+        .none {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div>第一个div</div>
+    <div class="inline">第二个div转行内</div>
+    <span>第一个span</span>
+    <span class="inline-block">第二个span转行内块</span>
+    <span class="block">第三个span转块元素</span>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex4-15"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>inline</code><p>转行内元素，不独占一行</p></div><div class="knowledge-item"><code>block</code><p>转块元素，独占一行</p></div><div class="knowledge-item"><code>inline-block</code><p>转行内块，可设宽高但不独占一行</p></div><div class="knowledge-item"><code>none</code><p>隐藏元素，不占空间</p></div></div></div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>.inline</code> 改为 <code>display: block;</code>，观察div独占一行</li>
+                            <li>删除 <code>.none</code> 的 <code>display: none;</code>，观察隐藏元素显现</li>
+                            <li>将 <code>span</code> 添加 <code>display: block;</code>，观察行内变块级</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>尝试给 <code>inline-block</code> 元素添加 <code>vertical-align: middle;</code></li>
+                                <li>使用 <code>visibility: hidden;</code> 对比 <code>display: none;</code> 的区别</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例4-16：图标导航栏完整代码 -->
+            <div class="example-card" data-example="ex4-16">
+                <div class="example-header"><span class="example-number">4-16</span><h4>图标导航栏（案例实现）</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>综合运用display:inline-block和背景图片制作图标导航栏</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex4-16" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>图标导航栏</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .nav {
+            width: 900px;
+            height: 60px;
+            margin: 50px auto;
+            background: #EEE;
+            padding-left: 20px;
+            border-bottom: 3px solid #000;
+        }
+        .nav span {
+            display: inline-block;
+            width: 100px;
+            height: 50px;
+            margin-right: 10px;
+            border: 1px solid #CCC;
+        }
+        .nav span:nth-child(1) { background: url(images/nav1.png) no-repeat; }
+        .nav span:nth-child(2) { background: url(images/nav2.png) no-repeat; }
+        .nav span:nth-child(3) { background: url(images/nav3.png) no-repeat; }
+        .nav span:nth-child(4) { background: url(images/nav4.png) no-repeat; }
+        .nav span:nth-child(5) { background: url(images/nav5.png) no-repeat; }
+        .nav span:nth-child(6) { background: url(images/nav6.png) no-repeat; }
+        .nav span:nth-child(7) { background: url(images/nav7.png) no-repeat; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex4-16"></iframe></div>
+                    </div>
+                    <div class="knowledge-box"><h5>关键知识点</h5><div class="knowledge-grid"><div class="knowledge-item"><code>inline-block</code><p>使span可设宽高又不独占一行</p></div><div class="knowledge-item"><code>nth-child</code><p>为不同导航项设置不同背景图</p></div><div class="knowledge-item"><code>border-bottom</code><p>为导航栏添加底部边框线</p></div><div class="knowledge-item"><code>padding-left</code><p>使导航图标从左侧留白开始</p></div></div></div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>span</code> 的 <code>width</code> 改为 <code>80px</code>，观察导航项变小</li>
+                            <li>将 <code>margin-right</code> 改为 <code>5px</code>，观察导航项间距变化</li>
+                            <li>修改 <code>background: #EEE</code> 为其他颜色，观察背景色变化</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>为导航项添加悬停效果：<code>:hover { background-color: #ddd; }</code></li>
+                                <li>修改底部边框颜色为其他颜色</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 拓展练习 -->
+            <div class="challenge-box">
+                <h5>拓展练习 · 底部工具栏</h5>
+                <p class="challenge-desc">综合运用本章节学习的display属性知识，设计一个手机App风格的底部工具栏。通过合理使用inline-block和flex布局，实现专业的底部导航效果。</p>
+                <div class="code-split-container">
+                    <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-challenge-7" spellcheck="false"><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>拓展练习 - 底部工具栏</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+            min-height: 100vh;
+        }
+        .toolbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            /* 请在这里添加样式 */
+            /* 1. 背景色设为白色 background: #fff */
+            /* 2. 上方边框 border-top */
+            /* 3. 内边距 padding */
+            /* 4. 使用flex布局 display: flex */
+        }
+        .toolbar-item {
+            /* 请在这里添加样式 */
+            /* 1. flex: 1 平分空间 */
+            /* 2. 文字居中 text-align: center */
+            /* 3. 内边距 padding */
+        }
+        .toolbar-icon {
+            /* 请在这里添加样式 */
+            /* 1. display: block 块级显示 */
+            /* 2. 文字大小 font-size: 24px */
+            /* 3. 下方外边距 margin-bottom */
+        }
+        .toolbar-text {
+            /* 请在这里添加样式 */
+            /* 1. 文字大小 font-size: 12px */
+            /* 2. 文字颜色 color */
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <div class="toolbar-item">
+            <span class="toolbar-icon">🏠</span>
+            <span class="toolbar-text">首页</span>
+        </div>
+        <div class="toolbar-item">
+            <span class="toolbar-icon">📦</span>
+            <span class="toolbar-text">分类</span>
+        </div>
+        <div class="toolbar-item">
+            <span class="toolbar-icon">🛒</span>
+            <span class="toolbar-text">购物车</span>
+        </div>
+        <div class="toolbar-item">
+            <span class="toolbar-icon">👤</span>
+            <span class="toolbar-text">我的</span>
+        </div>
+    </div>
+</body>
+</html></textarea></div>
+                    <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-challenge-7"></iframe></div>
+                </div>
+                <ul class="challenge-task">
+                    <li>任务一：按照代码注释提示，依次完成各个CSS属性的添加</li>
+                    <li>任务二：修改图标和文字的颜色，如 <code>color: #666;</code></li>
+                    <li>任务三：为当前激活的导航项添加特殊样式（如首页高亮）</li>
+                    <li>任务四（挑战）：使用CSS伪类 :hover 添加悬停效果</li>
+                </ul>
+            </div>
+
+            <div class="task-complete-section"><h3>任务七完成</h3><p>恭喜完成所有实训任务！</p></div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
