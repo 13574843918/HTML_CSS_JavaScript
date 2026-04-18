@@ -515,6 +515,9 @@ function makeLink(element, url) {
 // 实时预览功能
 // ========================================
 function initLivePreviews() {
+    // 初始化双编辑器合并预览（如task12的HTML+CSS完整效果）
+    initCombinedPreviews();
+    
     var codeTextareas = document.querySelectorAll('.code-editor');
     
     codeTextareas.forEach(function(textarea) {
@@ -543,6 +546,58 @@ function initLivePreviews() {
             });
         }
     });
+}
+
+// 处理双编辑器合并预览（HTML+CSS完整效果）
+function initCombinedPreviews() {
+    // 定义需要合并预览的配对
+    var combinedPairs = [
+        { htmlId: 'code-ex12-2-html', cssId: 'code-ex12-2-css', previewId: 'preview-ex12-2-css' },
+        { htmlId: 'code-ex12-4-html', cssId: 'code-ex12-4-css', previewId: 'preview-ex12-4-css' }
+    ];
+    
+    combinedPairs.forEach(function(pair) {
+        var htmlEditor = document.getElementById(pair.htmlId);
+        var cssEditor = document.getElementById(pair.cssId);
+        var previewFrame = document.getElementById(pair.previewId);
+        
+        if (htmlEditor && cssEditor && previewFrame) {
+            // 初始渲染
+            updateCombinedPreview(htmlEditor, cssEditor, previewFrame);
+            
+            // 监听两个编辑器的变化
+            htmlEditor.addEventListener('input', function() {
+                updateCombinedPreview(htmlEditor, cssEditor, previewFrame);
+            });
+            cssEditor.addEventListener('input', function() {
+                updateCombinedPreview(htmlEditor, cssEditor, previewFrame);
+            });
+        }
+    });
+}
+
+// 更新合并后的预览
+function updateCombinedPreview(htmlEditor, cssEditor, previewFrame) {
+    var htmlCode = htmlEditor.value;
+    var cssCode = cssEditor.value;
+    
+    // 检查HTML代码是否已包含style标签
+    if (htmlCode.indexOf('<style>') === -1 && htmlCode.indexOf('</style>') === -1) {
+        // 将CSS插入到HTML的</head>前，或<body>后
+        if (htmlCode.indexOf('</head>') !== -1) {
+            htmlCode = htmlCode.replace('</head>', '<style>' + cssCode + '</style></head>');
+        } else if (htmlCode.indexOf('<body>') !== -1) {
+            htmlCode = htmlCode.replace('<body>', '<body><style>' + cssCode + '</style>');
+        } else {
+            // 如果都没有，直接追加
+            htmlCode += '<style>' + cssCode + '</style>';
+        }
+    }
+    
+    var doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+    doc.open();
+    doc.write(htmlCode);
+    doc.close();
 }
 
 function updatePreview(textarea, previewFrame) {
