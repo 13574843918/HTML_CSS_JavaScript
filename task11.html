@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务十一：精美电商悬浮框 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '💻'; }
+        .code-editor { width: 100%; min-height: 280px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-editor:focus { border-color: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1); }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 280px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #06b6d4; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #06b6d4; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(6, 182, 212, 0.08) 0%, rgba(6, 182, 212, 0.02) 100%); border: 1px solid rgba(6, 182, 212, 0.15); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #06b6d4; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #06b6d4; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.02) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #3b82f6; flex-shrink: 0; }
+        .practice-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #06b6d4; font-size: 0.8125rem; }
+        .practice-box .challenge { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(59, 130, 246, 0.3); }
+        .practice-box .challenge-title { font-size: 0.8125rem; font-weight: 600; color: #f59e0b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box .challenge-title::before { content: '🔥'; }
+        .challenge-box { margin-top: 1.5rem; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.02) 100%); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 0.75rem; }
+        .challenge-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .challenge-box h5::before { content: '🚀'; }
+        .challenge-box .challenge-desc { font-size: 0.875rem; color: #94a3b8; line-height: 1.7; margin-bottom: 1rem; }
+        .challenge-box .challenge-task { font-size: 0.8125rem; color: #f59e0b; line-height: 1.6; }
+        .challenge-box .challenge-task li { color: #f59e0b; }
+        .challenge-box .challenge-task li::before { content: '⭐'; color: #a855f7; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+                <li class="nav-item" data-task="task4"><span class="nav-number">04</span><div class="nav-content"><span class="nav-title">音乐盒</span><span class="nav-desc">盒子模型基础</span></div></li>
+                <li class="nav-item" data-task="task5"><span class="nav-number">05</span><div class="nav-content"><span class="nav-title">用户中心</span><span class="nav-desc">内边距与外边距</span></div></li>
+                <li class="nav-item" data-task="task6"><span class="nav-number">06</span><div class="nav-content"><span class="nav-title">咖啡店banner</span><span class="nav-desc">背景属性</span></div></li>
+                <li class="nav-item" data-task="task7"><span class="nav-number">07</span><div class="nav-content"><span class="nav-title">图标导航栏</span><span class="nav-desc">display属性</span></div></li>
+                <li class="nav-item" data-task="task8"><span class="nav-number">08</span><div class="nav-content"><span class="nav-title">创意画框</span><span class="nav-desc">渐变与阴影</span></div></li>
+                <li class="nav-item" data-task="task9"><span class="nav-number">09</span><div class="nav-content"><span class="nav-title">拼图效果</span><span class="nav-desc">圆角与多背景</span></div></li>
+                <li class="nav-item active" data-task="task11"><span class="nav-number">11</span><div class="nav-content"><span class="nav-title">精美悬浮框</span><span class="nav-desc">无序与有序列表</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer"><div class="tool-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>HBuilderX</div></div>
+    </aside>
+    <button class="mobile-menu-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <section id="task11" class="task-section active">
+            <div class="task-header"><span class="task-badge">任务十一</span><h1 class="task-title">精美电商悬浮框</h1><p class="task-subtitle">掌握无序列表与有序列表的使用方法</p></div>
+            <div class="task-meta">
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>预计学习时长：60分钟</span></div>
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span>列表标签</span></div>
+            </div>
+            <div class="objectives-card">
+                <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>学习目标</h3>
+                <ul class="objectives-list">
+                    <li>掌握无序列表&lt;ul&gt;和&lt;li&gt;的使用方法</li>
+                    <li>掌握有序列表&lt;ol&gt;和&lt;li&gt;的使用方法</li>
+                    <li>理解列表的type属性和value属性</li>
+                    <li>能够使用CSS定义列表样式</li>
+                </ul>
+            </div>
+
+            <!-- HBuilderX 使用技巧 -->
+            <div class="hbuilder-tips-section">
+                <div class="hts-header">
+                    <span class="hts-icon">⚡</span>
+                    <span class="hts-title">HBuilderX 使用技巧 · 本节专属</span>
+                    <span class="hts-badge">列表 &amp; 项目符号</span>
+                </div>
+                <div class="hbuilder-tips-grid">
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📋</span>
+                        <div class="tip-body">
+                            <span class="tip-key">ul/ol 按 Tab</span>
+                            <p class="tip-desc">输入 <code>ul</code> 或 <code>ol</code> 按 Tab，一键生成列表标签，是创建列表的基本操作。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔹</span>
+                        <div class="tip-body">
+                            <span class="tip-key">li 按 Tab</span>
+                            <p class="tip-desc">输入 <code>li</code> 按 Tab，一键生成 <code>&lt;li&gt;&lt;/li&gt;</code> 标签，快速创建列表项。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🎯</span>
+                        <div class="tip-body">
+                            <span class="tip-key">list-style:none</span>
+                            <p class="tip-desc">输入 <code>lst</code> 按 Tab 自动补全 <code>list-style: none;</code>，清除列表默认的项目符号。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔄</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Emmet 语法 ul&gt;li*3</span>
+                            <p class="tip-desc">输入 <code>ul&gt;li*3</code> 按 Tab，自动生成包含3个列表项的无序列表。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">✂️</span>
+                        <div class="tip-body">
+                            <span class="tip-key">删除列表符号</span>
+                            <p class="tip-desc">在 CSS 中使用 <code>list-style: none;</code> 清除默认项目符号，再自定义背景图作为新的项目符号。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🎨</span>
+                        <div class="tip-body">
+                            <span class="tip-key">背景图替代符号</span>
+                            <p class="tip-desc">用 <code>background: url(...) no-repeat left center;</code> 配合 <code>padding-left</code> 实现自定义项目符号效果。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例13-1：无序列表 -->
+            <div class="example-card" data-example="ex11-1">
+                <div class="example-header"><span class="example-number">13-1</span><h4>无序列表</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握无序列表&lt;ul&gt;和&lt;li&gt;的基本用法，理解type属性定义项目符号类型</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex11-1" spellcheck="false"><!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>无序列表</title>
+</head>
+<body>
+<ul>
+<li type="square">春</li>
+<li>夏</li>
+<li>秋</li>
+<li>冬</li>
+</ul>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex11-1"></iframe></div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item"><code>&lt;ul&gt;</code><p>无序列表标签，各列表项之间没有顺序级别之分</p></div>
+                            <div class="knowledge-item"><code>&lt;li&gt;</code><p>列表项标签，必须嵌套在&lt;ul&gt;内</p></div>
+                            <div class="knowledge-item"><code>type属性</code><p>指定项目符号：disc(●)、circle(○)、square(■)</p></div>
+                            <div class="knowledge-item"><code>HTML属性</code><p>不赞成使用HTML的type属性，建议通过CSS替代</p></div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将第一个&lt;li&gt;的 <code>type="square"</code> 改为 <code>type="circle"</code>，观察项目符号变化</li>
+                            <li>将所有&lt;li&gt;的type属性删除，添加 <code>&lt;style&gt;li{list-style-type:decimal;}&lt;/style&gt;</code>，对比效果</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例13-2：有序列表 -->
+            <div class="example-card" data-example="ex11-2">
+                <div class="example-header"><span class="example-number">13-2</span><h4>有序列表</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握有序列表&lt;ol&gt;和&lt;li&gt;的用法，理解start属性和value属性</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex11-2" spellcheck="false"><!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>有序列表</title>
+</head>
+<body>
+<ol>
+<li>大师兄孙悟空</li>
+<li>二师兄猪八戒</li>
+<li>三师弟沙和尚</li>
+</ol>
+<ol>
+<li type="1" value="1">第一名状元</li>
+<li type="a">第二名榜眼</li>
+<li type="I">第三名探花</li>
+</ol>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex11-2"></iframe></div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item"><code>&lt;ol&gt;</code><p>有序列表标签，强调排列顺序</p></div>
+                            <div class="knowledge-item"><code>start属性</code><p>规定项目符号的起始值</p></div>
+                            <div class="knowledge-item"><code>value属性</code><p>规定项目符号的数字，可改变后续编号</p></div>
+                            <div class="knowledge-item"><code>type值</code><p>1(数字)、a/A(字母)、i/I(罗马数字)</p></div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将第二个有序列表的 <code>start="5"</code> 属性添加到&lt;ol&gt;，观察编号起始值</li>
+                            <li>将 <code>type="a"</code> 改为 <code>type="A"</code>，观察字母大小写变化</li>
+                            <li>添加第四个列表项，修改其 <code>value="99"</code>，观察后续编号变化</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例13-3：精美电商悬浮框 -->
+            <div class="example-card" data-example="ex11-3">
+                <div class="example-header"><span class="example-number">13-3</span><h4>案例实现：精美电商悬浮框</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>综合运用无序列表和CSS样式，制作精美的电商分类悬浮框</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>HTML代码</label><textarea class="code-editor" id="code-ex11-3-html" spellcheck="false"><!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>精美电商悬浮框</title>
+</head>
+<body>
+<ul>
+<li>服装鞋帽</li>
+<li>数码家电</li>
+<li>运动户外</li>
+<li>孕婴用品</li>
+<li class="no_line">厨卫家居</li>
+</ul>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex11-3-html"></iframe></div>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>CSS代码</label><textarea class="code-editor" id="code-ex11-3-css" spellcheck="false">/*全局控制*/
+body{font-size:16px;font-family:"微软雅黑";color:#222;}
+/*重置浏览器的默认样式*/
+body,ul,li{padding:0;margin:0;list-style:none;}
+
+ul{
+width:171px;
+height:299px;
+padding-top:190px;
+color:#fff;
+}
+
+li{
+width:80px;
+height:40px;
+text-align:center;
+line-height:40px;
+border-bottom:1px dotted #fff;
+margin-left:45px;
+}
+
+.no_line{border:none;}</textarea></div>
+                        <div class="preview-panel"><label>HTML+CSS完整效果</label><iframe class="preview-frame" id="preview-ex11-3-css"></iframe></div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item"><code>商品分类</code><p>清晰且排序不分先后时，使用无序列表定义</p></div>
+                            <div class="knowledge-item"><code>list-style:none</code><p>清除列表默认项目符号</p></div>
+                            <div class="knowledge-item"><code>padding-top</code><p>为背景图预留空间</p></div>
+                            <div class="knowledge-item"><code>border:none</code><p>通过class配合CSS去掉最后一个li的边框</p></div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>margin-left:45px</code> 改为 <code>margin:0 auto</code>，观察列表项居中效果</li>
+                            <li>将 <code>border-bottom:1px dotted #fff</code> 改为 <code>solid</code>，观察边框样式变化</li>
+                            <li>删除 <code>class="no_line"</code>，观察最后一个列表项边框变化</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>添加更多商品分类项（至少7个），并为新增项设置相同的样式</li>
+                                <li>使用 <code>background: linear-gradient(...)</code> 为列表项添加渐变背景色</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 拓展练习 -->
+            <div class="challenge-box">
+                <h5>拓展练习 · 商品分类导航</h5>
+                <p class="challenge-desc">综合运用无序列表、有序列表和CSS样式，制作一个多级商品分类导航菜单。左侧为主分类，右侧显示对应子分类。</p>
+                <div class="code-split-container">
+                    <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-challenge-11" spellcheck="false"><!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>商品分类导航</title>
+<style>
+/* 请在这里添加样式 */
+/* 1. 重置默认样式 */
+body,ul,li{margin:0;padding:0;list-style:none;}
+
+/* 2. 设置整体容器宽度和背景 */
+
+/* 3. 主分类样式：宽度、高度、行高、边框 */
+
+/* 4. 子分类容器样式 */
+
+/* 5. 子分类项样式 */
+
+/* 6. 悬停效果 */
+</style>
+</head>
+<body>
+<div class="nav">
+    <ul class="main-list">
+        <li>女装
+            <ul class="sub-list">
+                <li>连衣裙</li>
+                <li>上衣</li>
+                <li>裤子</li>
+            </ul>
+        </li>
+        <li>男装
+            <ul class="sub-list">
+                <li>外套</li>
+                <li>衬衫</li>
+                <li>牛仔裤</li>
+            </ul>
+        </li>
+        <li>童装
+            <ul class="sub-list">
+                <li>男童</li>
+                <li>女童</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+</body>
+</html></textarea></div>
+                    <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-challenge-11"></iframe></div>
+                </div>
+                <ul class="challenge-task">
+                    <li>任务一：添加基础样式（宽度200px，灰色背景，圆角边框）</li>
+                    <li>任务二：为子分类添加背景色和内边距</li>
+                    <li>任务三：使用list-style:none清除项目符号</li>
+                    <li>任务四（挑战）：实现鼠标悬停显示子分类的效果</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
