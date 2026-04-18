@@ -518,9 +518,17 @@ function initLivePreviews() {
     // 初始化双编辑器合并预览（如task12的HTML+CSS完整效果）
     initCombinedPreviews();
     
+    // 定义合并预览使用的CSS编辑器ID，避免重复处理
+    var combinedCssIds = ['code-ex12-2-css', 'code-ex12-4-css'];
+    
     var codeTextareas = document.querySelectorAll('.code-editor');
     
     codeTextareas.forEach(function(textarea) {
+        // 跳过用于合并预览的CSS编辑器
+        if (combinedCssIds.indexOf(textarea.id) !== -1) {
+            return;
+        }
+        
         var previewId;
         
         // 优先使用 data-preview 属性
@@ -555,6 +563,9 @@ function initCombinedPreviews() {
         { htmlId: 'code-ex12-2-html', cssId: 'code-ex12-2-css', previewId: 'preview-ex12-2-css' },
         { htmlId: 'code-ex12-4-html', cssId: 'code-ex12-4-css', previewId: 'preview-ex12-4-css' }
     ];
+    
+    // 同时在initLivePreviews中排除这些CSS编辑器
+    var combinedCssIds = ['code-ex12-2-css', 'code-ex12-4-css'];
     
     combinedPairs.forEach(function(pair) {
         var htmlEditor = document.getElementById(pair.htmlId);
