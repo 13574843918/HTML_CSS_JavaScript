@@ -598,7 +598,7 @@ function initNavigation() {
             var taskId = this.getAttribute('data-task');
             
             // 如果有 data-task 且当前页面是独立的 task 页面，跳转到对应页面
-            if (taskId && window.location.pathname.match(/task\d?\.html$/)) {
+            if (taskId && window.location.pathname.match(/task\d+\.html$/)) {
                 window.location.href = taskId + '.html';
                 return;
             }
