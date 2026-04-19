@@ -519,7 +519,12 @@ function initLivePreviews() {
     initCombinedPreviews();
     
     // 定义合并预览使用的CSS编辑器ID，避免重复处理
-    var combinedCssIds = ['code-ex12-2-css', 'code-ex12-4-css'];
+    var combinedCssIds = [
+        'code-ex11-3-css',
+        'code-ex12-2-css', 'code-ex12-4-css',
+        'code-ex13-6-css',
+        'code-ex14-4-css'
+    ];
     
     var codeTextareas = document.querySelectorAll('.code-editor');
     
@@ -558,10 +563,13 @@ function initLivePreviews() {
 
 // 处理双编辑器合并预览（HTML+CSS完整效果）
 function initCombinedPreviews() {
-    // 定义需要合并预览的配对
+    // 定义需要合并预览的配对（HTML编辑器 + CSS编辑器 → 预览框）
     var combinedPairs = [
+        { htmlId: 'code-ex11-3-html', cssId: 'code-ex11-3-css', previewId: 'preview-ex11-3-css' },
         { htmlId: 'code-ex12-2-html', cssId: 'code-ex12-2-css', previewId: 'preview-ex12-2-css' },
-        { htmlId: 'code-ex12-4-html', cssId: 'code-ex12-4-css', previewId: 'preview-ex12-4-css' }
+        { htmlId: 'code-ex12-4-html', cssId: 'code-ex12-4-css', previewId: 'preview-ex12-4-css' },
+        { htmlId: 'code-ex13-6-html', cssId: 'code-ex13-6-css', previewId: 'preview-ex13-6-css' },
+        { htmlId: 'code-ex14-4-html', cssId: 'code-ex14-4-css', previewId: 'preview-ex14-4-css' }
     ];
     
     // 同时在initLivePreviews中排除这些CSS编辑器
