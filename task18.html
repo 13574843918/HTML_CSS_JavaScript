@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务十八：用户登录界面 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '💻'; }
+        .code-editor { width: 100%; min-height: 280px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; box-sizing: border-box; }
+        .code-editor:focus { border-color: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1); }
+        .preview-panel { display: flex; flex-direction: column; }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 280px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #06b6d4; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #06b6d4; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(6,182,212,0.08) 0%, rgba(6,182,212,0.02) 100%); border: 1px solid rgba(6,182,212,0.15); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #06b6d4; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #06b6d4; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; margin: 0; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.02) 100%); border: 1px solid rgba(59,130,246,0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; padding: 0; margin: 0; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #3b82f6; flex-shrink: 0; }
+        .practice-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #06b6d4; font-size: 0.8125rem; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        /* AI实训区域 */
+        .ai-training-box { margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(245,158,11,0.02) 100%); border: 1px solid rgba(245,158,11,0.25); border-radius: 0.75rem; }
+        .ai-training-box h5 { font-size: 1rem; font-weight: 700; color: #f59e0b; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .ai-training-box h5::before { content: '🤖'; }
+        .ai-training-desc { font-size: 0.875rem; color: #94a3b8; line-height: 1.7; margin-bottom: 1rem; }
+        .prompt-box { background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; padding: 1rem; margin-top: 1rem; }
+        .prompt-box .prompt-label { font-size: 0.75rem; font-weight: 600; color: #f59e0b; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .prompt-box pre { font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #e6edf3; line-height: 1.7; white-space: pre-wrap; word-break: break-word; margin: 0; }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+                <li class="nav-item" data-task="task4"><span class="nav-number">04</span><div class="nav-content"><span class="nav-title">音乐盒</span><span class="nav-desc">盒子模型基础</span></div></li>
+                <li class="nav-item" data-task="task5"><span class="nav-number">05</span><div class="nav-content"><span class="nav-title">用户中心</span><span class="nav-desc">内边距与外边距</span></div></li>
+                <li class="nav-item" data-task="task6"><span class="nav-number">06</span><div class="nav-content"><span class="nav-title">咖啡店banner</span><span class="nav-desc">背景属性</span></div></li>
+                <li class="nav-item" data-task="task7"><span class="nav-number">07</span><div class="nav-content"><span class="nav-title">图标导航栏</span><span class="nav-desc">display属性</span></div></li>
+                <li class="nav-item" data-task="task8"><span class="nav-number">08</span><div class="nav-content"><span class="nav-title">创意画框</span><span class="nav-desc">渐变与阴影</span></div></li>
+                <li class="nav-item" data-task="task9"><span class="nav-number">09</span><div class="nav-content"><span class="nav-title">拼图效果</span><span class="nav-desc">圆角与多背景</span></div></li>
+                <li class="nav-item" data-task="task11"><span class="nav-number">11</span><div class="nav-content"><span class="nav-title">精美悬浮框</span><span class="nav-desc">无序与有序列表</span></div></li>
+                <li class="nav-item" data-task="task12"><span class="nav-number">12</span><div class="nav-content"><span class="nav-title">二维码名片</span><span class="nav-desc">定义列表</span></div></li>
+                <li class="nav-item" data-task="task13"><span class="nav-number">13</span><div class="nav-content"><span class="nav-title">电商团购悬浮框</span><span class="nav-desc">list-style属性</span></div></li>
+                <li class="nav-item" data-task="task14"><span class="nav-number">14</span><div class="nav-content"><span class="nav-title">唱吧导航栏</span><span class="nav-desc">超链接与锚点</span></div></li>
+                <li class="nav-item" data-task="task17"><span class="nav-number">17</span><div class="nav-content"><span class="nav-title">简历表</span><span class="nav-desc">表格基础与CSS</span></div></li>
+                <li class="nav-item active" data-task="task18"><span class="nav-number">18</span><div class="nav-content"><span class="nav-title">用户登录界面</span><span class="nav-desc">表单基础</span></div></li>
+                <li class="nav-item" data-task="task19"><span class="nav-number">19</span><div class="nav-content"><span class="nav-title">趣味选择题</span><span class="nav-desc">input控件全类型</span></div></li>
+                <li class="nav-item" data-task="task20"><span class="nav-number">20</span><div class="nav-content"><span class="nav-title">空间日志</span><span class="nav-desc">textarea与select</span></div></li>
+                <li class="nav-item" data-task="task21"><span class="nav-number">21</span><div class="nav-content"><span class="nav-title">员工档案</span><span class="nav-desc">CSS控制表单样式</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer"><div class="tool-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>HBuilderX</div></div>
+    </aside>
+    <button class="mobile-menu-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <section id="task18" class="task-section active">
+            <div class="task-header"><span class="task-badge">任务十八</span><h1 class="task-title">用户登录界面</h1><p class="task-subtitle">掌握HTML表单的基本结构与form、input标签的使用方法</p></div>
+            <div class="task-meta">
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>预计学习时长：60分钟</span></div>
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span>表单基础与input控件</span></div>
+            </div>
+            <div class="objectives-card">
+                <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>学习目标</h3>
+                <ul class="objectives-list">
+                    <li>掌握 &lt;form&gt; 标签及其 action、method 属性</li>
+                    <li>理解 get 和 post 两种数据提交方式的区别</li>
+                    <li>掌握 &lt;input&gt; 标签的基本类型：text、password、button</li>
+                    <li>能用 CSS 控制表单的整体布局与 input 控件样式</li>
+                    <li>能综合运用背景图片与 display: block 美化登录界面</li>
+                </ul>
+            </div>
+
+            <!-- HBuilderX 使用技巧 -->
+            <div class="hbuilder-tips-section">
+                <div class="hts-header">
+                    <span class="hts-icon">⚡</span>
+                    <span class="hts-title">HBuilderX 使用技巧 · 本节专属</span>
+                    <span class="hts-badge">表单 &amp; input</span>
+                </div>
+                <div class="hbuilder-tips-grid">
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📝</span>
+                        <div class="tip-body">
+                            <span class="tip-key">form 按 Tab</span>
+                            <p class="tip-desc">输入 <code>form</code> 按 Tab，快速生成 form 骨架代码（含 action、method）。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔒</span>
+                        <div class="tip-body">
+                            <span class="tip-key">type="password"</span>
+                            <p class="tip-desc">密码框内容自动以圆点显示，输入 <code>input:p</code> 可快速生成密码域。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🎨</span>
+                        <div class="tip-body">
+                            <span class="tip-key">display: block</span>
+                            <p class="tip-desc">input 默认行内块元素，设置 <code>display: block</code> 后可用 <code>margin: auto</code> 居中。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📡</span>
+                        <div class="tip-body">
+                            <span class="tip-key">post vs get</span>
+                            <p class="tip-desc">登录/注册等含敏感信息的表单，必须使用 <code>method="post"</code>，安全性更高。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6-09：案例实现：用户登录界面 -->
+            <div class="example-card expanded" data-example="ex18-1">
+                <div class="example-header"><span class="example-number">6-09</span><h4>案例实现：用户登录界面</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>综合运用 form、input 标签与 CSS 样式，制作用户登录界面。掌握表单容器布局与输入控件的美化方法。</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex18-1" spellcheck="false"><!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户登录界面</title>
+    <style type="text/css">
+        /* 重置浏览器的默认样式 */
+        body, form, input {
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+        /* 整体控制表单 */
+        .list {
+            width: 500px;
+            height: 280px;
+            background: #1a2740;
+            margin: 50px auto;
+            padding-top: 70px;
+        }
+        /* 控制 input 控件 */
+        input {
+            display: block;
+            width: 290px;
+            height: 34px;
+            background-color: #11131f;
+            border: 2px solid #4f5556;
+            margin: 25px auto;
+            color: #EEF;
+            padding-left: 10px;
+        }
+        /* 单独控制登录按钮 */
+        .btn {
+            width: 302px;
+            height: 34px;
+            background: #2563eb;
+            border: none;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post" class="list">
+        <input type="text" value="请输入手机号"/>
+        <input type="text" value="请输入验证码"/>
+        <input class="btn" type="button" value="登录"/>
+    </form>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex18-1"></iframe></div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item"><code>&lt;form&gt;</code><p>表单容器，action 指定提交地址，method 指定提交方式</p></div>
+                            <div class="knowledge-item"><code>method="get"</code><p>数据显示在地址栏，有数据量限制，保密性差</p></div>
+                            <div class="knowledge-item"><code>method="post"</code><p>分段传输，无数据量限制，保密性好（推荐）</p></div>
+                            <div class="knowledge-item"><code>display: block</code><p>input 转为块元素后，可用 margin: auto 居中</p></div>
+                            <div class="knowledge-item"><code>type="text"</code><p>单行文本框，value 属性设置默认文字</p></div>
+                            <div class="knowledge-item"><code>type="button"</code><p>普通按钮，常配合 JS 使用，value 为显示文字</p></div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将第二个 input 的 <code>type="text"</code> 改为 <code>type="password"</code>，观察输入框变为密码框</li>
+                            <li>在登录按钮下方再添加一个 <code>type="reset"</code> 的重置按钮，value 设为"清空"</li>
+                            <li>修改 <code>.list</code> 的 <code>background</code> 颜色，体验不同深色背景效果</li>
+                            <li>给 <code>.btn</code> 添加 <code>border-radius: 4px</code>，让按钮有圆角效果</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI实训：用AI完成登录页面开发 -->
+            <div class="ai-training-box">
+                <h5>AI实训：让AI完成登录页面开发</h5>
+                <p class="ai-training-desc">
+                    学会使用 AI 工具（千问、豆包、Kimi、WorkBuddy 等）完成网页开发，是现代前端工程师的必备技能。
+                    下方提供一个高质量提示词范本，你可以直接复制到 AI 工具中，让 AI 帮你生成一个美观的登录界面。
+                    <br><br>
+                    <strong style="color:#f59e0b;">任务目标：</strong>将下方提示词输入到 AI 工具，获取生成的代码，观察 AI 的实现方式与本节示例的异同。
+                </p>
+                <div class="prompt-box">
+                    <div class="prompt-label">📋 提示词范本（可直接复制使用）</div>
+                    <pre>请用纯 HTML + CSS 帮我制作一个用户登录界面，要求如下：
+
+【功能要求】
+1. 包含手机号输入框（type="text"）
+2. 包含密码输入框（type="password"）
+3. 包含"登录"按钮（type="submit"）
+4. 包含"注册账号"文字链接
+5. 使用 &lt;form&gt; 标签包裹，method="post"
+
+【样式要求】
+1. 整体深色风格，背景色 #0f172a
+2. 表单卡片居中显示，宽度 400px，带圆角和阴影
+3. 输入框宽度撑满卡片，高度 44px，深色背景，白色文字
+4. 登录按钮宽度撑满，蓝色背景 #2563eb，白色文字，圆角 8px
+5. 所有元素之间有合适的间距
+
+【技术要求】
+1. 只用 HTML + CSS，不需要 JavaScript
+2. 代码结构清晰，含必要注释
+3. 输出完整可运行的 HTML 文件代码</pre>
+                </div>
+                <p class="ai-training-desc" style="margin-top:1rem;">
+                    <strong style="color:#f59e0b;">💡 提示词技巧：</strong>提示词越具体，AI 生成的代码质量越高。可以加上"参考 Apple 官网风格"或"参考微信登录页"等风格描述，让效果更贴近需求。
+                </p>
+            </div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

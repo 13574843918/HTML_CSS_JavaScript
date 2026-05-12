@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务二十：空间日志 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '💻'; }
+        .code-editor { width: 100%; min-height: 300px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; box-sizing: border-box; }
+        .code-editor:focus { border-color: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1); }
+        .preview-panel { display: flex; flex-direction: column; }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 300px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #06b6d4; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #06b6d4; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(6,182,212,0.08) 0%, rgba(6,182,212,0.02) 100%); border: 1px solid rgba(6,182,212,0.15); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #06b6d4; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #06b6d4; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; margin: 0; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.02) 100%); border: 1px solid rgba(59,130,246,0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; padding: 0; margin: 0; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #3b82f6; flex-shrink: 0; }
+        .practice-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #06b6d4; font-size: 0.8125rem; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        /* AI实训区域 */
+        .ai-training-box { margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(245,158,11,0.02) 100%); border: 1px solid rgba(245,158,11,0.25); border-radius: 0.75rem; }
+        .ai-training-box h5 { font-size: 1rem; font-weight: 700; color: #f59e0b; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .ai-training-box h5::before { content: '🤖'; }
+        .ai-training-desc { font-size: 0.875rem; color: #94a3b8; line-height: 1.7; margin-bottom: 1rem; }
+        .prompt-box { background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; padding: 1rem; margin-top: 1rem; }
+        .prompt-box .prompt-label { font-size: 0.75rem; font-weight: 600; color: #f59e0b; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .prompt-box pre { font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #e6edf3; line-height: 1.7; white-space: pre-wrap; word-break: break-word; margin: 0; }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+                <li class="nav-item" data-task="task4"><span class="nav-number">04</span><div class="nav-content"><span class="nav-title">音乐盒</span><span class="nav-desc">盒子模型基础</span></div></li>
+                <li class="nav-item" data-task="task5"><span class="nav-number">05</span><div class="nav-content"><span class="nav-title">用户中心</span><span class="nav-desc">内边距与外边距</span></div></li>
+                <li class="nav-item" data-task="task6"><span class="nav-number">06</span><div class="nav-content"><span class="nav-title">咖啡店banner</span><span class="nav-desc">背景属性</span></div></li>
+                <li class="nav-item" data-task="task7"><span class="nav-number">07</span><div class="nav-content"><span class="nav-title">图标导航栏</span><span class="nav-desc">display属性</span></div></li>
+                <li class="nav-item" data-task="task8"><span class="nav-number">08</span><div class="nav-content"><span class="nav-title">创意画框</span><span class="nav-desc">渐变与阴影</span></div></li>
+                <li class="nav-item" data-task="task9"><span class="nav-number">09</span><div class="nav-content"><span class="nav-title">拼图效果</span><span class="nav-desc">圆角与多背景</span></div></li>
+                <li class="nav-item" data-task="task11"><span class="nav-number">11</span><div class="nav-content"><span class="nav-title">精美悬浮框</span><span class="nav-desc">无序与有序列表</span></div></li>
+                <li class="nav-item" data-task="task12"><span class="nav-number">12</span><div class="nav-content"><span class="nav-title">二维码名片</span><span class="nav-desc">定义列表</span></div></li>
+                <li class="nav-item" data-task="task13"><span class="nav-number">13</span><div class="nav-content"><span class="nav-title">电商团购悬浮框</span><span class="nav-desc">list-style属性</span></div></li>
+                <li class="nav-item" data-task="task14"><span class="nav-number">14</span><div class="nav-content"><span class="nav-title">唱吧导航栏</span><span class="nav-desc">超链接与锚点</span></div></li>
+                <li class="nav-item" data-task="task17"><span class="nav-number">17</span><div class="nav-content"><span class="nav-title">简历表</span><span class="nav-desc">表格基础与CSS</span></div></li>
+                <li class="nav-item" data-task="task18"><span class="nav-number">18</span><div class="nav-content"><span class="nav-title">用户登录界面</span><span class="nav-desc">表单基础</span></div></li>
+                <li class="nav-item" data-task="task19"><span class="nav-number">19</span><div class="nav-content"><span class="nav-title">趣味选择题</span><span class="nav-desc">input控件全类型</span></div></li>
+                <li class="nav-item active" data-task="task20"><span class="nav-number">20</span><div class="nav-content"><span class="nav-title">空间日志</span><span class="nav-desc">textarea与select</span></div></li>
+                <li class="nav-item" data-task="task21"><span class="nav-number">21</span><div class="nav-content"><span class="nav-title">员工档案</span><span class="nav-desc">CSS控制表单样式</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer"><div class="tool-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>HBuilderX</div></div>
+    </aside>
+    <button class="mobile-menu-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <section id="task20" class="task-section active">
+            <div class="task-header"><span class="task-badge">任务二十</span><h1 class="task-title">空间日志</h1><p class="task-subtitle">掌握 textarea 多行文本框与 select 下拉菜单的使用方法</p></div>
+            <div class="task-meta">
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>预计学习时长：75分钟</span></div>
+                <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span>textarea/select/optgroup</span></div>
+            </div>
+            <div class="objectives-card">
+                <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>学习目标</h3>
+                <ul class="objectives-list">
+                    <li>掌握 &lt;textarea&gt; 多行文本框的 cols、rows 属性</li>
+                    <li>掌握 &lt;select&gt; 下拉菜单的创建与 &lt;option&gt; 选项定义</li>
+                    <li>掌握 &lt;optgroup&gt; 对下拉选项进行分组</li>
+                    <li>能综合运用三种表单控件构建复杂表单</li>
+                    <li>能用 CSS 对表单进行整体与局部样式控制</li>
+                </ul>
+            </div>
+
+            <!-- HBuilderX 使用技巧 -->
+            <div class="hbuilder-tips-section">
+                <div class="hts-header">
+                    <span class="hts-icon">⚡</span>
+                    <span class="hts-title">HBuilderX 使用技巧 · 本节专属</span>
+                    <span class="hts-badge">textarea &amp; select</span>
+                </div>
+                <div class="hbuilder-tips-grid">
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📝</span>
+                        <div class="tip-body">
+                            <span class="tip-key">CSS 控制文本框尺寸</span>
+                            <p class="tip-desc">实际工作中建议用 CSS 的 <code>width/height</code> 替代 cols/rows，更精准稳定。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📋</span>
+                        <div class="tip-body">
+                            <span class="tip-key">select 多选</span>
+                            <p class="tip-desc">添加 <code>multiple="multiple"</code> 和 <code>size</code> 属性，下拉框变为多选列表框。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🏷️</span>
+                        <div class="tip-body">
+                            <span class="tip-key">optgroup 分组</span>
+                            <p class="tip-desc"><code>optgroup</code> 的 <code>label</code> 属性定义分组名，以灰色不可选的形式展示。</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🎨</span>
+                        <div class="tip-body">
+                            <span class="tip-key">background: transparent</span>
+                            <p class="tip-desc">重置表单控件背景时设置 <code>background-color: transparent</code>，使其显示父元素背景。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6-13：textarea 控件 -->
+            <div class="example-card expanded" data-example="ex20-1">
+                <div class="example-header"><span class="example-number">6-13</span><h4>textarea 控件</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握 textarea 多行文本框的基本使用，了解 cols、rows 属性的含义</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex20-1" spellcheck="false"><!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>textarea 控件</title>
+</head>
+<body>
+    <form action="#" method="post">
+        评论：<br/>
+        <textarea cols="60" rows="8">
+评论的时候，请遵纪守法并注意语言文明，多给文档分享人一些支持。
+        </textarea><br/>
+        <input type="submit" value="提交"/>
+    </form>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex20-1"></iframe></div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item"><code>&lt;textarea&gt;</code><p>多行文本输入框，开始和结束标签之间的内容为默认文字</p></div>
+                            <div class="knowledge-item"><code>cols</code><p>每行字符数（浏览器理解不同，推荐用 CSS width 替代）</p></div>
+                            <div class="knowledge-item"><code>rows</code><p>显示行数（推荐用 CSS height 替代）</p></div>
+                            <div class="knowledge-item"><code>readonly / disabled</code><p>只读 / 禁用属性</p></div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>cols="60" rows="8"</code> 改为 CSS 样式 <code>style="width:400px; height:120px;"</code>，观察效果</li>
+                            <li>给 textarea 添加 <code>readonly</code> 属性，观察文本变为只读</li>
+                            <li>清空 textarea 标签之间的默认文字，添加 <code>placeholder="请输入评论..."</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6-14：select 控件 -->
+            <div class="example-card" data-example="ex20-2">
+                <div class="example-header"><span class="example-number">6-14</span><h4>select 控件（下拉菜单）</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握 select 下拉菜单的基本使用，包括单选下拉、默认选中与多选列表框</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex20-2" spellcheck="false"><!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>select 控件</title>
+</head>
+<body>
+    <form action="#" method="post">
+        所在校区：<br/>
+        <select>
+            <option>-请选择-</option>
+            <option>北京</option>
+            <option>上海</option>
+            <option>广州</option>
+            <option>武汉</option>
+            <option>成都</option>
+        </select><br/><br/>
+
+        特长（单选）：<br/>
+        <select>
+            <option>唱歌</option>
+            <option>跳舞</option>
+            <option selected="selected">画画</option>
+        </select><br/><br/>
+
+        爱好（多选）：<br/>
+        <select multiple="multiple" size="4">
+            <option>读书</option>
+            <option selected="selected">写代码</option>
+            <option>旅行</option>
+            <option selected="selected">听音乐</option>
+            <option>篮球</option>
+        </select><br/><br/>
+
+        <input type="submit" value="提交"/>
+    </form>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex20-2"></iframe></div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item"><code>&lt;select&gt;</code><p>创建下拉菜单，内嵌 option 标签定义选项</p></div>
+                            <div class="knowledge-item"><code>size</code><p>下拉框可见选项数（配合 multiple 使用）</p></div>
+                            <div class="knowledge-item"><code>multiple="multiple"</code><p>允许多选，按 Ctrl 键可同时选多项</p></div>
+                            <div class="knowledge-item"><code>selected="selected"</code><p>option 属性，设置默认选中项</p></div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>在"所在校区"下拉中，将"广州"改为默认选中项（添加 <code>selected="selected"</code>）</li>
+                            <li>给多选列表框的 size 改为 <code>size="3"</code>，观察可见选项数变化</li>
+                            <li>在"特长"下拉中再添加两个 option 选项（如"体育"和"演讲"）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6-15：optgroup 分组 -->
+            <div class="example-card" data-example="ex20-3">
+                <div class="example-header"><span class="example-number">6-15</span><h4>下拉菜单选项分组（optgroup）</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>掌握 optgroup 标签对下拉选项进行分组，使多级选项更加清晰易用</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex20-3" spellcheck="false"><!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>为下拉菜单中的选项分组</title>
+</head>
+<body>
+    <form action="#" method="post">
+        城区：<br/>
+        <select>
+            <optgroup label="北京">
+                <option>东城区</option>
+                <option>西城区</option>
+                <option>朝阳区</option>
+                <option>海淀区</option>
+            </optgroup>
+            <optgroup label="上海">
+                <option>浦东新区</option>
+                <option>徐汇区</option>
+                <option>虹口区</option>
+            </optgroup>
+        </select>
+    </form>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex20-3"></iframe></div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item"><code>&lt;optgroup&gt;</code><p>对下拉选项分组，必须嵌套在 select 中</p></div>
+                            <div class="knowledge-item"><code>label 属性</code><p>必需属性，定义分组名，以灰色不可选形式显示</p></div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>再添加第三个分组 <code>optgroup label="广州"</code>，包含"天河区"、"越秀区"两个 option</li>
+                            <li>在"上海"分组中为"浦东新区"设置默认选中（<code>selected="selected"</code>）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6-16：案例实现：空间日志 -->
+            <div class="example-card" data-example="ex20-4">
+                <div class="example-header"><span class="example-number">6-16</span><h4>案例实现：空间日志</h4><div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div></div>
+                <div class="example-body">
+                    <div class="example-desc"><p><strong>实训目标：</strong>综合运用 input、textarea、select 三种表单控件，配合 CSS 从整体到局部构建空间日志发表界面</p></div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel"><label>修改代码，预览即时更新</label><textarea class="code-editor" id="code-ex20-4" spellcheck="false"><!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>空间日志</title>
+    <style type="text/css">
+        body { font-family: "微软雅黑"; font-size: 12px; }
+        body, form, input, select, textarea {
+            margin: 0; padding: 0;
+            list-style: none; border: none;
+            background-color: transparent;
+        }
+        #list { width: 600px; margin: 30px auto; }
+        .content {
+            height: 280px;
+            padding-top: 20px;
+            background: #e8f4f8;
+            border: 1px solid #aacce0;
+            border-radius: 6px;
+        }
+        .title {
+            display: block;
+            width: 560px;
+            height: 30px;
+            border-top: 2px dotted #63775e;
+            border-bottom: 2px dotted #666;
+            text-align: center;
+            font-size: 16px;
+            margin: 0 auto;
+            background: transparent;
+        }
+        .txt {
+            display: block;
+            width: 556px;
+            height: 200px;
+            margin: 10px auto 0;
+            border-top: 2px dotted #63775e;
+            font-size: 12px;
+            background: transparent;
+        }
+        .choose {
+            height: 36px;
+            line-height: 36px;
+            background-color: #c0c0c0;
+            padding-left: 10px;
+            font-weight: bold;
+            margin-top: 8px;
+            border-radius: 4px;
+        }
+        select { width: 100px; border: 1px solid #666; background-color: #E5F5F5; }
+        .btn { margin-top: 10px; }
+        .btn1, .btn2, .btn3 {
+            width: 100px; height: 28px;
+            background-color: #eee; border: 1px solid #ccc;
+            margin-right: 8px; cursor: pointer;
+        }
+        .btn1 { background-color: #5b9bd5; color: #fff; border-color: #5b9bd5; }
+    </style>
+</head>
+<body>
+    <form action="" method="post" id="list">
+        <div class="content">
+            <input class="title" type="text" value="请输入日志标题"/>
+            <textarea class="txt" cols="30" rows="10"></textarea>
+        </div>
+        <div class="choose">
+            <span>分类：</span>
+            <select>
+                <option>文章转载</option>
+                <option selected="selected">个人日志</option>
+                <option>游戏人生</option>
+            </select>
+            &nbsp;&nbsp;
+            <span>权限：</span>
+            <select>
+                <option>公开</option>
+                <option>仅好友可见</option>
+                <option>仅个人可见</option>
+            </select>
+        </div>
+        <div class="btn">
+            <input class="btn1" type="submit" value="发表"/>
+            <input class="btn2" type="reset" value="取消"/>
+            <input class="btn3" type="button" value="保存草稿"/>
+        </div>
+    </form>
+</body>
+</html></textarea></div>
+                        <div class="preview-panel"><label>实时预览效果</label><iframe class="preview-frame" id="preview-ex20-4"></iframe></div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item"><code>background: transparent</code><p>设置背景透明，显示父元素背景（input/textarea常用）</p></div>
+                            <div class="knowledge-item"><code>三种控件综合</code><p>input（标题）+ textarea（正文）+ select（分类/权限）</p></div>
+                            <div class="knowledge-item"><code>div 分区</code><p>用 div 将表单分为内容区、分类区、按钮区，便于独立设置</p></div>
+                            <div class="knowledge-item"><code>CSS从整体到局部</code><p>先重置默认样式 → 整体布局 → 局部细节，逐步修饰</p></div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>.choose</code> 的 <code>background-color</code> 改为 <code>#4a90d9</code>，文字颜色改为 <code>#fff</code></li>
+                            <li>在分类 select 中再添加一个 option 选项（如"技术分享"）</li>
+                            <li>给"发表"按钮添加 <code>border-radius: 4px</code>，让按钮有圆角效果</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI实训 -->
+            <div class="ai-training-box">
+                <h5>AI实训：让AI完成博客发文页面开发</h5>
+                <p class="ai-training-desc">
+                    博客发文界面是综合运用多种表单控件的典型场景。下方提示词可让 AI 生成一个带分类、标签、权限设置的博客发文页面。
+                </p>
+                <div class="prompt-box">
+                    <div class="prompt-label">📋 提示词范本（可直接复制使用）</div>
+                    <pre>请用纯 HTML + CSS 制作一个博客发文页面，要求如下：
+
+【功能要求】
+1. 文章标题输入框（单行 input）
+2. 文章正文多行文本框（textarea，高度至少 200px）
+3. 文章分类下拉菜单（select），选项包含：
+   - 技术：前端开发、后端开发、移动端
+   - 生活：美食、旅行、随笔
+   （使用 optgroup 分组）
+4. 是否公开单选按钮（公开 / 私密）
+5. 文章标签复选框（前端、HTML、CSS、JavaScript）
+6. 发布和存草稿两个按钮
+
+【样式要求】
+1. 白色主题，卡片式布局，最大宽度 700px 居中
+2. 标题输入框宽度撑满，高度 44px
+3. 正文文本框 100% 宽，高度 240px，不允许水平拉伸（resize: vertical）
+4. 分类下拉、单选、复选框区域有明显分组背景色
+5. 发布按钮蓝色背景，存草稿按钮灰色背景
+
+【技术要求】
+1. 只用 HTML + CSS，不需要 JavaScript
+2. 所有表单控件必须在 form 标签内，method="post"
+3. 代码结构清晰，有注释</pre>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
