@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务二十六：网页布局 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '💻'; }
+        .code-editor { width: 100%; min-height: 260px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-editor:focus { border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,0.15); }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 260px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #8b5cf6; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #a78bfa; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(139,92,246,0.08) 0%, rgba(139,92,246,0.02) 100%); border: 1px solid rgba(139,92,246,0.2); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #a78bfa; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #a78bfa; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.02) 100%); border: 1px solid rgba(59,130,246,0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #3b82f6; flex-shrink: 0; }
+        .practice-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #a78bfa; font-size: 0.8125rem; }
+        .practice-box .challenge { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(59,130,246,0.3); }
+        .practice-box .challenge-title { font-size: 0.8125rem; font-weight: 600; color: #f59e0b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box .challenge-title::before { content: '🔥'; }
+        .challenge-box { margin-top: 1.5rem; padding: 1.25rem; background: linear-gradient(135deg, rgba(168,85,247,0.1) 0%, rgba(168,85,247,0.02) 100%); border: 1px solid rgba(168,85,247,0.2); border-radius: 0.75rem; }
+        .challenge-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .challenge-box h5::before { content: '🚀'; }
+        .challenge-box .challenge-desc { font-size: 0.875rem; color: #94a3b8; line-height: 1.7; margin-bottom: 1rem; }
+        .challenge-box .challenge-task { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .challenge-box .challenge-task li { font-size: 0.8125rem; color: #f59e0b; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .challenge-box .challenge-task li::before { content: '⭐'; color: #a855f7; flex-shrink: 0; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task13"><span class="nav-number">13</span><div class="nav-content"><span class="nav-title">电商团购悬浮框</span><span class="nav-desc">list-style属性</span></div></li>
+                <li class="nav-item" data-task="task14"><span class="nav-number">14</span><div class="nav-content"><span class="nav-title">唱吧导航栏</span><span class="nav-desc">超链接与锚点</span></div></li>
+                <li class="nav-item" data-task="task22"><span class="nav-number">22</span><div class="nav-content"><span class="nav-title">世界杯梦幻阵容</span><span class="nav-desc">浮动布局</span></div></li>
+                <li class="nav-item" data-task="task23"><span class="nav-number">23</span><div class="nav-content"><span class="nav-title">商品专栏</span><span class="nav-desc">清除浮动</span></div></li>
+                <li class="nav-item" data-task="task24"><span class="nav-number">24</span><div class="nav-content"><span class="nav-title">移动端电商界面</span><span class="nav-desc">overflow属性</span></div></li>
+                <li class="nav-item" data-task="task25"><span class="nav-number">25</span><div class="nav-content"><span class="nav-title">违停查询</span><span class="nav-desc">定位属性</span></div></li>
+                <li class="nav-item active" data-task="task26"><span class="nav-number">26</span><div class="nav-content"><span class="nav-title">网页布局</span><span class="nav-desc">DIV+CSS综合布局</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer"><div class="tool-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>HBuilderX</div></div>
+    </aside>
+    <button class="mobile-menu-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <header class="page-header">
+            <div class="breadcrumb"><a href="index.html">首页</a><span>›</span><span>任务二十六</span></div>
+            <div class="header-content">
+                <div class="header-left">
+                    <span class="task-badge">任务二十六</span>
+                    <h2>网页布局</h2>
+                    <p class="header-desc">掌握版心设置、单列/两列/三列/通栏等常见网页布局模式，综合运用 DIV+CSS 实现完整页面结构。</p>
+                </div>
+                <div class="progress-mini">
+                    <div class="task-meta">
+                        <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>预计学习时长：70分钟</span></div>
+                        <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span>DIV+CSS 综合布局</span></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="objectives-card">
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>学习目标</h3>
+            <ul class="objectives-list">
+                <li>理解"版心"概念，掌握 <code>margin: 0 auto;</code> 居中布局技巧</li>
+                <li>掌握单列布局、两列布局、三列布局的实现方法</li>
+                <li>理解通栏布局的设计思路（外层 100% + 内层版心）</li>
+                <li>能够综合运用浮动和定位实现完整网页布局</li>
+                <li>熟悉常用网页模块的语义化命名规范</li>
+            </ul>
+        </div>
+
+        <!-- HBuilderX 使用技巧 -->
+        <div class="hbuilder-tips-section">
+            <div class="hts-header">
+                <span class="hts-icon">⚡</span>
+                <span class="hts-title">HBuilderX 使用技巧 · 本节专属</span>
+                <span class="hts-badge">网页布局 &amp; 版心</span>
+            </div>
+            <div class="hbuilder-tips-grid">
+                <div class="hbuilder-tip-item">
+                    <span class="tip-icon">📐</span>
+                    <div class="tip-body">
+                        <span class="tip-key">版心快速设置</span>
+                        <p class="tip-desc">输入 <code>w:980</code> + Tab 补全宽度，再输入 <code>m:a</code> + Tab 补全 <code>margin: auto;</code>，快速创建版心容器。</p>
+                    </div>
+                </div>
+                <div class="hbuilder-tip-item">
+                    <span class="tip-icon">📈</span>
+                    <div class="tip-body">
+                        <span class="tip-key">多列布局快捷键</span>
+                        <p class="tip-desc">输入 <code>div*3</code> + Tab 快速生成 3 个 div，再分别设置 <code>float: left/right;</code> 实现多列。</p>
+                    </div>
+                </div>
+                <div class="hbuilder-tip-item">
+                    <span class="tip-icon">🎯</span>
+                    <div class="tip-body">
+                        <span class="tip-key">语义化命名提示</span>
+                        <p class="tip-desc">HBuilderX 支持自定义代码块，可设置 <code>header</code>、<code>nav</code>、<code>footer</code> 等语义化代码块快速生成。</p>
+                    </div>
+                </div>
+                <div class="hbuilder-tip-item">
+                    <span class="tip-icon">🔍</span>
+                    <div class="tip-body">
+                        <span class="tip-key">F12 查看布局框</span>
+                        <p class="tip-desc">按 <code>F12</code> 打开开发者工具，选中元素后可看到 margin/border/padding 可视化盒子模型，方便调试布局。</p>
+                    </div>
+                </div>
+                <div class="hbuilder-tip-item">
+                    <span class="tip-icon">📏</span>
+                    <div class="tip-body">
+                        <span class="tip-key">width + box-sizing</span>
+                        <p class="tip-desc">输入 <code>bs:bb</code> + Tab 补全 <code>box-sizing: border-box;</code>，让宽度计算更直观（padding 不撑大盒子）。</p>
+                    </div>
+                </div>
+                <div class="hbuilder-tip-item">
+                    <span class="tip-icon">🚀</span>
+                    <div class="tip-body">
+                        <span class="tip-key">实时预览布局变化</span>
+                        <p class="tip-desc">开启 HBuilderX 内置服务器，保存后浏览器自动刷新，调整宽度/浮动时可即时观察布局效果。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 7-13：单列布局 -->
+        <div class="example-card" data-example="ex26-1">
+            <div class="example-header">
+                <span class="example-number">01</span>
+                <h4>example 7-13：单列布局</h4>
+                <div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+            </div>
+            <div class="example-body">
+                <div class="example-desc">
+                    <p><strong>实训目标：</strong>理解"版心"概念，掌握单列布局的基本结构。所有内容模块在页面中居中排列，是最基础的网页布局模式。</p>
+                </div>
+                <div class="code-split-container">
+                    <div class="code-editor-panel">
+                        <label>修改代码，预览即时更新</label>
+                        <textarea class="code-editor" id="code-ex26-1" spellcheck="false"><!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>单列布局</title>
+  <style type="text/css">
+    body { margin: 0; padding: 0; font-size: 24px; text-align: center; }
+    div {
+      width: 980px;        /* 版心宽度 */
+      margin: 5px auto;    /* 水平居中 */
+      background: #D2EBFE;
+    }
+    #top     { height: 40px; }
+    #nav     { height: 60px; }
+    #banner  { height: 200px; }
+    #content { height: 200px; }
+    #footer  { height: 90px; }
+  </style>
+</head>
+<body>
+  <div id="top">头部</div>
+  <div id="nav">导航栏</div>
+  <div id="banner">焦点图</div>
+  <div id="content">内容</div>
+  <div id="footer">页面底部</div>
+</body>
+</html></textarea>
+                    </div>
+                    <div class="preview-panel">
+                        <label>实时预览效果</label>
+                        <iframe class="preview-frame" id="preview-ex26-1"></iframe>
+                    </div>
+                </div>
+                <div class="knowledge-box">
+                    <h5>关键知识点</h5>
+                    <div class="knowledge-grid">
+                        <div class="knowledge-item">
+                            <code>版心（Container）</code>
+                            <p>页面有效内容区域，通常宽度 960~1200px</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>margin: 0 auto</code>
+                            <p>上下边距0，左右自动，实现块级元素水平居中</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>单列布局</code>
+                            <p>所有模块从上到下排列，每模块独占一行</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>模块命名</code>
+                            <p>top/nav/banner/content/footer 语义化命名</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="practice-box">
+                    <h5>动手练练</h5>
+                    <ul>
+                        <li>修改 <code>width: 980px;</code> 为 <code>1200px</code>，观察版心变宽后的效果</li>
+                        <li>将 <code>margin: 5px auto;</code> 改为 <code>margin: 5px 0;</code>，观察盒子不再居中</li>
+                        <li>给 <code>#top</code> 添加 <code>background: #333; color: white;</code>，美化头部样式</li>
+                    </ul>
+                    <div class="challenge">
+                        <div class="challenge-title">挑战练习</div>
+                        <ul>
+                            <li>将版心宽度改为 <code>100%</code>（全宽），再在内部新增一个 <code>width: 1200px; margin: 0 auto;</code> 的子容器，实现"通栏背景 + 内容居中"效果</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 7-14：两列布局 -->
+        <div class="example-card" data-example="ex26-2">
+            <div class="example-header">
+                <span class="example-number">02</span>
+                <h4>example 7-14：两列布局</h4>
+                <div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+            </div>
+            <div class="example-body">
+                <div class="example-desc">
+                    <p><strong>实训目标：</strong>掌握两列布局的实现方法。内容区域分为左右两列，通过 <code>float: left</code> 和 <code>float: right</code> 实现水平排列。</p>
+                </div>
+                <div class="code-split-container">
+                    <div class="code-editor-panel">
+                        <label>修改代码，预览即时更新</label>
+                        <textarea class="code-editor" id="code-ex26-2" spellcheck="false"><!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>两列布局</title>
+  <style type="text/css">
+    body { margin: 0; padding: 0; font-size: 24px; text-align: center; }
+    div {
+      width: 980px;
+      margin: 5px auto;
+      background: #D2EBFE;
+    }
+    #top     { height: 40px; }
+    #nav     { height: 60px; }
+    #banner  { height: 200px; }
+    #content { height: 200px; overflow: hidden; }  /* 清除内部浮动 */
+    .content_left {
+      width: 350px;
+      height: 200px;
+      background-color: #CCC;
+      float: left;
+      margin: 0;
+    }
+    .content_right {
+      width: 625px;  /* 980-350-5(margin) 注意总宽 */
+      height: 200px;
+      background-color: #CCC;
+      float: right;
+      margin: 0;
+    }
+    #footer  { height: 90px; }
+  </style>
+</head>
+<body>
+  <div id="top">头部</div>
+  <div id="nav">导航栏</div>
+  <div id="banner">焦点图</div>
+  <div id="content">
+    <div class="content_left">内容左部分（侧边栏）</div>
+    <div class="content_right">内容右部分（主内容区）</div>
+  </div>
+  <div id="footer">页面底部</div>
+</body>
+</html></textarea>
+                    </div>
+                    <div class="preview-panel">
+                        <label>实时预览效果</label>
+                        <iframe class="preview-frame" id="preview-ex26-2"></iframe>
+                    </div>
+                </div>
+                <div class="knowledge-box">
+                    <h5>关键知识点</h5>
+                    <div class="knowledge-grid">
+                        <div class="knowledge-item">
+                            <code>两列布局</code>
+                            <p>左列左浮动，右列右浮动，中间内容区水平分成两部分</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>宽度计算</code>
+                            <p>两列宽度之和 + 间距 ≤ 父容器宽度，避免换行</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>overflow: hidden</code>
+                            <p>清除内部浮动，防止父容器高度塌陷</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>常见比例</code>
+                            <p>侧边栏 25~35%，主内容区 65~75%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="practice-box">
+                    <h5>动手练练</h5>
+                    <ul>
+                        <li>交换左右两列的浮动方向（左列 <code>float: right</code>，右列 <code>float: left</code>），观察排列变化</li>
+                        <li>将 <code>.content_left</code> 宽度改为 <code>600px</code>，观察是否还能一行放下</li>
+                        <li>给 <code>#content</code> 去掉 <code>overflow: hidden;</code>，观察父容器高度变化</li>
+                    </ul>
+                    <div class="challenge">
+                        <div class="challenge-title">挑战练习</div>
+                        <ul>
+                            <li>在左列上方添加一个 <code>height: 150px</code> 的广告区块，实现"广告 + 导航"双模块侧边栏</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 7-15：三列布局 -->
+        <div class="example-card" data-example="ex26-3">
+            <div class="example-header">
+                <span class="example-number">03</span>
+                <h4>example 7-15：三列布局</h4>
+                <div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+            </div>
+            <div class="example-body">
+                <div class="example-desc">
+                    <p><strong>实训目标：</strong>掌握三列布局的实现方法。内容区域分为左、中、右三列，全部使用 <code>float: left</code>（或左左右），注意宽度计算避免换行。</p>
+                </div>
+                <div class="code-split-container">
+                    <div class="code-editor-panel">
+                        <label>修改代码，预览即时更新</label>
+                        <textarea class="code-editor" id="code-ex26-3" spellcheck="false"><!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>三列布局</title>
+  <style type="text/css">
+    body { margin: 0; padding: 0; font-size: 24px; text-align: center; }
+    div {
+      width: 980px;
+      margin: 5px auto;
+      background: #D2EBFE;
+    }
+    #top     { height: 40px; }
+    #nav     { height: 60px; }
+    #banner  { height: 200px; }
+    #content { height: 200px; overflow: hidden; }
+    .content_left {
+      width: 200px;
+      height: 200px;
+      background-color: #CCC;
+      float: left;
+      margin: 0;
+    }
+    .content_middle {
+      width: 570px;  /* 980-200-200-5-5 = 570 */
+      height: 200px;
+      background-color: #CCC;
+      float: left;
+      margin: 0 5px;   /* 左右各5px间距 */
+    }
+    .content_right {
+      width: 200px;
+      height: 200px;
+      background-color: #CCC;
+      float: right;     /* 也可以 left，但 right 更直观 */
+      margin: 0;
+    }
+    #footer  { height: 90px; }
+  </style>
+</head>
+<body>
+  <div id="top">头部</div>
+  <div id="nav">导航栏</div>
+  <div id="banner">焦点图</div>
+  <div id="content">
+    <div class="content_left">内容左部分（左侧栏）</div>
+    <div class="content_middle">内容中间部分（主内容区）</div>
+    <div class="content_right">内容右部分（右侧栏）</div>
+  </div>
+  <div id="footer">页面底部</div>
+</body>
+</html></textarea>
+                    </div>
+                    <div class="preview-panel">
+                        <label>实时预览效果</label>
+                        <iframe class="preview-frame" id="preview-ex26-3"></iframe>
+                    </div>
+                </div>
+                <div class="knowledge-box">
+                    <h5>关键知识点</h5>
+                    <div class="knowledge-grid">
+                        <div class="knowledge-item">
+                            <code>三列布局</code>
+                            <p>左中右三列，常用左+中左浮动、右右浮动</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>margin 间距</code>
+                            <p>中间列用左右 margin 制造间距，注意总宽计算</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>浮动顺序</code>
+                            <p>HTML 中先写左列，再中列，最后右列，避免渲染顺序问题</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>常见比例</code>
+                            <p>左20%、中58%、右20%，留出2%间距</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="practice-box">
+                    <h5>动手练练</h5>
+                    <ul>
+                        <li>将中间列 <code>margin: 0 5px;</code> 改为 <code>margin: 0 20px;</code>，观察布局是否换行</li>
+                        <li>将三列都改为 <code>float: left;</code>（去掉右列的 <code>float: right</code>），观察效果差异</li>
+                        <li>给三个列分别加上不同背景色（如 #fdd、#dfd、#ddf），更直观看到三列分布</li>
+                    </ul>
+                    <div class="challenge">
+                        <div class="challenge-title">挑战练习</div>
+                        <ul>
+                            <li>将三列布局改为"左列固定 200px + 右列自适应"模式（用 <code>margin-right</code> 代替固定宽度右列）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 7-16：通栏布局 -->
+        <div class="example-card" data-example="ex26-4">
+            <div class="example-header">
+                <span class="example-number">04</span>
+                <h4>example 7-16：通栏布局</h4>
+                <div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+            </div>
+            <div class="example-body">
+                <div class="example-desc">
+                    <p><strong>实训目标：</strong>掌握通栏布局的设计思路。头部和底部需要"通栏"（宽度占满整个浏览器），但内容仍需在版心内居中，通过"外层 100% + 内层版心"实现。</p>
+                </div>
+                <div class="code-split-container">
+                    <div class="code-editor-panel">
+                        <label>修改代码，预览即时更新</label>
+                        <textarea class="code-editor" id="code-ex26-4" spellcheck="false"><!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>通栏布局</title>
+  <style type="text/css">
+    body { margin: 0; padding: 0; font-size: 24px; text-align: center; }
+    div {
+      width: 980px;
+      margin: 5px auto;
+      background: #D2EBFE;
+    }
+    #top     { height: 40px; }
+    /* 通栏：外层宽度100%，内层版心居中 */
+    #topbar {
+      width: 100%;
+      height: 60px;
+      background-color: #3CF;
+    }
+    .nav     { height: 60px; }   /* 内层导航，宽度980px居中 */
+    #banner  { height: 200px; }
+    #content { height: 200px; }
+    .inner   { height: 90px; }  /* 底部内层 */
+    #footer {
+      width: 100%;
+      height: 90px;
+      background-color: #3CF;
+    }
+  </style>
+</head>
+<body>
+  <div id="top">头部（版心宽度）</div>
+  <div id="topbar">
+    <div class="nav">导航栏（在通栏内部居中）</div>
+  </div>
+  <div id="banner">焦点图（版心宽度）</div>
+  <div id="content">内容（版心宽度）</div>
+  <div id="footer">
+    <div class="inner">页面底部（在通栏内部居中）</div>
+  </div>
+</body>
+</html></textarea>
+                    </div>
+                    <div class="preview-panel">
+                        <label>实时预览效果</label>
+                        <iframe class="preview-frame" id="preview-ex26-4"></iframe>
+                    </div>
+                </div>
+                <div class="knowledge-box">
+                    <h5>关键知识点</h5>
+                    <div class="knowledge-grid">
+                        <div class="knowledge-item">
+                            <code>通栏布局</code>
+                            <p>外层容器 width:100%，内层容器设版心宽度并居中</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>双层嵌套</code>
+                            <p>通栏盒子内部再套一个版心盒子，内容在版心中居中</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>常见通栏模块</code>
+                            <p>顶部导航栏、页面底部版权栏常使用通栏背景</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>background-color</code>
+                            <p>给通栏外层设背景色，内层透明，实现通栏色块效果</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="practice-box">
+                    <h5>动手练练</h5>
+                    <ul>
+                        <li>给 <code>#topbar</code> 设置 <code>background: linear-gradient(...)</code> 渐变背景，美化通栏效果</li>
+                        <li>新增一个通栏广告区（放在 banner 下方），宽度 100%，高度 100px</li>
+                        <li>将 <code>.nav</code> 的文字靠左对齐（<code>text-align: left; padding-left: 20px;</code>）</li>
+                    </ul>
+                    <div class="challenge">
+                        <div class="challenge-title">挑战练习</div>
+                        <ul>
+                            <li>实现一个"固定顶部通栏导航"：给 <code>#topbar</code> 添加 <code>position: fixed; top: 0;</code>，并给 body 添加 <code>padding-top: 60px;</code> 防止内容被遮挡</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 7-17：网页布局综合案例 -->
+        <div class="example-card" data-example="ex26-5">
+            <div class="example-header">
+                <span class="example-number">05</span>
+                <h4>example 7-17：网页布局综合案例</h4>
+                <div class="example-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+            </div>
+            <div class="example-body">
+                <div class="example-desc">
+                    <p><strong>实训目标：</strong>综合运用单列、三列、通栏等布局模式，制作一个完整的网页结构。理解实际项目中如何用 DIV+CSS 搭建页面骨架。</p>
+                </div>
+                <div class="code-split-container">
+                    <div class="code-editor-panel">
+                        <label>修改代码，预览即时更新</label>
+                        <textarea class="code-editor" id="code-ex26-5" spellcheck="false"><!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>网页布局综合案例</title>
+  <style type="text/css">
+    body { margin: 0; padding: 0; font-size: 20px; text-align: center; }
+    div {
+      width: 980px;
+      margin: 0 auto;
+    }
+    #top    { height: 40px;  background: #2c3e50; color: white; line-height: 40px; }
+    #nav    { height: 60px;  background: #3498db; color: white; line-height: 60px; }
+    #banner { height: 200px; background: #ecf0f1; color: #333; line-height: 200px; }
+    #content{ height: 300px; overflow: hidden; }
+    .content_left {
+      width: 200px;
+      height: 300px;
+      float: left;
+      background: #dfe6e9;
+      color: #333;
+      line-height: 300px;
+    }
+    .content_middle {
+      width: 570px;
+      height: 300px;
+      float: left;
+      margin: 0 5px;
+      background: #b2bec3;
+      color: #333;
+      line-height: 300px;
+    }
+    .content_right {
+      width: 200px;
+      height: 300px;
+      float: right;
+      background: #dfe6e9;
+      color: #333;
+      line-height: 300px;
+    }
+    #footer { height: 90px; background: #2c3e50; color: white; line-height: 90px; }
+  </style>
+</head>
+<body>
+  <div id="top">头部（Logo + 登录/注册）</div>
+  <div id="nav">导航栏（首页 资讯 产品 关于我们）</div>
+  <div id="banner">焦点图轮播区域</div>
+  <div id="content">
+    <div class="content_left">左侧栏（热门推荐）</div>
+    <div class="content_middle">中间内容区（文章列表）</div>
+    <div class="content_right">右侧栏（标签云 + 广告）</div>
+  </div>
+  <div id="footer">页面底部（版权信息 © 2024）</div>
+</body>
+</html></textarea>
+                    </div>
+                    <div class="preview-panel">
+                        <label>实时预览效果</label>
+                        <iframe class="preview-frame" id="preview-ex26-5"></iframe>
+                    </div>
+                </div>
+                <div class="knowledge-box">
+                    <h5>关键知识点</h5>
+                    <div class="knowledge-grid">
+                        <div class="knowledge-item">
+                            <code>综合网页布局</code>
+                            <p>头部 + 导航 + Banner + 三列内容 + 底部，完整页面结构</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>DIV+CSS 思想</code>
+                            <p>用 DIV 划分页面模块，用 CSS 控制每个模块的位置和样式</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>line-height 居中</code>
+                            <p>设置 line-height = height，实现单行文字垂直居中</p>
+                        </div>
+                        <div class="knowledge-item">
+                            <code>语义化命名</code>
+                            <p>top/nav/banner/content/footer 让代码结构清晰易懂</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="practice-box">
+                    <h5>动手练练</h5>
+                    <ul>
+                        <li>将 <code>#top</code> 的背景色改为渐变色 <code>linear-gradient(90deg, #2c3e50, #3498db)</code></li>
+                        <li>在 <code>#nav</code> 中用 <code>&lt;a&gt;</code> 标签做出4个导航链接，并用 <code>float: left;</code> 让它们水平排列</li>
+                        <li>给 <code>#footer</code> 添加 <code>margin-top: 10px;</code>，让底部与内容区拉开距离</li>
+                    </ul>
+                    <div class="challenge">
+                        <div class="challenge-title">挑战练习</div>
+                        <ul>
+                            <li>将 <code>#top</code> 改为通栏布局（外层 100% + 内层版心），让头部背景色铺满整个浏览器宽度</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 进阶任务 -->
+        <div class="challenge-box">
+            <h5>进阶任务 · 完整博客主页布局</h5>
+            <p class="challenge-desc">基于三列布局制作一个完整的<strong>博客主页</strong>。综合运用单列/多列/通栏布局，建立完整网页布局思维。</p>
+            <ul class="challenge-task">
+                <li>任务一：头部通栏，含 Logo（左浮动）+ 导航链接（右浮动），导航项用 <code>display: inline-block;</code> 水平排列</li>
+                <li>任务二：主内容区三列布局 — 左侧文章列表（60%）+ 中间广告栏（20%）+ 右侧侧边栏（20%）</li>
+                <li>任务三：右侧侧边栏包含"个人简介"、"最新文章"、"标签云"三个子模块，每个子模块用 <code>border-bottom</code> 分隔</li>
+                <li>任务四（挑战）：页脚通栏，含版权信息（左浮动）和"友情链接"（右浮动），整体背景深色、文字白色</li>
+            </ul>
+            <div class="code-split-container" style="margin-top:1rem;">
+                <div class="code-editor-panel">
+                    <label>修改代码，预览即时更新</label>
+                    <textarea class="code-editor" id="code-challenge-26" spellcheck="false"><!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>博客主页布局</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: sans-serif; color: #333; }
+    /* 1. 通栏头部 */
+    .header-outer { width: 100%; background: #2c3e50; }
+    .header { width: 980px; height: 60px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; color: white; }
+    .logo { font-size: 24px; font-weight: bold; }
+    .nav a { color: white; text-decoration: none; margin-left: 20px; font-size: 14px; }
+    /* 2. 通栏 Banner */
+    .banner-outer { width: 100%; background: #3498db; }
+    .banner { width: 980px; height: 180px; margin: 0 auto; color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+    /* 3. 内容区三列 */
+    .content-outer { width: 980px; margin: 20px auto; overflow: hidden; }
+    .main-articles  { float: left; width: 580px; min-height: 400px; background: #f9f9f9; padding: 20px; }
+    .ad-column      { float: left; width: 180px; min-height: 400px; background: #ecf0f1; padding: 20px; margin-left: 10px; }
+    .sidebar        { float: right; width: 200px; min-height: 400px; background: #f9f9f9; padding: 20px; margin-left: 10px; }
+    .sidebar h4 { font-size: 16px; border-bottom: 2px solid #3498db; padding-bottom: 8px; margin-bottom: 12px; }
+    .sidebar p  { font-size: 13px; color: #666; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    /* 4. 通栏页脚 */
+    .footer-outer { width: 100%; background: #2c3e50; margin-top: 30px; }
+    .footer { width: 980px; height: 80px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; color: #bbb; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <!-- 头部 -->
+  <div class="header-outer">
+    <div class="header">
+      <div class="logo">📝 我的博客</div>
+      <div class="nav">
+        <a href="#">首页</a><a href="#">归档</a><a href="#">关于</a><a href="#">联系</a>
+      </div>
+    </div>
+  </div>
+  <!-- Banner -->
+  <div class="banner-outer">
+    <div class="banner">🎯 欢迎来到我的技术博客</div>
+  </div>
+  <!-- 内容区 -->
+  <div class="content-outer">
+    <div class="main-articles">
+      <h3>最新文章</h3>
+      <p>📄 CSS 浮动布局详解...</p>
+      <p>📄 HTML5 新特性总结...</p>
+      <p>📄 JavaScript 异步编程...</p>
+    </div>
+    <div class="ad-column">📢 广告位</div>
+    <div class="sidebar">
+      <h4>👤 个人简介</h4>
+      <p>热爱前端的开发者，专注 HTML/CSS/JS 分享。</p>
+      <h4>📚 最新文章</h4>
+      <p>CSS 浮动布局详解</p>
+      <p>HTML5 新特性总结</p>
+      <h4>🏷️ 标签云</h4>
+      <p>CSS · HTML · JS · 前端 · 布局</p>
+    </div>
+  </div>
+  <!-- 页脚 -->
+  <div class="footer-outer">
+    <div class="footer">
+      <div>© 2024 我的博客 · 豫ICP备xxxxxxxx号</div>
+      <div>友情链接：CSDN | 掘金 | GitHub</div>
+    </div>
+  </div>
+</body>
+</html></textarea>
+                </div>
+                <div class="preview-panel">
+                    <label>实时预览效果</label>
+                    <iframe class="preview-frame" id="preview-challenge-26"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI 实训 -->
+        <div class="challenge-box" style="border-color: rgba(168,85,247,0.3);">
+            <h5>🤖 AI 开发实训 · 用 AI 生成完整网页布局</h5>
+            <p class="challenge-desc">使用 AI 工具（千问/豆包/Kimi）生成一个<strong>完整的企业官网首页</strong>，实践 DIV+CSS 布局思维。</p>
+            <ul class="challenge-task">
+                <li><strong>AI 提示词范本：</strong>请帮我用纯 HTML+CSS 制作一个"科技公司官网首页"，要求：① 头部通栏：Logo 左浮动，导航链接右浮动；② Banner 区域：全宽背景色 + 居中标题文字；③ 内容区三列布局：左（公司简介）、中（产品列表）、右（联系方式）；④ 页脚通栏：版权信息居中；⑤ 代码自包含，CSS 写在 <code>&lt;style&gt;</code> 标签内；⑥ 图片使用 <code>https://picsum.photos</code> 代替。直接输出完整 HTML 代码。</li>
+                <li><strong>评估要点：</strong>AI 生成的代码是否正确使用了通栏（外层100% + 内层版心）？三列布局宽度计算是否准确？是否有清除浮动的处理？</li>
+                <li><strong>拓展练习：</strong>让 AI 在页面中增加一个"回到顶部"按钮（<code>position: fixed; bottom: 30px; right: 30px;</code>），并添加 <code>scroll-behavior: smooth;</code> 实现平滑滚动。</li>
+            </ul>
+        </div>
+
+        <div class="task-complete-section">
+            <div class="complete-card">
+                <div class="complete-icon">🎉</div>
+                <h3>任务完成！</h3>
+                <p>你已掌握 DIV+CSS 网页布局的核心方法。第七章（浮动与定位）已全部完成！</p>
+                <a href="index.html" class="btn-next">← 返回首页，选择下一任务</a>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
