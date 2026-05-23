@@ -107,7 +107,7 @@
 
             <!-- 例 8-1 -->
             <div class="example-card" data-example="ex-01">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-1</span>
                         <h4>嵌入视频</h4>
@@ -189,7 +189,7 @@
 
             <!-- 例 8-2 -->
             <div class="example-card" data-example="ex-02">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-2</span>
                         <h4>video 标签的扩展属性</h4>
@@ -270,7 +270,7 @@
 
             <!-- 例 8-3 -->
             <div class="example-card" data-example="ex-03">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-3</span>
                         <h4>嵌入音频</h4>
@@ -337,7 +337,7 @@
 
             <!-- 例 8-4 -->
             <div class="example-card" data-example="ex-04">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-4</span>
                         <h4>使用 source 解决浏览器兼容性</h4>
@@ -445,12 +445,7 @@
     </main>
     <script src="script.js"></script>
     <script>
-        // 折叠功能
-        function toggleExample(header) {
-            const card = header.closest('.example-card');
-            card.classList.toggle('expanded');
-        }
-        // 实时预览功能
+        // 实时预览功能（折叠功能由 script.js 中的 initExampleCards 统一处理）
         document.querySelectorAll('.code-editor').forEach(editor => {
             editor.addEventListener('input', function() {
                 const previewId = this.id.replace('code-', 'preview-');
@@ -461,8 +456,6 @@
             });
             editor.dispatchEvent(new Event('input'));
         });
-        // 默认展开第一个
-        document.querySelector('.example-card')?.classList.add('expanded');
     </script>
 </body>
 </html>

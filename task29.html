@@ -109,7 +109,7 @@
 
             <!-- 例 8-8 -->
             <div class="example-card" data-example="ex-08">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-8</span>
                         <h4>translate() 平移</h4>
@@ -187,7 +187,7 @@
 
             <!-- 例 8-9 -->
             <div class="example-card" data-example="ex-09">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-9</span>
                         <h4>scale() 缩放</h4>
@@ -266,7 +266,7 @@
 
             <!-- 例 8-10 -->
             <div class="example-card" data-example="ex-10">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-10</span>
                         <h4>skew() 倾斜</h4>
@@ -344,7 +344,7 @@
 
             <!-- 例 8-11 -->
             <div class="example-card" data-example="ex-11">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-11</span>
                         <h4>transform-origin 更改变换中心点</h4>
@@ -427,7 +427,7 @@
 
             <!-- 例 8-12 -->
             <div class="example-card" data-example="ex-12">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-12</span>
                         <h4>rotateX() 围绕 X 轴旋转</h4>
@@ -504,7 +504,7 @@
 
             <!-- 例 8-13 -->
             <div class="example-card" data-example="ex-13">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-13</span>
                         <h4>perspective 透视效果</h4>
@@ -584,7 +584,7 @@
 
             <!-- 例 8-14 -->
             <div class="example-card" data-example="ex-14">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-14</span>
                         <h4>3D 综合变形</h4>
@@ -667,7 +667,7 @@
 
             <!-- 例 8-15 -->
             <div class="example-card" data-example="ex-15">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-15</span>
                         <h4>翻牌动画结构</h4>
@@ -780,12 +780,7 @@
     </main>
     <script src="script.js"></script>
     <script>
-        // 折叠功能
-        function toggleExample(header) {
-            const card = header.closest('.example-card');
-            card.classList.toggle('expanded');
-        }
-        // 实时预览功能
+        // 实时预览功能（折叠功能由 script.js 中的 initExampleCards 统一处理）
         document.querySelectorAll('.code-editor').forEach(editor => {
             editor.addEventListener('input', function() {
                 const previewId = this.id.replace('code-', 'preview-');
@@ -797,8 +792,6 @@
             // 初始化时执行一次
             editor.dispatchEvent(new Event('input'));
         });
-        // 默认展开第一个
-        document.querySelector('.example-card')?.classList.add('expanded');
     </script>
 </body>
 </html>

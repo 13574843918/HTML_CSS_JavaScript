@@ -107,7 +107,7 @@
 
             <!-- 例 8-5 -->
             <div class="example-card" data-example="ex-05">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-5</span>
                         <h4>transition-property 与 transition-duration</h4>
@@ -193,7 +193,7 @@
 
             <!-- 例 8-6 -->
             <div class="example-card" data-example="ex-06">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-6</span>
                         <h4>transition-timing-function 与 transition-delay</h4>
@@ -293,7 +293,7 @@
 
             <!-- 例 8-7 -->
             <div class="example-card" data-example="ex-07">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-7</span>
                         <h4>transition 简写属性</h4>
@@ -406,12 +406,7 @@
     </main>
     <script src="script.js"></script>
     <script>
-        // 折叠功能
-        function toggleExample(header) {
-            const card = header.closest('.example-card');
-            card.classList.toggle('expanded');
-        }
-        // 实时预览功能
+        // 实时预览功能（折叠功能由 script.js 中的 initExampleCards 统一处理）
         document.querySelectorAll('.code-editor').forEach(editor => {
             editor.addEventListener('input', function() {
                 const previewId = this.id.replace('code-', 'preview-');
@@ -422,8 +417,6 @@
             });
             editor.dispatchEvent(new Event('input'));
         });
-        // 默认展开第一个
-        document.querySelector('.example-card')?.classList.add('expanded');
     </script>
 </body>
 </html>

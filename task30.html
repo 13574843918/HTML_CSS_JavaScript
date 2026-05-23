@@ -110,7 +110,7 @@
 
             <!-- 例 8-16 -->
             <div class="example-card" data-example="ex-16">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-16</span>
                         <h4>animation-name 与 animation-duration</h4>
@@ -199,7 +199,7 @@
 
             <!-- 例 8-17 -->
             <div class="example-card" data-example="ex-17">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-17</span>
                         <h4>animation-iteration-count 与 animation-direction</h4>
@@ -301,7 +301,7 @@
 
             <!-- 例 8-18 -->
             <div class="example-card" data-example="ex-18">
-                <div class="example-header" onclick="toggleExample(this)">
+                <div class="example-header">
                     <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
                         <span class="example-number">8-18</span>
                         <h4>宝石旋转综合案例</h4>
@@ -466,12 +466,7 @@
     </main>
     <script src="script.js"></script>
     <script>
-        // 折叠功能
-        function toggleExample(header) {
-            const card = header.closest('.example-card');
-            card.classList.toggle('expanded');
-        }
-        // 实时预览功能
+        // 实时预览功能（折叠功能由 script.js 中的 initExampleCards 统一处理）
         document.querySelectorAll('.code-editor').forEach(editor => {
             editor.addEventListener('input', function() {
                 const previewId = this.id.replace('code-', 'preview-');
@@ -483,8 +478,6 @@
             // 初始化时执行一次
             editor.dispatchEvent(new Event('input'));
         });
-        // 默认展开第一个
-        document.querySelector('.example-card')?.classList.add('expanded');
     </script>
 </body>
 </html>
