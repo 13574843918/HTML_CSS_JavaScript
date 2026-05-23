@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务二十七：电影播放界面 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '💻'; }
+        .code-editor { width: 100%; min-height: 280px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-editor:focus { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15); }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 280px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #ef4444; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #ef4444; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.02) 100%); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #ef4444; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #ef4444; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.02) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #3b82f6; flex-shrink: 0; }
+        .practice-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #ef4444; font-size: 0.8125rem; }
+        .practice-box .challenge { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(59, 130, 246, 0.3); }
+        .practice-box .challenge-title { font-size: 0.8125rem; font-weight: 600; color: #f59e0b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box .challenge-title::before { content: '🔥'; }
+        .challenge-box { margin-top: 1.5rem; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.02) 100%); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 0.75rem; }
+        .challenge-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .challenge-box h5::before { content: '🚀'; }
+        .challenge-box .challenge-desc { font-size: 0.875rem; color: #94a3b8; line-height: 1.7; margin-bottom: 1rem; }
+        .challenge-box .challenge-task { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .challenge-box .challenge-task li { font-size: 0.8125rem; color: #f59e0b; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .challenge-box .challenge-task li::before { content: '⭐'; color: #a855f7; flex-shrink: 0; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+                <li class="nav-item" data-task="task4"><span class="nav-number">04</span><div class="nav-content"><span class="nav-title">音乐盒</span><span class="nav-desc">盒子模型基础</span></div></li>
+                <li class="nav-item" data-task="task5"><span class="nav-number">05</span><div class="nav-content"><span class="nav-title">用户中心</span><span class="nav-desc">内边距与外边距</span></div></li>
+                <li class="nav-item" data-task="task6"><span class="nav-number">06</span><div class="nav-content"><span class="nav-title">咖啡店banner</span><span class="nav-desc">背景属性</span></div></li>
+                <li class="nav-item" data-task="task7"><span class="nav-number">07</span><div class="nav-content"><span class="nav-title">图标导航栏</span><span class="nav-desc">display属性</span></div></li>
+                <li class="nav-item" data-task="task8"><span class="nav-number">08</span><div class="nav-content"><span class="nav-title">创意画框</span><span class="nav-desc">渐变与阴影</span></div></li>
+                <li class="nav-item" data-task="task9"><span class="nav-number">09</span><div class="nav-content"><span class="nav-title">拼图效果</span><span class="nav-desc">圆角与多背景</span></div></li>
+                <li class="nav-item" data-task="task11"><span class="nav-number">11</span><div class="nav-content"><span class="nav-title">精美悬浮框</span><span class="nav-desc">无序与有序列表</span></div></li>
+                <li class="nav-item" data-task="task12"><span class="nav-number">12</span><div class="nav-content"><span class="nav-title">二维码名片</span><span class="nav-desc">定义列表</span></div></li>
+                <li class="nav-item" data-task="task13"><span class="nav-number">13</span><div class="nav-content"><span class="nav-title">电商团购悬浮框</span><span class="nav-desc">list-style属性</span></div></li>
+                <li class="nav-item" data-task="task14"><span class="nav-number">14</span><div class="nav-content"><span class="nav-title">唱吧导航栏</span><span class="nav-desc">超链接与锚点</span></div></li>
+                <li class="nav-item" data-task="task22"><span class="nav-number">22</span><div class="nav-content"><span class="nav-title">世界杯梦幻阵容</span><span class="nav-desc">浮动布局</span></div></li>
+                <li class="nav-item" data-task="task23"><span class="nav-number">23</span><div class="nav-content"><span class="nav-title">商品专栏</span><span class="nav-desc">清除浮动</span></div></li>
+                <li class="nav-item" data-task="task24"><span class="nav-number">24</span><div class="nav-content"><span class="nav-title">移动端电商界面</span><span class="nav-desc">overflow属性</span></div></li>
+                <li class="nav-item" data-task="task25"><span class="nav-number">25</span><div class="nav-content"><span class="nav-title">违停查询</span><span class="nav-desc">定位属性</span></div></li>
+                <li class="nav-item" data-task="task26"><span class="nav-number">26</span><div class="nav-content"><span class="nav-title">网页布局</span><span class="nav-desc">DIV+CSS综合</span></div></li>
+                <li class="nav-item active" data-task="task27"><span class="nav-number">27</span><div class="nav-content"><span class="nav-title">电影播放界面</span><span class="nav-desc">音视频嵌入</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">HTML+CSS 网页设计实训平台</div>
+    </aside>
+    <button class="mobile-menu-btn" aria-label="打开菜单">
+        <svg viewBox="0 0 24 24" width="24" height="24"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <header class="task-header">
+            <div class="task-badge">任务 27</div>
+            <h1>电影播放界面</h1>
+            <p class="task-subtitle">运用 HTML5 的 <code>&lt;video&gt;</code> 和 <code>&lt;audio&gt;</code> 标签嵌入多媒体，制作电影播放界面。</p>
+            <div class="task-meta">
+                <span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 50分钟</span>
+                <span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> 4个示例</span>
+            </div>
+        </header>
+
+        <div class="task-content">
+            <div class="info-box">
+                <h4>💡 本章节核心目标</h4>
+                <p>HTML5 之前，网页中播放音视频需要依赖 Flash 等第三方插件，存在安全风险、移动端不兼容等问题。HTML5 引入了原生的 <code>&lt;video&gt;</code> 和 <code>&lt;audio&gt;</code> 标签，让多媒体嵌入变得像插入图片一样简单。本任务通过制作一个电影播放界面，带领你掌握音视频标签的完整用法，包括属性配置、多格式兼容处理以及与 CSS 的配合应用。</p>
+            </div>
+
+            <!-- 例 8-1 -->
+            <div class="example-card" data-example="ex-01">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-1</span>
+                        <h4>嵌入视频</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>&lt;video&gt;</code> 标签的基本用法，在网页中嵌入并播放视频文件。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-01">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;在HTML5中嵌入视频&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;video src="https://www.w3schools.com/html/mov_bbb.mp4"
+           controls="controls"
+           width="320" height="240"&gt;
+        您的浏览器不支持 HTML5 video 标签。
+    &lt;/video&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-01"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>&lt;video&gt; 标签</code>
+                                <p>HTML5 新增元素，用于在页面中嵌入视频文件，支持 MP4、WebM、OGG 三种格式。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>src 属性</code>
+                                <p>指定视频文件路径，支持相对路径和绝对路径。也可用 <code>&lt;source&gt;</code> 子元素替代。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>controls 属性</code>
+                                <p>布尔属性，显示浏览器默认的播放控件栏（播放/暂停、进度条、音量、全屏切换等）。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>降级文本</code>
+                                <p><code>&lt;video&gt;</code> 标签之间的文字，在浏览器不支持该标签时显示，提供友好降级。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>替换元素</code>
+                                <p><code>&lt;video&gt;</code> 类似 <code>&lt;img&gt;</code>，是替换元素，其尺寸受 CSS <code>width</code>/<code>height</code> 控制。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>浏览器支持</code>
+                                <p>IE 9+、Firefox 3.5+、Chrome 3.0+、Safari 3.2+、Opera 10.5+ 均支持 <code>&lt;video&gt;</code> 标签。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>controls</code> 属性去掉，观察视频是否还有播放控件。</li>
+                            <li>添加 <code>autoplay</code> 属性，刷新页面观察是否自动播放（注意：Chrome 需配合 <code>muted</code> 才生效）。</li>
+                            <li>修改 <code>width</code> 和 <code>height</code> 的值，观察视频显示区域的变化。</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">⚡ 挑战练习</div>
+                            <ul style="list-style:none;display:flex;flex-direction:column;gap:0.5rem;">
+                                <li style="font-size:0.8125rem;color:#94a3b8;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.5;"><span style="color:#f59e0b;">→</span> 使用 <code>poster="https://www.w3schools.com/images/w3schools_green.jpg"</code> 为视频添加封面图，观察加载过程中封面是否显示。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-2 -->
+            <div class="example-card" data-example="ex-02">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-2</span>
+                        <h4>video 标签的扩展属性</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>&lt;video&gt;</code> 标签的扩展属性（<code>autoplay</code>、<code>loop</code>、<code>preload</code>、<code>poster</code>、<code>muted</code> 等），实现更丰富的视频播放控制。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-02">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;video 标签扩展属性&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;video src="https://www.w3schools.com/html/mov_bbb.mp4"
+           controls
+           autoplay
+           muted
+           loop
+           preload="metadata"
+           poster="https://www.w3schools.com/images/w3schools_green.jpg"
+           width="320"&gt;
+        您的浏览器不支持 HTML5 video 标签。
+    &lt;/video&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-02"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>autoplay</code>
+                                <p>页面加载完成后自动播放。Chrome 70+ 禁止有声自动播放，需配合 <code>muted</code> 属性才生效。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>loop</code>
+                                <p>布尔属性，视频播放结束后自动重新播放，实现循环播放效果。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>preload</code>
+                                <p>预加载策略：<code>auto</code>（预加载整个视频）、<code>metadata</code>（仅加载元数据）、<code>none</code>（不预加载）。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>poster</code>
+                                <p>指定视频缓冲不足时显示的封面图片 URL，提升用户体验。仅在视频未开始播放时显示。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>muted</code>
+                                <p>布尔属性，静音播放视频。是实现 Chrome 自动播放的必要条件（<code>autoplay + muted</code>）。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>playsinline</code>
+                                <p>布尔属性，在移动端（特别是 iOS Safari）内嵌播放，而非自动全屏播放。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>去掉 <code>muted</code> 属性，观察 Chrome 浏览器是否还能自动播放。</li>
+                            <li>将 <code>preload</code> 改为 <code>auto</code>，用浏览器开发者工具观察网络请求变化。</li>
+                            <li>去掉 <code>poster</code> 属性，观察视频加载前的显示效果。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-3 -->
+            <div class="example-card" data-example="ex-03">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-3</span>
+                        <h4>嵌入音频</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>&lt;audio&gt;</code> 标签的基本用法，在网页中嵌入并播放音频文件。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-03">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;在HTML5中嵌入音频&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;audio src="https://www.w3schools.com/html/horse.mp3"
+           controls="controls"&gt;
+        您的浏览器不支持 HTML5 audio 标签。
+    &lt;/audio&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-03"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>&lt;audio&gt; 标签</code>
+                                <p>HTML5 新增，用于嵌入音频文件，用法与 <code>&lt;video&gt;</code> 基本一致，支持 MP3、OGG、WAV 三种格式。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>无画面</code>
+                                <p>音频没有画面，因此没有 <code>poster</code>、<code>width</code>、<code>height</code> 等视觉相关属性。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>通用属性</code>
+                                <p><code>controls</code>、<code>autoplay</code>、<code>loop</code>、<code>preload</code>、<code>muted</code> 等属性与 <code>&lt;video&gt;</code> 语义完全相同。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>音频格式兼容性</code>
+                                <p>MP3 格式兼容性最好（所有浏览器均支持），OGG 需 Firefox 支持，WAV 体积较大一般不推荐。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>添加 <code>autoplay</code> 和 <code>muted</code> 属性，观察音频是否自动播放。</li>
+                            <li>添加 <code>loop</code> 属性，观察音频结束后是否自动重新播放。</li>
+                            <li>将 <code>src</code> 改为一个不存在的路径，观察降级文本的显示效果。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-4 -->
+            <div class="example-card" data-example="ex-04">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-4</span>
+                        <h4>使用 source 解决浏览器兼容性</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握使用 <code>&lt;source&gt;</code> 子元素为不同浏览器提供多种音视频格式，解决浏览器兼容性问题。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-04">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;使用 source 解决兼容性&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- 视频多格式兼容 --&gt;
+    &lt;video controls preload="metadata" width="320"&gt;
+        &lt;source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"&gt;
+        &lt;source src="https://www.w3schools.com/html/mov_bbb.webm" type="video/webm"&gt;
+        您的浏览器不支持 HTML5 video 标签，
+        请 &lt;a href="https://www.w3schools.com/html/mov_bbb.mp4"&gt;点击此处下载&lt;/a&gt; 观看。
+    &lt;/video&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;!-- 音频多格式兼容 --&gt;
+    &lt;audio controls&gt;
+        &lt;source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg"&gt;
+        &lt;source src="https://www.w3schools.com/html/horse.ogg" type="audio/ogg"&gt;
+        您的浏览器不支持 HTML5 audio 标签。
+    &lt;/audio&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-04"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>&lt;source&gt; 元素</code>
+                                <p>为 <code>&lt;video&gt;</code> 或 <code>&lt;audio&gt;</code> 提供多个备用媒体文件，浏览器按顺序选择第一个可播放的格式。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>src 属性</code>
+                                <p>指定媒体文件的 URL 地址。使用 <code>&lt;source&gt;</code> 时，父元素上不写 <code>src</code> 属性。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>type 属性</code>
+                                <p>指定媒体文件的 MIME 类型（如 <code>video/mp4</code>、<code>audio/mpeg</code>），帮助浏览器快速判断是否支持，避免下载后才报错。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>兼容性策略</code>
+                                <p>视频推荐使用 <strong>MP4 + WebM</strong> 双格式；音频以 <strong>MP3</strong> 为主（兼容性最好）。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>降级内容</code>
+                                <p>所有 <code>&lt;source&gt;</code> 都不被支持时，显示标签之间的降级文本（可包含下载链接）。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>MIME 类型速查</code>
+                                <p><code>.mp4</code>→<code>video/mp4</code>；<code>.webm</code>→<code>video/webm</code>；<code>.mp3</code>→<code>audio/mpeg</code>；<code>.ogg</code>→<code>audio/ogg</code>。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>只保留 <code>type="video/webm"</code> 的 <code>&lt;source&gt;</code>，观察浏览器是否还能播放（取决于浏览器是否支持 WebM）。</li>
+                            <li>在降级文本中添加一个下载链接，让不支持 HTML5 的浏览器用户可以下载视频本地观看。</li>
+                            <li>查阅资料，了解 <code>media</code> 属性的作用（提示：用于响应式媒体查询）。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HBuilderX 技巧 -->
+            <div class="challenge-box">
+                <h5>🛠️ HBuilderX 使用技巧</h5>
+                <div class="challenge-desc">
+                    <p>① 在 HBuilderX 中，可以同时预览多个 HTML 文件：右键点击 HTML 文件 →「运行」→「运行到浏览器」。</p>
+                    <p>② 使用 <code>Ctrl + D</code>（Mac：<code>Cmd + D</code>）可以选中下一个相同的选中词，快速批量修改标签属性。</p>
+                    <p>③ 使用 <code>Ctrl + /</code> 快速注释/取消注释代码，在调试 <code>&lt;video&gt;</code> 属性时非常有用。</p>
+                </div>
+            </div>
+
+            <!-- 进阶任务 -->
+            <div class="challenge-box">
+                <h5>🚀 进阶任务（AI 开发实训提示词）</h5>
+                <div class="challenge-desc">
+                    <p>使用 AI 辅助完成以下任务，将提示词填入 AI 对话框：</p>
+                </div>
+                <ul class="challenge-task">
+                    <li>请设计一个完整的电影播放网页，包含：① 顶部导航栏 ② 视频播放区（使用 <code>&lt;video&gt;</code> 标签，支持 MP4 和 WebM 双格式）③ 影片简介区 ④ 相关推荐区。要求整体风格简洁大气，配色以深色为主。</li>
+                    <li>请为上面的电影播放网页添加自定义播放控件（不使用浏览器默认 controls），包括：播放/暂停按钮、进度条、音量控制、全屏按钮。使用 JavaScript 控制 <code>&lt;video&gt;</code> 的 API（如 <code>play()</code>、<code>pause()</code>、<code>currentTime</code> 等）。</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+    <script>
+        // 折叠功能
+        function toggleExample(header) {
+            const card = header.closest('.example-card');
+            card.classList.toggle('expanded');
+        }
+        // 实时预览功能
+        document.querySelectorAll('.code-editor').forEach(editor => {
+            editor.addEventListener('input', function() {
+                const previewId = this.id.replace('code-', 'preview-');
+                const preview = document.getElementById(previewId);
+                if (preview) {
+                    preview.srcdoc = this.value;
+                }
+            });
+            editor.dispatchEvent(new Event('input'));
+        });
+        // 默认展开第一个
+        document.querySelector('.example-card')?.classList.add('expanded');
+    </script>
+</body>
+</html>

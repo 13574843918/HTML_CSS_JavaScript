@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务三十：宝石旋转 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '🔧'; }
+        .code-editor { width: 100%; min-height: 280px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-editor:focus { border-color: #a855f7; box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15); }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 280px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #a855f7; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #a855f7; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.02) 100%); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #a855f7; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.02) 100%); border: 1px solid rgba(34, 197, 94, 0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #22c55e; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #22c55e; flex-shrink: 0; }
+        .practice-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #a855f7; font-size: 0.8125rem; }
+        .practice-box .challenge { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(34, 197, 94, 0.3); }
+        .practice-box .challenge-title { font-size: 0.8125rem; font-weight: 600; color: #f59e0b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box .challenge-title::before { content: '🔥'; }
+        .challenge-box { margin-top: 1.5rem; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.02) 100%); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 0.75rem; }
+        .challenge-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .challenge-box h5::before { content: '🚀'; }
+        .challenge-box .challenge-desc { font-size: 0.875rem; color: #94a3b8; line-height: 1.7; margin-bottom: 1rem; }
+        .challenge-box .challenge-task { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .challenge-box .challenge-task li { font-size: 0.8125rem; color: #f59e0b; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .challenge-box .challenge-task li::before { content: '⭐'; color: #a855f7; flex-shrink: 0; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+                <li class="nav-item" data-task="task4"><span class="nav-number">04</span><div class="nav-content"><span class="nav-title">音乐盒</span><span class="nav-desc">盒子模型基础</span></div></li>
+                <li class="nav-item" data-task="task5"><span class="nav-number">05</span><div class="nav-content"><span class="nav-title">用户中心</span><span class="nav-desc">内边距与外边距</span></div></li>
+                <li class="nav-item" data-task="task6"><span class="nav-number">06</span><div class="nav-content"><span class="nav-title">咖啡店banner</span><span class="nav-desc">背景属性</span></div></li>
+                <li class="nav-item" data-task="task7"><span class="nav-number">07</span><div class="nav-content"><span class="nav-title">图标导航栏</span><span class="nav-desc">display属性</span></div></li>
+                <li class="nav-item" data-task="task8"><span class="nav-number">08</span><div class="nav-content"><span class="nav-title">创意画框</span><span class="nav-desc">渐变与阴影</span></div></li>
+                <li class="nav-item" data-task="task9"><span class="nav-number">09</span><div class="nav-content"><span class="nav-title">拼图效果</span><span class="nav-desc">圆角与多背景</span></div></li>
+                <li class="nav-item" data-task="task11"><span class="nav-number">11</span><div class="nav-content"><span class="nav-title">精美悬浮框</span><span class="nav-desc">无序与有序列表</span></div></li>
+                <li class="nav-item" data-task="task12"><span class="nav-number">12</span><div class="nav-content"><span class="nav-title">二维码名片</span><span class="nav-desc">定义列表</span></div></li>
+                <li class="nav-item" data-task="task13"><span class="nav-number">13</span><div class="nav-content"><span class="nav-title">电商团购悬浮框</span><span class="nav-desc">list-style属性</span></div></li>
+                <li class="nav-item" data-task="task14"><span class="nav-number">14</span><div class="nav-content"><span class="nav-title">唱吧导航栏</span><span class="nav-desc">超链接与锚点</span></div></li>
+                <li class="nav-item" data-task="task22"><span class="nav-number">22</span><div class="nav-content"><span class="nav-title">世界杯梦幻阵容</span><span class="nav-desc">浮动布局</span></div></li>
+                <li class="nav-item" data-task="task23"><span class="nav-number">23</span><div class="nav-content"><span class="nav-title">商品专栏</span><span class="nav-desc">清除浮动</span></div></li>
+                <li class="nav-item" data-task="task24"><span class="nav-number">24</span><div class="nav-content"><span class="nav-title">移动端电商界面</span><span class="nav-desc">overflow属性</span></div></li>
+                <li class="nav-item" data-task="task25"><span class="nav-number">25</span><div class="nav-content"><span class="nav-title">违停查询</span><span class="nav-desc">定位属性</span></div></li>
+                <li class="nav-item" data-task="task26"><span class="nav-number">26</span><div class="nav-content"><span class="nav-title">网页布局</span><span class="nav-desc">DIV+CSS综合</span></div></li>
+                <li class="nav-item" data-task="task27"><span class="nav-number">27</span><div class="nav-content"><span class="nav-title">电影播放界面</span><span class="nav-desc">音视频嵌入</span></div></li>
+                <li class="nav-item" data-task="task28"><span class="nav-number">28</span><div class="nav-content"><span class="nav-title">导航栏悬浮特效</span><span class="nav-desc">过渡属性</span></div></li>
+                <li class="nav-item" data-task="task29"><span class="nav-number">29</span><div class="nav-content"><span class="nav-title">翻牌动画</span><span class="nav-desc">变形属性</span></div></li>
+                <li class="nav-item active" data-task="task30"><span class="nav-number">30</span><div class="nav-content"><span class="nav-title">宝石旋转</span><span class="nav-desc">动画属性</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">HTML+CSS 网页设计实训平台</div>
+    </aside>
+    <button class="mobile-menu-btn" aria-label="打开菜单">
+        <svg viewBox="0 0 24 24" width="24" height="24"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <header class="task-header">
+            <div class="task-badge">任务 30</div>
+            <h1>宝石旋转</h1>
+            <p class="task-subtitle">运用 CSS3 的 <code>@keyframes</code> 规则和 <code>animation</code> 属性定义复杂、可重复播放的动画效果。</p>
+            <div class="task-meta">
+                <span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 70分钟</span>
+                <span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> 3个示例</span>
+            </div>
+        </header>
+
+        <div class="task-content">
+            <div class="info-box">
+                <h4>💡 本节核心目标</h4>
+                <p>CSS3 动画（animation）是比过渡（transition）更强大的动画方案。过渡只能定义 A→B 的状态变化，而动画可以定义多个关键帧（A→B→C→D→…），实现复杂的多阶段动画。动画还可以自动播放、无限循环、正反交替，无需用户交互触发。本任务将带你掌握 <code>@keyframes</code> 和 <code>animation</code> 的完整用法，并制作一个宝石旋转综合案例。</p>
+            </div>
+
+            <!-- 例 8-16 -->
+            <div class="example-card" data-example="ex-16">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-16</span>
+                        <h4>animation-name 与 animation-duration</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>@keyframes</code> 规则的定义语法，以及 <code>animation-name</code> 和 <code>animation-duration</code> 两个核心属性的用法。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-16">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;animation-duration属性&lt;/title&gt;
+    &lt;style&gt;
+        .box {
+            width: 200px;
+            height: 150px;
+            border-radius: 50%;
+            background: #F60;
+            /* 绑定动画名称和时长 */
+            animation-name: mymove;
+            animation-duration: 10s;
+        }
+        @keyframes mymove {
+            from  { transform: translate(0) rotateY(180deg); }
+            50%   { transform: translate(1000px) rotateY(180deg); }
+            51%   { transform: translate(1000px) rotateY(0deg); }
+            to    { transform: translate(0) rotateY(0deg); }
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="box"&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-16"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>@keyframes 名称 { }</code>
+                                <p>创建动画，定义关键帧序列。<code>from</code> 等同 <code>0%</code>，<code>to</code> 等同 <code>100%</code>。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>from / 0%</code>
+                                <p>动画起始帧。<code>from</code> 是 <code>0%</code> 的别名，两者等效。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>to / 100%</code>
+                                <p>动画结束帧。<code>to</code> 是 <code>100%</code> 的别名，两者等效。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>百分比关键帧</code>
+                                <p>可定义多个中间状态：<code>25%, 75% { ... }</code> 同一百分比可合并书写。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>animation-name</code>
+                                <p>将元素与 <code>@keyframes</code> 规则绑定。<code>none</code>（默认）表示无动画。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>animation-duration</code>
+                                <p>动画完成一次所需时间（s 或 ms）。<strong>必须设置</strong>，否则默认 0 不可见。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>animation-duration: 10s;</code> 改为 <code>3s</code>，观察动画速度变化。</li>
+                            <li>在 <code>@keyframes</code> 中添加 <code>25% { background: #09f; }</code>，观察中间帧颜色变化。</li>
+                            <li>将 <code>animation-name</code> 改为一个不存在的名称，观察动画是否还播放。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-17 -->
+            <div class="example-card" data-example="ex-17">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-17</span>
+                        <h4>animation-iteration-count 与 animation-direction</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>animation-iteration-count</code>（播放次数）和 <code>animation-direction</code>（播放方向）的用法，理解 <code>animation-fill-mode</code> 和 <code>animation-play-state</code> 的作用。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-17">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;animation-direction属性&lt;/title&gt;
+    &lt;style&gt;
+        .box {
+            width: 200px;
+            height: 150px;
+            border-radius: 50%;
+            background: #F60;
+            animation-name: mymove;
+            animation-duration: 8s;
+            animation-iteration-count: 2;
+            animation-direction: alternate;
+        }
+        @keyframes mymove {
+            from { transform: translate(0) rotateZ(0deg); }
+            to   { transform: translate(1000px) rotateZ(1080deg); }
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="box"&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-17"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>animation-iteration-count</code>
+                                <p>播放次数。<code>infinite</code> 为无限循环。默认值为 <code>1</code>。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>animation-direction: normal</code>
+                                <p>每次都<strong>正向</strong>播放（默认值）。<code>0% → 100%</code>。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>animation-direction: reverse</code>
+                                <p>每次都<strong>反向</strong>播放。<code>100% → 0%</code>。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>animation-direction: alternate</code>
+                                <p>奇数次正向、偶数次<strong>逆向</strong>。需播放次数 ≥ 2。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>animation-direction: alternate-reverse</code>
+                                <p>奇数次逆向、偶数次正向。需播放次数 ≥ 2。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>animation-fill-mode: forwards</code>
+                                <p>动画结束后<strong>保持最后一帧</strong>的样式，不恢复原样。常用於入场动画。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>animation-play-state</code>
+                                <p><code>running</code>（默认，播放中）；<code>paused</code>（暂停，停在当前帧）。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>animation-delay 负值</code>
+                                <p><code>-2s</code> 表示跳过前 2 秒，<strong>直接从动画中间</strong>开始播放。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>animation-iteration-count: 2</code> 改为 <code>infinite</code>，观察是否无限循环。</li>
+                            <li>将 <code>animation-direction: alternate</code> 改为 <code>reverse</code>，观察播放方向变化。</li>
+                            <li>添加 <code>animation-fill-mode: forwards;</code>，观察动画结束后是否停在最后一帧。</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">🔥 挑战练习</div>
+                            <ul style="list-style:none;display:flex;flex-direction:column;gap:0.5rem;">
+                                <li style="font-size:0.8125rem;color:#94a3b8;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.5;"><span style="color:#f59e0b;">→</span> 制作一个「 spinner 旋转加载动画」：使用 <code>@keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }</code>，配合 <code>animation: spin 1s linear infinite;</code>，并添加 <code>.spinner:hover { animation-play-state: paused; }</code> 实现悬浮暂停。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-18 -->
+            <div class="example-card" data-example="ex-18">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-18</span>
+                        <h4>宝石旋转综合案例</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>综合运用本案例所有知识点，制作一个多层叠加的宝石旋转动画效果。理解多动画并行、旋转方向控制、呼吸灯效果和发光效果的实现原理。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-18">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;宝石旋转&lt;/title&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; list-style: none; }
+        .stage {
+            width: 592px;
+            height: 534px;
+            position: relative;
+            background: #000;
+            margin: 2rem auto;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        /* 外圆环：顺时针旋转 */
+        .waihuan {
+            position: absolute;
+            left: 8%; top: 7%;
+            width: 503px; height: 477px;
+            border: 3px solid #a855f7;
+            border-radius: 50%;
+            animation: xuanzhuan1 10s linear infinite;
+        }
+        @keyframes xuanzhuan1 {
+            from { transform: rotate(0); }
+            to   { transform: rotate(360deg); }
+        }
+        /* 内圆环：逆时针旋转 */
+        .neihuan {
+            position: absolute;
+            left: 27%; top: 25%;
+            width: 274px; height: 274px;
+            border: 2px dashed #3b82f6;
+            border-radius: 50%;
+            animation: xuanzhuan2 30s linear infinite;
+        }
+        @keyframes xuanzhuan2 {
+            from { transform: rotate(360deg); }
+            to   { transform: rotate(0); }
+        }
+        /* 宝石：呼吸灯效果 */
+        .shitou {
+            position: absolute;
+            left: 45%; top: 42%;
+            width: 60px; height: 60px;
+            background: radial-gradient(circle, #f59e0b, #a855f7);
+            border-radius: 50%;
+            animation: fangda 1s linear infinite alternate;
+        }
+        @keyframes fangda {
+            from { transform: scale(1); box-shadow: 0 0 20px #f59e0b; }
+            to   { transform: scale(1.3); box-shadow: 0 0 60px #a855f7; }
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="stage"&gt;
+        &lt;div class="waihuan"&gt;&lt;/div&gt;
+        &lt;div class="neihuan"&gt;&lt;/div&gt;
+        &lt;div class="shitou"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;p style="text-align:center;color:#666;"&gt;这是一个简化版宝石旋转效果，悬浮查看动画&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-18"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>animation 简写属性总结</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>animation 简写</code>
+                                <p><code>animation: name duration timing-function delay iteration-count direction fill-mode;</code></p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>必填项</code>
+                                <p><code>animation-name</code> 和 <code>animation-duration</code> 必须指定，否则动画不播放。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>顺时针旋转</code>
+                                <p><code>from { rotate(0) } to { rotate(360deg) }</code> 实现正向旋转。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>逆时针旋转</code>
+                                <p><code>from { rotate(360deg) } to { rotate(0) }</code> 交换起止值实现反向。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>infinite 无限循环</code>
+                                <p><code>animation-iteration-count: infinite</code> 配合持续旋转/闪烁效果使用。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>alternate 往复效果</code>
+                                <p><code>animation-direction: alternate</code> 实现缩放/颜色等属性的来回交替效果。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>box-shadow 动画</code>
+                                <p>通过 <code>@keyframes</code> 改变 <code>box-shadow</code> 大小和颜色，实现发光闪烁效果。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>多动画叠加</code>
+                                <p>多个元素可同时运行不同动画，互不影响，各自按自己的参数运行。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将外圆环的 <code>animation-duration: 10s</code> 改为 <code>3s</code>，观察旋转速度变化。</li>
+                            <li>将内圆环的 <code>from { rotate(360deg) }</code> 改为 <code>from { rotate(0) }</code>，观察旋转方向是否变为顺时针。</li>
+                            <li>将宝石的 <code>alternate</code> 去掉，观察呼吸灯效果是否变成单向放大。</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">🔥 挑战练习</div>
+                            <ul style="list-style:none;display:flex;flex-direction:column;gap:0.5rem;">
+                                <li style="font-size:0.8125rem;color:#94a3b8;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.5;"><span style="color:#f59e0b;">→</span> 在上面的宝石旋转案例中，添加第 4 个图层（发光层）：使用 <code>box-shadow</code> 动画，让发光效果在橙色和紫色之间交替闪烁，持续时间为 2s。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HBuilderX 技巧 -->
+            <div class="challenge-box">
+                <h5>🛠️ HBuilderX 使用技巧</h5>
+                <div class="challenge-desc">
+                    <p>① 在 HBuilderX 中调试 <code>@keyframes</code> 动画时，可以使用「实时预览」功能（运行→实时预览），保存代码后浏览器自动刷新，无需手动 F5。</p>
+                    <p>② 使用 <code>Ctrl + /</code> 快速注释/取消注释 CSS 代码，在调试动画关键帧时非常有用。</p>
+                    <p>③ <code>animation</code> 简写属性中，<code>animation-play-state</code> <strong>不能</strong>写在简写中，必须单独声明。建议调试时先写分开的属性，确认无误后再合并为简写。</p>
+                </div>
+            </div>
+
+            <!-- 进阶任务 -->
+            <div class="challenge-box">
+                <h5>🚀 进阶任务（AI 开发实训提示词）</h5>
+                <div class="challenge-desc">
+                    <p>使用 AI 辅助完成以下任务，将提示词填入 AI 对话框：</p>
+                </div>
+                <ul class="challenge-task">
+                    <li>请设计一个完整的「加载动画」组件库，包含：① 旋转圆环（spinner）② 跳动圆点（bounce-dots）③ 渐变进度条（progress-bar）④ 脉冲发光效果（pulse-glow）。要求所有动画使用纯 CSS <code>@keyframes</code> + <code>animation</code> 实现，无需 JavaScript。</li>
+                    <li>请为上面的加载动画组件添加「深色/浅色」主题切换功能，使用 CSS 变量（<code>--color-bg</code> 等）控制颜色，并通过 JavaScript 切换 <code>data-theme</code> 属性实现主题切换。</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+    <script>
+        // 折叠功能
+        function toggleExample(header) {
+            const card = header.closest('.example-card');
+            card.classList.toggle('expanded');
+        }
+        // 实时预览功能
+        document.querySelectorAll('.code-editor').forEach(editor => {
+            editor.addEventListener('input', function() {
+                const previewId = this.id.replace('code-', 'preview-');
+                const preview = document.getElementById(previewId);
+                if (preview) {
+                    preview.srcdoc = this.value;
+                }
+            });
+            // 初始化时执行一次
+            editor.dispatchEvent(new Event('input'));
+        });
+        // 默认展开第一个
+        document.querySelector('.example-card')?.classList.add('expanded');
+    </script>
+</body>
+</html>

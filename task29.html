@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务二十九：翻牌动画 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '🔧'; }
+        .code-editor { width: 100%; min-height: 280px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-editor:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 280px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #3b82f6; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #3b82f6; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.02) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #3b82f6; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #3b82f6; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.02) 100%); border: 1px solid rgba(34, 197, 94, 0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #22c55e; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #22c55e; flex-shrink: 0; }
+        .practice-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #3b82f6; font-size: 0.8125rem; }
+        .practice-box .challenge { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(34, 197, 94, 0.3); }
+        .practice-box .challenge-title { font-size: 0.8125rem; font-weight: 600; color: #f59e0b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box .challenge-title::before { content: '🔥'; }
+        .challenge-box { margin-top: 1.5rem; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.02) 100%); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 0.75rem; }
+        .challenge-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .challenge-box h5::before { content: '🚀'; }
+        .challenge-box .challenge-desc { font-size: 0.875rem; color: #94a3b8; line-height: 1.7; margin-bottom: 1rem; }
+        .challenge-box .challenge-task { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .challenge-box .challenge-task li { font-size: 0.8125rem; color: #f59e0b; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .challenge-box .challenge-task li::before { content: '⭐'; color: #a855f7; flex-shrink: 0; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+                <li class="nav-item" data-task="task4"><span class="nav-number">04</span><div class="nav-content"><span class="nav-title">音乐盒</span><span class="nav-desc">盒子模型基础</span></div></li>
+                <li class="nav-item" data-task="task5"><span class="nav-number">05</span><div class="nav-content"><span class="nav-title">用户中心</span><span class="nav-desc">内边距与外边距</span></div></li>
+                <li class="nav-item" data-task="task6"><span class="nav-number">06</span><div class="nav-content"><span class="nav-title">咖啡店banner</span><span class="nav-desc">背景属性</span></div></li>
+                <li class="nav-item" data-task="task7"><span class="nav-number">07</span><div class="nav-content"><span class="nav-title">图标导航栏</span><span class="nav-desc">display属性</span></div></li>
+                <li class="nav-item" data-task="task8"><span class="nav-number">08</span><div class="nav-content"><span class="nav-title">创意画框</span><span class="nav-desc">渐变与阴影</span></div></li>
+                <li class="nav-item" data-task="task9"><span class="nav-number">09</span><div class="nav-content"><span class="nav-title">拼图效果</span><span class="nav-desc">圆角与多背景</span></div></li>
+                <li class="nav-item" data-task="task11"><span class="nav-number">11</span><div class="nav-content"><span class="nav-title">精美悬浮框</span><span class="nav-desc">无序与有序列表</span></div></li>
+                <li class="nav-item" data-task="task12"><span class="nav-number">12</span><div class="nav-content"><span class="nav-title">二维码名片</span><span class="nav-desc">定义列表</span></div></li>
+                <li class="nav-item" data-task="task13"><span class="nav-number">13</span><div class="nav-content"><span class="nav-title">电商团购悬浮框</span><span class="nav-desc">list-style属性</span></div></li>
+                <li class="nav-item" data-task="task14"><span class="nav-number">14</span><div class="nav-content"><span class="nav-title">唱吧导航栏</span><span class="nav-desc">超链接与锚点</span></div></li>
+                <li class="nav-item" data-task="task22"><span class="nav-number">22</span><div class="nav-content"><span class="nav-title">世界杯梦幻阵容</span><span class="nav-desc">浮动布局</span></div></li>
+                <li class="nav-item" data-task="task23"><span class="nav-number">23</span><div class="nav-content"><span class="nav-title">商品专栏</span><span class="nav-desc">清除浮动</span></div></li>
+                <li class="nav-item" data-task="task24"><span class="nav-number">24</span><div class="nav-content"><span class="nav-title">移动端电商界面</span><span class="nav-desc">overflow属性</span></div></li>
+                <li class="nav-item" data-task="task25"><span class="nav-number">25</span><div class="nav-content"><span class="nav-title">违停查询</span><span class="nav-desc">定位属性</span></div></li>
+                <li class="nav-item" data-task="task26"><span class="nav-number">26</span><div class="nav-content"><span class="nav-title">网页布局</span><span class="nav-desc">DIV+CSS综合</span></div></li>
+                <li class="nav-item" data-task="task27"><span class="nav-number">27</span><div class="nav-content"><span class="nav-title">电影播放界面</span><span class="nav-desc">音视频嵌入</span></div></li>
+                <li class="nav-item" data-task="task28"><span class="nav-number">28</span><div class="nav-content"><span class="nav-title">导航栏悬浮特效</span><span class="nav-desc">过渡属性</span></div></li>
+                <li class="nav-item active" data-task="task29"><span class="nav-number">29</span><div class="nav-content"><span class="nav-title">翻牌动画</span><span class="nav-desc">变形属性</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">HTML+CSS 网页设计实训平台</div>
+    </aside>
+    <button class="mobile-menu-btn" aria-label="打开菜单">
+        <svg viewBox="0 0 24 24" width="24" height="24"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <header class="task-header">
+            <div class="task-badge">任务 29</div>
+            <h1>翻牌动画</h1>
+            <p class="task-subtitle">运用 CSS3 变形属性（transform）实现 2D/3D 变形效果，制作鼠标悬浮翻牌动画。</p>
+            <div class="task-meta">
+                <span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 70分钟</span>
+                <span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> 8个示例</span>
+            </div>
+        </header>
+
+        <div class="task-content">
+            <div class="info-box">
+                <h4>💡 本节核心目标</h4>
+                <p>CSS3 变形（transform）是网页动画的核心能力之一。它能在不改变文档流布局的前提下，对元素进行平移、缩放、旋转、倾斜等视觉变换。与通过 <code>margin</code>/<code>left</code>/<code>top</code> 移动不同，<code>transform</code> 变形不会影响其他元素的位置，且由 GPU 加速渲染，性能更优。本任务将带你掌握 <code>transform</code> 的完整用法，并制作一个翻牌动画。</p>
+            </div>
+
+            <!-- 例 8-8 -->
+            <div class="example-card" data-example="ex-08">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-8</span>
+                        <h4>translate() 平移</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>translate()</code> 平移函数的用法，理解平移与 <code>position: relative</code> 移动的区别。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-08">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;translate()方法&lt;/title&gt;
+    &lt;style&gt;
+        body { font-family: sans-serif; padding: 2rem; }
+        .box { width: 100px; height: 50px; background: #0CC; margin: 0.5rem 0; }
+        .translated { transform: translate(100px, 30px); }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="box"&gt;盒子1（未平移）&lt;/div&gt;
+    &lt;div class="box translated"&gt;盒子2（平移）&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-08"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>translate(x, y)</code>
+                                <p>将元素沿 X 轴移动 x，沿 Y 轴移动 y。相对于元素<strong>自身位置</strong>进行。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>translateX(tx)</code>
+                                <p>仅沿 X 轴水平移动。正值向右，负值向左。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>translateY(ty)</code>
+                                <p>仅沿 Y 轴垂直移动。正值向下，负值向上。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>百分比单位</code>
+                                <p>百分比<strong>相对于元素自身</strong>的宽高（非父元素）。<code>translate(50%, 50%)</code> 向右/下移动自身尺寸的一半。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>单位不可省略</code>
+                                <p><code>translate(100)</code> 无效！必须写单位：<code>translate(100px)</code> 或 <code>translate(50%)</code>。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>居中技巧</code>
+                                <p><code>position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);</code> 是实现元素居中的经典方案。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>translate(100px, 30px)</code> 改为 <code>translateX(100px)</code>，观察效果。</li>
+                            <li>改为 <code>translate(50%, 0)</code>，观察移动距离与元素自身宽度的关系。</li>
+                            <li>尝试用 <code>translate</code> 实现一个元素在父容器中水平垂直居中（提示：需配合 <code>position: absolute</code>）。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-9 -->
+            <div class="example-card" data-example="ex-09">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-9</span>
+                        <h4>scale() 缩放</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>scale()</code> 缩放函数的用法，理解缩放中心点（transform-origin）的影响。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-09">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;scale()方法&lt;/title&gt;
+    &lt;style&gt;
+        body { font-family: sans-serif; padding: 2rem; }
+        .box { width: 100px; height: 50px; background: #FF0; border: 1px solid #333; margin: 1rem 0; }
+        .scaled { transform: scale(2, 3); }
+        .scaled:hover { transform: scale(1.1); }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="box"&gt;原始元素&lt;/div&gt;
+    &lt;div class="box scaled"&gt;放大后的元素（悬浮我看看）&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-09"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>scale(x, y)</code>
+                                <p>x 为水平缩放倍数，y 为垂直缩放倍数。大于1放大，0~1缩小，负数镜像+缩放。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>scaleX(sx) / scaleY(sy)</code>
+                                <p>仅水平/垂直缩放。省略第二参数时默认等于第一参数（等比缩放）。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>scale(0)</code>
+                                <p>元素缩为不可见（常用于消失动画）。等价于 <code>scale(0, 0)</code>。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>无需单位</code>
+                                <p>缩放值是倍数，直接写数字，<strong>不能加单位</strong>！<code>scale(2)</code> ✅，<code>scale(2px)</code> ❌。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>常见应用</code>
+                                <p>悬浮放大图片 <code>img:hover { transform: scale(1.1); }</code>；点击缩小反馈 <code>:active { transform: scale(0.95); }</code>。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>负数效果</code>
+                                <p><code>scale(-1, 1)</code> 水平镜像翻转；<code>scale(-1, -1)</code> 同时水平+垂直翻转。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>scale(2, 3)</code> 改为 <code>scale(0.5)</code>，观察缩小效果。</li>
+                            <li>改为 <code>scaleX(-1)</code>，观察水平镜像效果。</li>
+                            <li>为原始元素添加 <code>:hover { transform: scale(1.2); }</code>，观察悬浮放大效果。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-10 -->
+            <div class="example-card" data-example="ex-10">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-10</span>
+                        <h4>skew() 倾斜</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>skew()</code> 倾斜函数的用法，理解倾斜角度的方向规律。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-10">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;skew()方法&lt;/title&gt;
+    &lt;style&gt;
+        body { font-family: sans-serif; padding: 2rem; }
+        .box { width: 100px; height: 50px; background: #F90; border: 1px solid #333; margin: 2rem auto; }
+        .skewed { transform: skew(30deg, 10deg); }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="box"&gt;原始元素&lt;/div&gt;
+    &lt;div class="box skewed"&gt;倾斜后的元素&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-10"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>skew(x, y)</code>
+                                <p>沿 X 轴倾斜 x 度，沿 Y 轴倾斜 y 度。会改变元素形状，文字内容也随之倾斜。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>skewX(angle)</code>
+                                <p>仅沿 X 轴倾斜（顶边向右/左倾斜）。正值→顶边向右倾斜。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>skewY(angle)</code>
+                                <p>仅沿 Y 轴倾斜（左侧向上/下倾斜）。正值→左边向下倾斜。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>单位 deg</code>
+                                <p>倾斜角度必须使用 <code>deg</code> 单位。可正可负。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>斜角标签效果</code>
+                                <p>容器 <code>skewX(-15deg)</code> + 内部文字 <code>skewX(15deg)</code> 反向倾斜，可制作斜角促销标签。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>省略第二参数</code>
+                                <p>只写一个值时，表示 <code>skewX(value)</code>，Y 轴不倾斜（等同于 0）。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>skew(30deg, 10deg)</code> 改为 <code>skewX(30deg)</code>，观察效果。</li>
+                            <li>改为 <code>skewY(20deg)</code>，观察左侧倾斜方向。</li>
+                            <li>尝试用 <code>skewX(-15deg)</code> 制作一个斜角标签，内部文字保持水平（提示：内部元素反向 <code>skewX(15deg)</code>）。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-11 -->
+            <div class="example-card" data-example="ex-11">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-11</span>
+                        <h4>transform-origin 更改变换中心点</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>transform-origin</code> 属性的用法，理解变换中心点对旋转/缩放效果的影响。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-11">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;transform-origin属性&lt;/title&gt;
+    &lt;style&gt;
+        .wrap { position: relative; width: 200px; height: 200px; margin: 2rem auto; padding: 10px; border: 1px solid #333; }
+        .box { padding: 20px; position: absolute; border: 1px solid #333; }
+        .box2 { background: red; transform: rotate(45deg); transform-origin: 20% 40%; }
+        .box3 { background: #FE0; transform: rotate(45deg); }
+        .wrap:hover .box2,
+        .wrap:hover .box3 { transform: rotate(90deg); }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="wrap"&gt;
+        &lt;div class="box box2"&gt;更改基点&lt;/div&gt;
+        &lt;div class="box box3"&gt;未更改基点（默认中心）&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-11"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>默认变换中心点</code>
+                                <p>元素中心（<code>50% 50%</code>）。旋转、缩放都围绕这个点进行。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>transform-origin: x y</code>
+                                <p>修改变换基准点。x/y 可用 <code>px</code>、<code>%</code>、关键词（<code>left/center/right/top/bottom</code>）。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>z 轴参数</code>
+                                <p>仅用于 3D 变形，只能用 <code>px</code> 长度值，不能使用百分比。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>关键词映射</code>
+                                <p><code>top left</code> = <code>0% 0%</code>；<code>center center</code> = <code>50% 50%</code>；<code>bottom right</code> = <code>100% 100%</code>。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>多变形叠加</code>
+                                <p>多个变形函数用<strong>空格</strong>隔开：<code>transform: rotate(45deg) scale(1.2);</code>。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>变形顺序影响结果</code>
+                                <p><code>rotate(45deg) translate(100px)</code> 与 <code>translate(100px) rotate(45deg)</code> 结果<strong>不同</strong>！</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>transform-origin: 20% 40%</code> 改为 <code>transform-origin: left top</code>，观察旋转中心变化。</li>
+                            <li>改为 <code>transform-origin: 100% 100%</code>，观察旋转中心是否在右下角。</li>
+                            <li>设计一个时钟指针效果：指针围绕底部端点旋转（提示：<code>transform-origin: 50% 100%</code>）。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-12 -->
+            <div class="example-card" data-example="ex-12">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-12</span>
+                        <h4>rotateX() 围绕 X 轴旋转</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>rotateX()</code>、<code>rotateY()</code>、<code>rotateZ()</code> 三轴旋转的用法，理解 2D 与 3D 旋转的区别。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-12">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;rotateX()方法&lt;/title&gt;
+    &lt;style&gt;
+        .box { width: 250px; height: 50px; background: #FF0; border: 1px solid #333; margin: 1rem auto; transition: all 1s ease 2s; }
+        .box:hover { transform: rotateX(60deg); }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="box"&gt;悬浮查看 X 轴旋转效果（先等2秒）&lt;/div&gt;
+    &lt;p&gt;rotateX(正角度)：顶部向屏幕内翻转&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-12"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>rotate(angle)</code>
+                                <p>2D 旋转，围绕 Z 轴旋转（平面旋转）。正值顺时针，负值逆时针。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>rotateX(a)</code>
+                                <p>围绕水平 X 轴旋转。正值→顶部向屏幕<strong>内</strong>翻转。需配合 <code>perspective</code> 才有透视感。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>rotateY(a)</code>
+                                <p>围绕垂直 Y 轴旋转。正值→右侧向屏幕<strong>内</strong>翻转。翻牌动画的核心属性。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>rotateZ(a)</code>
+                                <p>围绕 Z 轴旋转，等同于 2D <code>rotate()</code>，但属于 3D 变形语法。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>rotate3d(x,y,z,angle)</code>
+                                <p>自定义旋转轴。x/y/z 定义轴向量（0 或 1），angle 为旋转角度。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>透视感</code>
+                                <p>2D 变形时 <code>rotateX/Y</code> 没有透视效果，必须配合 <code>perspective</code> 属性才会有 3D 视觉。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>rotateX(60deg)</code> 改为 <code>rotateY(60deg)</code>，观察 Y 轴旋转效果。</li>
+                            <li>改为 <code>rotate(45deg)</code>（2D 旋转），对比与 <code>rotateZ(45deg)</code> 的效果是否相同。</li>
+                            <li>在父元素添加 <code>perspective: 400px</code>，再观察 <code>rotateX(60deg)</code> 的透视效果。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-13 -->
+            <div class="example-card" data-example="ex-13">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-13</span>
+                        <h4>perspective 透视效果</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>perspective</code> 属性和 <code>perspective()</code> 函数的区别，理解 3D 透视的原理。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-13">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;perspective属性&lt;/title&gt;
+    &lt;style&gt;
+        .wrap { width: 250px; height: 80px; border: 1px solid #666; perspective: 250px; margin: 1rem auto; }
+        .inner { width: 250px; height: 50px; background: #0CC; transition: all 1s ease 2s; }
+        .wrap:hover .inner { transform: rotateX(60deg); }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="wrap"&gt;
+        &lt;div class="inner"&gt;元素透视（悬浮查看）&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;p&gt;perspective: 250px 写在父元素上&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-13"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>perspective（属性）</code>
+                                <p>设置在<strong>父元素</strong>上，为所有子元素的 3D 变形提供统一的透视距离。值越小透视感越强。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>perspective() 函数</code>
+                                <p>写在当前元素的 <code>transform</code> 中：<code>transform: perspective(500px) rotateX(45deg);</code>。只影响当前元素。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>transform-style</code>
+                                <p><code>preserve-3d</code>：子元素在 3D 空间中保留位置；<code>flat</code>（默认）：子元素展平到父元素平面。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>backface-visibility</code>
+                                <p><code>hidden</code>：元素背面朝向屏幕时不可见（翻牌效果的核心）；<code>visible</code>（默认）：背面可见。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>推荐透视值</code>
+                                <p>通常 <code>500px~1000px</code> 之间效果自然；<code>100px~300px</code> 透视感强烈（近大远小感强）。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>3D 空间三属性</code>
+                                <p>① <code>perspective</code>（父元素）② <code>transform-style: preserve-3d</code>（父元素）③ <code>transform</code>（子元素）。缺一不可！</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>perspective: 250px</code> 改为 <code>800px</code>，观察透视感是否变弱。</li>
+                            <li>改为 <code>100px</code>，观察透视感是否变强（近大远小）。</li>
+                            <li>去掉 <code>perspective</code> 属性，观察 <code>rotateX(60deg)</code> 是否变成 2D 压缩效果。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-14 -->
+            <div class="example-card" data-example="ex-14">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-14</span>
+                        <h4>3D 综合变形</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>综合运用 <code>translateZ()</code>、<code>rotateX()</code>、<code>transform-style: preserve-3d</code> 实现 3D 空间布局。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-14">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;translate3D()方法&lt;/title&gt;
+    &lt;style&gt;
+        .wrap { width: 200px; height: 200px; border: 2px solid #000; position: relative; transition: all 1s ease; transform-style: preserve-3d; perspective: 800px; margin: 2rem auto; }
+        .wrap div { position: absolute; top: 0; left: 0; width: 200px; height: 200px; opacity: 0.8; }
+        .no1 { background: rgba(0,200,200,0.5); transform: translateZ(100px); }
+        .no2 { background: rgba(255,200,0,0.5); transform: rotateX(90deg) translateZ(100px); }
+        .wrap:hover { transform: rotateX(-90deg); }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="wrap"&gt;
+        &lt;div class="no1"&gt;沿Z轴前移100px&lt;/div&gt;
+        &lt;div class="no2"&gt;先旋转90°再沿Z轴移100px&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;p&gt;悬浮查看3D旋转效果（父元素 rotateX(-90deg)）&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-14"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>translate3d(x,y,z)</code>
+                                <p>3D 位移（同时设置三轴）。<code>translateZ(z)</code> 沿 Z 轴移动，正值靠近屏幕。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>scale3d(x,y,z)</code>
+                                <p>3D 缩放。<code>scaleZ(z)</code> 需配合 <code>perspective</code> 才有视觉效果。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>rotate3d(x,y,z,angle)</code>
+                                <p>3D 旋转。x/y/z 定义旋转轴向量，angle 为角度。如 <code>rotate3d(1,1,0,45deg)</code>。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>变形顺序从右到左</code>
+                                <p><code>rotateX(90deg) translateZ(100px)</code>：先沿 Z 轴移动，再旋转 X 轴（因为从右到左应用）。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>Z 轴方向</code>
+                                <p>Z+ 向用户方向（靠近屏幕）；Z- 垂直屏幕方向（远离屏幕）。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>3D 旋转木马原理</code>
+                                <p>每个子元素先 <code>rotateY(n*60deg)</code> 再 <code>translateZ(300px)</code>，父元素动态更新 <code>rotateY</code> 角度。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>translateZ(100px)</code> 改为 <code>translateZ(-100px)</code>，观察元素是否"远离"屏幕。</li>
+                            <li>在 <code>.wrap</code> 中添加 <code>rotateY(45deg)</code> 到 <code>:hover</code> 中，观察 Y 轴 3D 旋转效果。</li>
+                            <li>尝试制作一个 3D 立方体：6 个子元素分别旋转并沿 Z 轴移出，组合成一个正方体。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-15 -->
+            <div class="example-card" data-example="ex-15">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-15</span>
+                        <h4>翻牌动画结构</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>综合运用本案例所有知识点，制作一个完整的鼠标悬浮翻牌动画效果。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-15">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;翻牌动画&lt;/title&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .wrap { width: 223px; height: 333px; margin: 2rem auto; position: relative; perspective: 400px; }
+        .wrap img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backface-visibility: hidden; transition: all 1s linear; }
+        .back { transform: rotateY(180deg); }
+        .wrap:hover .front { transform: rotateY(-180deg); }
+        .wrap:hover .back { transform: rotateY(0deg); }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="wrap"&gt;
+        &lt;img class="front" src="https://picsum.photos/seed/card1/223/333" alt="背面"&gt;
+        &lt;img class="back" src="https://picsum.photos/seed/card2/223/333" alt="正面"&gt;
+    &lt;/div&gt;
+    &lt;p style="text-align:center;color:#666;"&gt;悬浮查看翻牌效果（需联网加载示例图片）&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-15"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>翻牌动画实现步骤总结</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>步骤1：容器透视</code>
+                                <p>父元素设置 <code>perspective: 400px</code>，为 3D 旋转提供透视距离。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>步骤2：图片重叠</code>
+                                <p>两张图片 <code>position: absolute</code> 重叠在同一位置。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>步骤3：隐藏背面</code>
+                                <p>两张图片都设置 <code>backface-visibility: hidden</code>，背面朝向屏幕时不可见。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>步骤4：正面初始隐藏</code>
+                                <p>正面图片初始 <code>rotateY(180deg)</code>，背面朝向屏幕，配合 <code>backface-visibility: hidden</code> 不可见。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>步骤5：添加过渡</code>
+                                <p><code>transition: all 1s linear</code> 让翻转过程平滑过渡。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>步骤6/7：hover 触发翻转</code>
+                                <p>悬浮时正面从 0°→-180°（隐藏），背面从 180°→0°（显现）。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>perspective: 400px</code> 改为 <code>800px</code>，观察透视感变化对翻牌效果的影响。</li>
+                            <li>将 <code>transition: all 1s linear</code> 改为 <code>ease-in-out</code>，观察速度曲线变化。</li>
+                            <li>尝试制作"双面卡片"效果：正面显示头像，背面显示个人简介（用两个 <code>div</code> 替代 <code>img</code>）。</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">🔥 挑战练习</div>
+                            <ul style="list-style:none;display:flex;flex-direction:column;gap:0.5rem;">
+                                <li style="font-size:0.8125rem;color:#94a3b8;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.5;"><span style="color:#f59e0b;">→</span> 制作一个 3×3 的卡片网格，每张卡片都有翻牌效果（悬浮时翻转显示背面的文字介绍）。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HBuilderX 技巧 -->
+            <div class="challenge-box">
+                <h5>🛠️ HBuilderX 使用技巧</h5>
+                <div class="challenge-desc">
+                    <p>① 在 HBuilderX 中调试 transform 属性时，可以使用「代码块折叠」功能（<code>Ctrl+Shift+[</code>）折叠不需要关注的 CSS 规则，专注当前变形调试。</p>
+                    <p>② <code>transform</code> 多个函数值之间用<strong>空格</strong>隔开，不要用分号！正确：<code>transform: rotate(45deg) scale(1.2);</code> ❌ 错误：<code>transform: rotate(45deg); scale(1.2);</code></p>
+                    <p>③ 使用 HBuilderX 的「实时预览」功能（运行→实时预览），保存代码后浏览器自动刷新，无需手动 F5。</p>
+                </div>
+            </div>
+
+            <!-- 进阶任务 -->
+            <div class="challenge-box">
+                <h5>🚀 进阶任务（AI 开发实训提示词）</h5>
+                <div class="challenge-desc">
+                    <p>使用 AI 辅助完成以下任务，将提示词填入 AI 对话框：</p>
+                </div>
+                <ul class="challenge-task">
+                    <li>请设计一个完整的 3D 卡片翻转效果，要求：① 卡片正面显示产品图片 ② 卡片背面显示产品详细参数和购买按钮 ③ 鼠标悬浮时 Y 轴翻转 180° ④ 使用 <code>backface-visibility: hidden</code> 隐藏背面 ⑤ 添加 <code>perspective: 800px</code> 提供透视感。</li>
+                    <li>请为上面的翻牌效果添加「点击翻转」交互（而非 hover），使用 JavaScript 切换 CSS 类名控制翻转状态，并要求翻转时有弹性过渡效果（使用 <code>cubic-bezier(0.68, -0.55, 0.265, 1.55)</code> 速度曲线）。</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+    <script>
+        // 折叠功能
+        function toggleExample(header) {
+            const card = header.closest('.example-card');
+            card.classList.toggle('expanded');
+        }
+        // 实时预览功能
+        document.querySelectorAll('.code-editor').forEach(editor => {
+            editor.addEventListener('input', function() {
+                const previewId = this.id.replace('code-', 'preview-');
+                const preview = document.getElementById(previewId);
+                if (preview) {
+                    preview.srcdoc = this.value;
+                }
+            });
+            // 初始化时执行一次
+            editor.dispatchEvent(new Event('input'));
+        });
+        // 默认展开第一个
+        document.querySelector('.example-card')?.classList.add('expanded');
+    </script>
+</body>
+</html>

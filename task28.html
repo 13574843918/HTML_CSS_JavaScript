@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务二十八：导航栏悬浮特效 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '🔧'; }
+        .code-editor { width: 100%; min-height: 280px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-editor:focus { border-color: #f97316; box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15); }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 280px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #f97316; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #f97316; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0.02) 100%); border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #f97316; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #f97316; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.02) 100%); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #3b82f6; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #3b82f6; flex-shrink: 0; }
+        .practice-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #f97316; font-size: 0.8125rem; }
+        .practice-box .challenge { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(59, 130, 246, 0.3); }
+        .practice-box .challenge-title { font-size: 0.8125rem; font-weight: 600; color: #f59e0b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box .challenge-title::before { content: '🔥'; }
+        .challenge-box { margin-top: 1.5rem; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.02) 100%); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 0.75rem; }
+        .challenge-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .challenge-box h5::before { content: '🚀'; }
+        .challenge-box .challenge-desc { font-size: 0.875rem; color: #94a3b8; line-height: 1.7; margin-bottom: 1rem; }
+        .challenge-box .challenge-task { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .challenge-box .challenge-task li { font-size: 0.8125rem; color: #f59e0b; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .challenge-box .challenge-task li::before { content: '⭐'; color: #a855f7; flex-shrink: 0; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+                <li class="nav-item" data-task="task4"><span class="nav-number">04</span><div class="nav-content"><span class="nav-title">音乐盒</span><span class="nav-desc">盒子模型基础</span></div></li>
+                <li class="nav-item" data-task="task5"><span class="nav-number">05</span><div class="nav-content"><span class="nav-title">用户中心</span><span class="nav-desc">内边距与外边距</span></div></li>
+                <li class="nav-item" data-task="task6"><span class="nav-number">06</span><div class="nav-content"><span class="nav-title">咖啡店banner</span><span class="nav-desc">背景属性</span></div></li>
+                <li class="nav-item" data-task="task7"><span class="nav-number">07</span><div class="nav-content"><span class="nav-title">图标导航栏</span><span class="nav-desc">display属性</span></div></li>
+                <li class="nav-item" data-task="task8"><span class="nav-number">08</span><div class="nav-content"><span class="nav-title">创意画框</span><span class="nav-desc">渐变与阴影</span></div></li>
+                <li class="nav-item" data-task="task9"><span class="nav-number">09</span><div class="nav-content"><span class="nav-title">拼图效果</span><span class="nav-desc">圆角与多背景</span></div></li>
+                <li class="nav-item" data-task="task11"><span class="nav-number">11</span><div class="nav-content"><span class="nav-title">精美悬浮框</span><span class="nav-desc">无序与有序列表</span></div></li>
+                <li class="nav-item" data-task="task12"><span class="nav-number">12</span><div class="nav-content"><span class="nav-title">二维码名片</span><span class="nav-desc">定义列表</span></div></li>
+                <li class="nav-item" data-task="task13"><span class="nav-number">13</span><div class="nav-content"><span class="nav-title">电商团购悬浮框</span><span class="nav-desc">list-style属性</span></div></li>
+                <li class="nav-item" data-task="task14"><span class="nav-number">14</span><div class="nav-content"><span class="nav-title">唱吧导航栏</span><span class="nav-desc">超链接与锚点</span></div></li>
+                <li class="nav-item" data-task="task22"><span class="nav-number">22</span><div class="nav-content"><span class="nav-title">世界杯梦幻阵容</span><span class="nav-desc">浮动布局</span></div></li>
+                <li class="nav-item" data-task="task23"><span class="nav-number">23</span><div class="nav-content"><span class="nav-title">商品专栏</span><span class="nav-desc">清除浮动</span></div></li>
+                <li class="nav-item" data-task="task24"><span class="nav-number">24</span><div class="nav-content"><span class="nav-title">移动端电商界面</span><span class="nav-desc">overflow属性</span></div></li>
+                <li class="nav-item" data-task="task25"><span class="nav-number">25</span><div class="nav-content"><span class="nav-title">违停查询</span><span class="nav-desc">定位属性</span></div></li>
+                <li class="nav-item" data-task="task26"><span class="nav-number">26</span><div class="nav-content"><span class="nav-title">网页布局</span><span class="nav-desc">DIV+CSS综合</span></div></li>
+                <li class="nav-item active" data-task="task28"><span class="nav-number">28</span><div class="nav-content"><span class="nav-title">导航栏悬浮特效</span><span class="nav-desc">过渡属性</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">HTML+CSS 网页设计实训平台</div>
+    </aside>
+    <button class="mobile-menu-btn" aria-label="打开菜单">
+        <svg viewBox="0 0 24 24" width="24" height="24"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <header class="task-header">
+            <div class="task-badge">任务 28</div>
+            <h1>导航栏悬浮特效</h1>
+            <p class="task-subtitle">运用 CSS3 过渡属性（transition）制作鼠标悬浮时的平滑动画效果。</p>
+            <div class="task-meta">
+                <span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 50分钟</span>
+                <span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> 3个示例</span>
+            </div>
+        </header>
+
+        <div class="task-content">
+            <div class="info-box">
+                <h4>💡 本节核心目标</h4>
+                <p>CSS3 过渡（transition）是网页动画的基础。它能在 CSS 属性值发生变化时，自动创建平滑的过渡效果，而不需要 JavaScript。在实际开发中，过渡最常配合 <code>:hover</code>、<code>:focus</code> 等伪类使用，制作按钮变色、菜单展开、图片放大等交互效果。本任务将带你掌握 <code>transition</code> 的完整用法。</p>
+            </div>
+
+            <!-- 例 8-5 -->
+            <div class="example-card" data-example="ex-05">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-5</span>
+                        <h4>transition-property 与 transition-duration</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>transition-property</code> 和 <code>transition-duration</code> 两个核心子属性，理解过渡的触发条件。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-05">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;transition 属性&lt;/title&gt;
+    &lt;style&gt;
+        .box {
+            width: 200px;
+            height: 200px;
+            background-color: #6cf;
+            border-radius: 0;
+            /* 指定过渡属性和时间 */
+            transition-property: border-radius;
+            transition-duration: 5s;
+        }
+        .box:hover {
+            border-radius: 50%;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="box"&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-05"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>transition-property</code>
+                                <p>指定哪个 CSS 属性应用过渡效果。<code>all</code> 表示所有可动画属性，<code>none</code> 表示无过渡效果。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>transition-duration</code>
+                                <p>过渡完成所需时间（s 或 ms）。<strong>必须设置</strong>，否则默认值为 0，过渡不可见。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>可过渡的属性</code>
+                                <p>只有可计算中间值的属性才能过渡：<code>width</code>、<code>height</code>、<code>color</code>、<code>opacity</code>、<code>transform</code> 等。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>不可过渡的属性</code>
+                                <p><code>display</code>（none↔block 是瞬间切换）、<code>position</code>、<code>float</code> 等无法计算中间值。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>触发条件</code>
+                                <p>过渡在 CSS 属性值<strong>发生变化</strong>时自动触发，常见触发方式：<code>:hover</code>、<code>:focus</code>、<code>:active</code>、JS 修改 class。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>双向过渡</code>
+                                <p>过渡写在元素本身（而非 <code>:hover</code>）上时，鼠标移入和移出都会触发过渡效果。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>transition-property: border-radius;</code> 改为 <code>transition-property: all;</code>，观察鼠标悬浮时哪些属性会过渡。</li>
+                            <li>将 <code>transition-duration: 5s;</code> 改为 <code>5000ms</code>，观察效果是否相同。</li>
+                            <li>尝试添加 <code>transition-property: width;</code> 和 <code>width: 400px;</code> 到 <code>:hover</code> 中，观察宽度是否会过渡。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-6 -->
+            <div class="example-card" data-example="ex-06">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-6</span>
+                        <h4>transition-timing-function 与 transition-delay</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握过渡速度曲线（<code>transition-timing-function</code>）和延迟（<code>transition-delay</code>）的用法，理解贝塞尔曲线的含义。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-06">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;transition-timing-function&lt;/title&gt;
+    &lt;style&gt;
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: #f60;
+            transition-property: width;
+            transition-duration: 3s;
+            transition-timing-function: ease-in-out;
+            transition-delay: 1s;
+        }
+        .box:hover {
+            width: 400px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="box"&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-06"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>ease（默认）</code>
+                                <p>慢→快→慢。相当于 <code>cubic-bezier(0.25, 0.1, 0.25, 1.0)</code>。最常用。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>linear</code>
+                                <p>匀速，从头到尾速度相同。适合进度条、加载动画。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>ease-in</code>
+                                <p>慢启动，逐渐加速（淡入效果）。适合元素入场动画。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>ease-out</code>
+                                <p>慢结束，逐渐减速（淡出效果）。适合元素出场动画。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>ease-in-out</code>
+                                <p>慢→快→慢，比 ease 更平滑对称。适合通用平滑过渡。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>cubic-bezier(n,n,n,n)</code>
+                                <p>自定义贝塞尔曲线，4个参数值范围 0~1。可用 <a href="https://cubic-bezier.com/" target="_blank">cubic-bezier.com</a> 可视化调节。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>steps(n, start|end)</code>
+                                <p>分步过渡，分 n 步完成。常用于打字机效果、逐帧动画。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>transition-delay</code>
+                                <p>延迟开始的时间（s 或 ms）。默认 0。可用于制作交错动画（staggered animation）效果。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 <code>transition-timing-function</code> 分别改为 <code>linear</code>、<code>ease-in</code>、<code>ease-out</code>，观察速度变化。</li>
+                            <li>将 <code>transition-delay</code> 改为 <code>2s</code>，观察延迟效果。</li>
+                            <li>尝试 <code>transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);</code>，观察弹性效果。</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">🔥 挑战练习</div>
+                            <ul style="list-style:none;display:flex;flex-direction:column;gap:0.5rem;">
+                                <li style="font-size:0.8125rem;color:#94a3b8;display:flex;align-items:flex-start;gap:0.5rem;line-height:1.5;"><span style="color:#f59e0b;">→</span> 制作一个导航菜单，5 个菜单项依次出现（交错动画）：给每个 <code>li:nth-child(n)</code> 设置不同的 <code>transition-delay</code> 值。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 8-7 -->
+            <div class="example-card" data-example="ex-07">
+                <div class="example-header" onclick="toggleExample(this)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">8-7</span>
+                        <h4>transition 简写属性</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>transition</code> 简写属性的语法，理解参数顺序规则，能够用简写替代多个子属性。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-07">&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;transition 简写属性&lt;/title&gt;
+    &lt;style&gt;
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: #09f;
+            /* 简写：属性 时长 速度曲线 延迟 */
+            transition: width 3s ease-in-out 1s;
+        }
+        .box:hover {
+            width: 400px;
+            background-color: #f60;
+        }
+        /* 多个属性分别过渡，用逗号分隔 */
+        .multi {
+            transition: width 2s ease, background-color 1s linear;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="box"&gt;&lt;/div&gt;
+    &lt;p&gt;悬浮观察：宽度过渡 3s，背景色瞬间切换（因为未包含在 transition 中）&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-07"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>简写语法</code>
+                                <p><code>transition: property duration timing-function delay;</code> 四个子属性按顺序书写，<code>duration</code> 必填。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>参数顺序规则</code>
+                                <p>第一个时间值 = <code>duration</code>（必填）；第二个时间值 = <code>delay</code>（可选）。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>多属性过渡</code>
+                                <p>用英文逗号分隔多组过渡值：<code>transition: width 2s, background-color 1s;</code></p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>all 关键字</code>
+                                <p><code>transition: all 0.3s ease;</code> 让所有可动画属性都过渡。方便但性能稍差，生产环境建议指定具体属性。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>常见错误</code>
+                                <p>忘记写 <code>duration</code>（默认 0，动画不可见）；把两个时间值的顺序写反。</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>最佳实践</code>
+                                <p>只过渡需要平滑变化的属性（如 <code>transform</code>、<code>opacity</code>），避免过渡 <code>width</code>/<code>height</code> 等触发布局重排的属性。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将简写改为 <code>transition: all 0.3s ease;</code>，观察宽度和背景色是否都过渡了。</li>
+                            <li>将 <code>transition: width 3s ease-in-out 1s;</code> 中的 <code>1s</code> 去掉，观察延迟是否还生效。</li>
+                            <li>给自己设计一个导航栏，鼠标悬浮时背景色、文字颜色、阴影同时过渡，使用简写语法。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HBuilderX 技巧 -->
+            <div class="challenge-box">
+                <h5>🛠️ HBuilderX 使用技巧</h5>
+                <div class="challenge-desc">
+                    <p>① 在 HBuilderX 中，可以同时预览多个 HTML 文件：右键点击 HTML 文件 →「运行」→「运行到浏览器」。</p>
+                    <p>② 使用 <code>Ctrl + D</code>（Mac：<code>Cmd + D</code>）可以选中下一个相同的选中词，快速批量修改 CSS 属性名。</p>
+                    <p>③ 在 CSS 中使用 <code>transition: all 0.3s ease;</code> 快速调试过渡效果，确定哪些属性需要过渡后再改为具体属性名，提升调试效率。</p>
+                </div>
+            </div>
+
+            <!-- 进阶任务 -->
+            <div class="challenge-box">
+                <h5>🚀 进阶任务（AI 开发实训提示词）</h5>
+                <div class="challenge-desc">
+                    <p>使用 AI 辅助完成以下任务，将提示词填入 AI 对话框：</p>
+                </div>
+                <ul class="challenge-task">
+                    <li>请帮我设计一个水平的导航栏，要求：① 5 个导航项，每个有图标和文字 ② 鼠标悬浮时背景色平滑过渡、文字颜色变化、出现底部边框动画 ③ 使用 <code>transition</code> 实现所有动画效果，过渡时间 0.3s。</li>
+                    <li>请为上面的导航栏添加"当前页面"高亮状态（使用 <code>.active</code> 类），并要求高亮状态的底部边框有 0.5s 的延迟出现效果（使用 <code>transition-delay</code>）。</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+    <script>
+        // 折叠功能
+        function toggleExample(header) {
+            const card = header.closest('.example-card');
+            card.classList.toggle('expanded');
+        }
+        // 实时预览功能
+        document.querySelectorAll('.code-editor').forEach(editor => {
+            editor.addEventListener('input', function() {
+                const previewId = this.id.replace('code-', 'preview-');
+                const preview = document.getElementById(previewId);
+                if (preview) {
+                    preview.srcdoc = this.value;
+                }
+            });
+            editor.dispatchEvent(new Event('input'));
+        });
+        // 默认展开第一个
+        document.querySelector('.example-card')?.classList.add('expanded');
+    </script>
+</body>
+</html>
