@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务三十三：限时秒杀 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '🔧'; }
+        .code-editor { width: 100%; min-height: 280px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-editor:focus { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15); }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 280px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #ef4444; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #ef4444; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.02) 100%); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #ef4444; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #ef4444; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.02) 100%); border: 1px solid rgba(34, 197, 94, 0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #22c55e; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #22c55e; flex-shrink: 0; }
+        .practice-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #f97316; font-size: 0.8125rem; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        .hbuilder-tips-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.02) 100%); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 0.75rem; }
+        .hbuilder-tips-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .hbuilder-tips-box h5::before { content: '💡'; }
+        .hbuilder-tips-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.hbuilder-tips-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.7; }
+.hbuilder-tips-box li::before { content: '→'; color: #3b82f6; flex-shrink: 0; }
+.practice-box .challenge { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(59, 130, 246, 0.3); }
+.practice-box .challenge-title { font-size: 0.8125rem; font-weight: 600; color: #f59e0b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+.practice-box .challenge-title::before { content: '🔥'; }
+.challenge-box { margin-top: 1.5rem; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.02) 100%); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 0.75rem; }
+.challenge-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+.challenge-box h5::before { content: '🚀'; }
+.challenge-box .challenge-desc { font-size: 0.875rem; color: #94a3b8; line-height: 1.7; margin-bottom: 1rem; }
+.challenge-box .challenge-task { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.challenge-box .challenge-task li { font-size: 0.8125rem; color: #f59e0b; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+.challenge-box .challenge-task li::before { content: '⭐'; color: #a855f7; flex-shrink: 0; }
+        .hbuilder-tips-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #a855f7; font-size: 0.8125rem; }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+                <li class="nav-item" data-task="task4"><span class="nav-number">04</span><div class="nav-content"><span class="nav-title">音乐盒</span><span class="nav-desc">盒子模型基础</span></div></li>
+                <li class="nav-item" data-task="task5"><span class="nav-number">05</span><div class="nav-content"><span class="nav-title">用户中心</span><span class="nav-desc">内边距与外边距</span></div></li>
+                <li class="nav-item" data-task="task6"><span class="nav-number">06</span><div class="nav-content"><span class="nav-title">咖啡店banner</span><span class="nav-desc">背景属性</span></div></li>
+                <li class="nav-item" data-task="task7"><span class="nav-number">07</span><div class="nav-content"><span class="nav-title">图标导航栏</span><span class="nav-desc">display属性</span></div></li>
+                <li class="nav-item" data-task="task8"><span class="nav-number">08</span><div class="nav-content"><span class="nav-title">创意画框</span><span class="nav-desc">渐变与阴影</span></div></li>
+                <li class="nav-item" data-task="task9"><span class="nav-number">09</span><div class="nav-content"><span class="nav-title">拼图效果</span><span class="nav-desc">圆角与多背景</span></div></li>
+                <li class="nav-item" data-task="task11"><span class="nav-number">11</span><div class="nav-content"><span class="nav-title">精美悬浮框</span><span class="nav-desc">无序与有序列表</span></div></li>
+                <li class="nav-item" data-task="task12"><span class="nav-number">12</span><div class="nav-content"><span class="nav-title">二维码名片</span><span class="nav-desc">定义列表</span></div></li>
+                <li class="nav-item" data-task="task13"><span class="nav-number">13</span><div class="nav-content"><span class="nav-title">电商团购悬浮框</span><span class="nav-desc">list-style属性</span></div></li>
+                <li class="nav-item" data-task="task14"><span class="nav-number">14</span><div class="nav-content"><span class="nav-title">唱吧导航栏</span><span class="nav-desc">超链接与锚点</span></div></li>
+                <li class="nav-item" data-task="task17"><span class="nav-number">17</span><div class="nav-content"><span class="nav-title">简历表</span><span class="nav-desc">表格标签与合并</span></div></li>
+                <li class="nav-item" data-task="task18"><span class="nav-number">18</span><div class="nav-content"><span class="nav-title">用户登录界面</span><span class="nav-desc">form表单</span></div></li>
+                <li class="nav-item" data-task="task19"><span class="nav-number">19</span><div class="nav-content"><span class="nav-title">趣味选择题</span><span class="nav-desc">input全类型</span></div></li>
+                <li class="nav-item" data-task="task20"><span class="nav-number">20</span><div class="nav-content"><span class="nav-title">空间日志</span><span class="nav-desc">多行文本与下拉菜单</span></div></li>
+                <li class="nav-item" data-task="task21"><span class="nav-number">21</span><div class="nav-content"><span class="nav-title">员工档案</span><span class="nav-desc">表单美化综合</span></div></li>
+                <li class="nav-item" data-task="task22"><span class="nav-number">22</span><div class="nav-content"><span class="nav-title">世界杯梦幻阵容</span><span class="nav-desc">浮动布局</span></div></li>
+                <li class="nav-item" data-task="task23"><span class="nav-number">23</span><div class="nav-content"><span class="nav-title">商品专栏</span><span class="nav-desc">清除浮动</span></div></li>
+                <li class="nav-item" data-task="task24"><span class="nav-number">24</span><div class="nav-content"><span class="nav-title">移动端电商界面</span><span class="nav-desc">overflow属性</span></div></li>
+                <li class="nav-item" data-task="task25"><span class="nav-number">25</span><div class="nav-content"><span class="nav-title">违停查询</span><span class="nav-desc">定位属性</span></div></li>
+                <li class="nav-item" data-task="task26"><span class="nav-number">26</span><div class="nav-content"><span class="nav-title">网页布局</span><span class="nav-desc">DIV+CSS综合</span></div></li>
+                <li class="nav-item" data-task="task27"><span class="nav-number">27</span><div class="nav-content"><span class="nav-title">电影播放界面</span><span class="nav-desc">音视频嵌入</span></div></li>
+                <li class="nav-item" data-task="task28"><span class="nav-number">28</span><div class="nav-content"><span class="nav-title">导航栏悬浮特效</span><span class="nav-desc">过渡属性</span></div></li>
+                <li class="nav-item" data-task="task29"><span class="nav-number">29</span><div class="nav-content"><span class="nav-title">翻牌动画</span><span class="nav-desc">变形属性</span></div></li>
+                <li class="nav-item" data-task="task30"><span class="nav-number">30</span><div class="nav-content"><span class="nav-title">宝石旋转</span><span class="nav-desc">动画属性</span></div></li>
+                <li class="nav-item" data-task="task31"><span class="nav-number">31</span><div class="nav-content"><span class="nav-title">身份验证</span><span class="nav-desc">JavaScript对话框</span></div></li>
+                <li class="nav-item" data-task="task32"><span class="nav-number">32</span><div class="nav-content"><span class="nav-title">商城下拉菜单</span><span class="nav-desc">DOM与事件</span></div></li>
+                <li class="nav-item active" data-task="task33"><span class="nav-number">33</span><div class="nav-content"><span class="nav-title">限时秒杀</span><span class="nav-desc">运算符与条件语句</span></div></li>
+                <li class="nav-item" data-task="task34"><span class="nav-number">34</span><div class="nav-content"><span class="nav-title">Tab栏切换</span><span class="nav-desc">循环与数组</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">HTML+CSS 网页设计实训平台</div>
+    </aside>
+    <button class="mobile-menu-btn" aria-label="打开菜单">
+        <svg viewBox="0 0 24 24" width="24" height="24"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <header class="task-header">
+            <div class="task-badge">任务 33</div>
+            <h1>限时秒杀</h1>
+            <p class="task-subtitle">掌握 JavaScript 的运算符、条件语句、Date 对象和定时器，实现电商限时秒杀倒计时效果，了解数据类型转换和 BOM 对象。</p>
+            <div class="task-meta">
+                <span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 80分钟</span>
+                <span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> 11个示例</span>
+            </div>
+        </header>
+
+        <div class="task-content">
+            <div class="info-box">
+                <h4>💡 本节核心目标</h4>
+                <p>运算符和条件语句是编程逻辑的基础。本任务你将学习算术、比较、逻辑、赋值和条件运算符的使用，掌握 if 和 switch 条件语句，了解 Date 对象和定时器的用法，最终实现电商"限时秒杀"的倒计时效果。</p>
+            </div>
+
+            <!-- HBuilderX 使用技巧 - 任务33专属 -->
+            <div class="hbuilder-tips-section">
+                <div class="hts-header">
+                    <span class="hts-icon">⚡</span>
+                    <span class="hts-title">HBuilderX 使用技巧 · 本节专属</span>
+                    <span class="hts-badge">运算符 &amp; 条件语句</span>
+                </div>
+                <div class="hbuilder-tips-grid">
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔢</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Console 快速计算</span>
+                            <p class="tip-desc">按 <code>F12</code> 打开控制台，直接输入表达式如 <code>5+3</code> 即可验证运算结果</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">⚖️</span>
+                        <div class="tip-body">
+                            <span class="tip-key">ESLint eqeqeq 规则</span>
+                            <p class="tip-desc">安装 ESLint 插件，设置 <code>eqeqeq</code> 规则强制使用 <code>===</code> 严格比较</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔄</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Ctrl+D 复制行</span>
+                            <p class="tip-desc">快速复制当前行，方便测试不同的条件组合和运算符</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🐛</span>
+                        <div class="tip-body">
+                            <span class="tip-key">console.log 调试</span>
+                            <p class="tip-desc">在条件语句分支中添加 <code>console.log()</code> 确认哪个分支被执行</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">⏱️</span>
+                        <div class="tip-body">
+                            <span class="tip-key">clearInterval 停止定时器</span>
+                            <p class="tip-desc">调试定时器时，在控制台输入 <code>clearInterval(sh)</code> 手动停止</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📝</span>
+                        <div class="tip-body">
+                            <span class="tip-key">if 代码片段</span>
+                            <p class="tip-desc">输入 <code>if</code> 后按 Tab 自动生成带花括号的 if 语句模板</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-07 -->
+            <div class="example-card" data-example="ex-07">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-07</span>
+                        <h4>算数运算符</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>使用算术运算符计算含税商品的标价和税额，理解自增/自减运算符的区别。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-07">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;算数运算符&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;pre&gt;
+&lt;script type="text/javascript"&gt;
+	var list,rate=0.05,paid=105,tax;
+	list=paid/(1+rate);
+	tax=paid-list;
+	document.writeln("标价="+list);
+	document.writeln("税钱="+tax);
+&lt;/script&gt;
+&lt;/pre&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-07"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>+ 加法</code>
+                                <p>数字相加或字符串拼接，有字符串时效果为拼接</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>- 减法</code>
+                                <p>数字相减，也会触发隐式类型转换</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>* / %</code>
+                                <p>乘法、除法、取模（余数），% 常用于判断奇偶</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>++ 自增</code>
+                                <p>i++ 后置：先使用后加1；++i 前置：先加1再使用</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>-- 自减</code>
+                                <p>i-- 后置：先使用后减1；--i 前置：先减1再使用</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>document.writeln()</code>
+                                <p>输出内容并换行，需配合 &lt;pre&gt; 标签生效</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改 <code>paid</code> 为不同金额（如 200、500），观察标价和税额变化</li>
+                            <li>尝试用 <code>%</code> 取模运算：<code>alert(17 % 5)</code> 应输出 2</li>
+                            <li>测试自增：<code>var a=5; alert(a++); alert(a);</code> 观察后置自增的区别</li>
+                            <li>测试前置自增：<code>var a=5; alert(++a);</code> 对比后置自增的结果</li>
+                        </ul>
+                    <div class="challenge">
+    <div class="challenge-title">挑战练习</div>
+    <ul>
+        <li>实现商品批量计算：<code>var qty=3, price=168; alert("总价：" + qty*price + " 含税：" + qty*price*1.13)</code></li>
+        <li>用 <code>%</code> 运算符判断 <code>25</code> 是奇数还是偶数，并解释为什么 <code>25 % 2</code> 的结果能用来判断奇偶</li>
+    </ul>
+</div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul><li>在 HBuilderX 中，按 <code>Ctrl+R</code> 运行页面后在浏览器中按 <code>F12</code> 打开控制台，可以用 Console 面板直接输入 JavaScript 表达式（如 <code>5+3</code>、<code>10%3</code>）来快速验证运算结果。</li></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-08 -->
+            <div class="example-card" data-example="ex-08">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-08</span>
+                        <h4>比较运算符</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>演示各种比较运算符，重点区分 <code>==</code>（宽松等于）和 <code>===</code>（严格等于）。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-08">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;比较运算符&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;pre&gt;
+&lt;script type="text/javascript"&gt;
+	var a=2,b=3,c="2",result;
+	document.writeln("a=2,b=3,c='2'");
+	document.write("a&amp;lt;b= ");result=a&amp;lt;b;document.writeln(result);
+	document.write("a&amp;lt;=b= ");result=a&amp;lt;=b;document.writeln(result);
+	document.write("a&amp;gt;b= ");result=a&amp;gt;b;document.writeln(result);
+	document.write("a&amp;gt;=b= ");result=a&amp;gt;=b;document.writeln(result);
+	document.write("a==c= ");result=a==c;document.writeln(result);
+	document.write("a===c= ");result=a===c;document.writeln(result);
+    document.write("a!=c= ");result=a!=c;document.writeln(result);
+    document.write("a!==c= ");result=a!==c;document.writeln(result);
+&lt;/script&gt;
+&lt;/pre&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-08"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>== 宽松等于</code>
+                                <p>只比较值，会自动进行类型转换，2 == "2" 为 true</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>=== 严格等于</code>
+                                <p>同时比较值和类型，2 === "2" 为 false</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>!= 宽松不等</code>
+                                <p>只比较值，2 != "2" 为 false</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>!== 严格不等</code>
+                                <p>同时比较值和类型，2 !== "2" 为 true</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>比较大小运算符</code>
+                                <p>&lt;、&lt;=、&gt;、&gt;=，用于数值大小比较</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>隐式类型转换</code>
+                                <p>== 会触发，如 "" == false 为 true，推荐使用 ===</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改 c 的值为数字 2（去掉引号），观察 <code>a==c</code> 和 <code>a===c</code> 的结果变化</li>
+                            <li>测试特殊比较：<code>alert(null == undefined)</code> 和 <code>alert(null === undefined)</code></li>
+                            <li>尝试 <code>alert("" == false)</code>，理解隐式类型转换的陷阱</li>
+                            <li>将所有 <code>==</code> 替换为 <code>===</code>，养成严格比较的习惯</li>
+                        </ul>
+                    <div class="challenge">
+    <div class="challenge-title">挑战练习</div>
+    <ul>
+        <li>用 <code>prompt()</code> 获取用户输入，使用 <code>===</code> 判断是否等于 <code>"admin"</code>，观察类型转换问题</li>
+        <li>解释为什么 <code>0 == ""</code> 为 true，但 <code>0 === ""</code> 为 false，理解隐式类型转换机制</li>
+    </ul>
+</div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul><li>JavaScript 中的 <code>==</code> 会进行隐式类型转换，容易产生难以发现的 Bug。建议在 HBuilderX 中安装 ESLint 插件，设置 <code>eqeqeq</code> 规则强制使用 <code>===</code>，从工具层面避免这类问题。</li></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-09 -->
+            <div class="example-card" data-example="ex-09">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-09</span>
+                        <h4>逻辑运算符</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>&amp;&amp;</code>（逻辑与）、<code>||</code>（逻辑或）、<code>!</code>（逻辑非）的用法和短路求值特性。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-09">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;逻辑运算符&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;pre&gt;
+&lt;script type="text/javascript"&gt;
+	var a=2,b=3,result;
+	document.writeln("a=2,b=3");
+	document.write("a&amp;lt;b&amp;amp;&amp;a&amp;lt;=b= ");result=a&amp;lt;b&amp;amp;&amp;a&amp;lt;=b;document.writeln(result);
+	document.write("a&amp;lt;b&amp;amp;&amp;a&amp;gt;b= ");result=a&amp;lt;b&amp;amp;&amp;a&amp;gt;b;document.writeln(result);
+	document.write("a&amp;lt;b||a&amp;gt;b= ");result=a&amp;lt;b||a&amp;gt;b;document.writeln(result);
+	document.write("a&amp;gt;b||a&amp;gt;=b= ");result=a&amp;gt;b||a&amp;gt;=b;document.writeln(result);
+	document.write("!(a&amp;lt;b)= ");result=!(a&amp;lt;b);document.writeln(result);
+	document.write("!(a&amp;gt;b)= ");result=!(a&amp;gt;b);document.writeln(result);
+&lt;/script&gt;
+&lt;/pre&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-09"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>&amp;&amp; 逻辑与</code>
+                                <p>两者都为 true 才为 true；有 false 则结果为 false</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>|| 逻辑或</code>
+                                <p>至少一个为 true 就为 true；全 false 才为 false</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>! 逻辑非</code>
+                                <p>取反，!true 为 false，!false 为 true</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>短路求值</code>
+                                <p>&amp;&amp; 遇 false 短路；|| 遇 true 短路，不再判断后续</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>真值表</code>
+                                <p>掌握 &amp;&amp; 和 || 的所有组合结果，是逻辑判断基础</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>短路实际应用</code>
+                                <p>var name = input || "匿名用户"；input 为空则使用默认值</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改 a 和 b 的值，测试不同的逻辑组合</li>
+                            <li>测试短路求值：<code>alert(true || alert("不会执行"))</code> — 第二个 alert 不会执行</li>
+                            <li>用逻辑或设置默认值：<code>var name = ""; alert(name || "匿名用户")</code></li>
+                            <li>用逻辑与安全访问：<code>var obj = null; alert(obj &amp;&amp; obj.property)</code> — 不会报错</li>
+                        </ul>
+                    <div class="challenge">
+    <div class="challenge-title">挑战练习</div>
+    <ul>
+        <li>实现登录验证：用户名和密码均不为空才允许登录，用 <code>&amp;&amp;</code> 判断 <code>username && password</code></li>
+        <li>用 <code>||</code> 实现默认值：<code>var name=prompt("请输入姓名"); alert(name || "游客")</code></li>
+    </ul>
+</div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul><li>逻辑运算符的短路特性在开发中非常实用。<code>||</code> 常用于设置默认值，<code>&amp;&amp;</code> 常用于条件执行。在 HBuilderX 中按 <code>Ctrl+D</code> 可以快速复制当前行，方便测试不同条件组合。</li></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-10 -->
+            <div class="example-card" data-example="ex-10">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-10</span>
+                        <h4>赋值运算符</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>演示复合赋值运算符 <code>+=</code>、<code>-=</code>、<code>*=</code>、<code>/=</code>、<code>%=</code> 的用法。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-10">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;赋值运算符&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;pre&gt;
+&lt;script type="text/javascript"&gt;
+	var a=3,b=2;
+	document.writeln("a=3,b=2");
+	document.write("a+=b= ");a+=b;document.writeln(a);
+	document.write("a-=b= ");a-=b;document.writeln(a);
+	document.write("a*=b= ");a*=b;document.writeln(a);
+	document.write("a/=b= ");a/=b;document.writeln(a);
+	document.write("a%=b= ");a%=b;document.writeln(a);
+&lt;/script&gt;
+&lt;/pre&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-10"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>= 赋值</code>
+                                <p>将右侧值赋给左侧变量，是最基本的赋值运算符</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>+= 加后赋值</code>
+                                <p>a+=b 等价于 a=a+b，先加后赋值是简写形式</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>-= *= /= %=</code>
+                                <p>减/乘/除/取模后赋值，都是"运算+赋值"的简写</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>复合赋值本质</code>
+                                <p>复合赋值运算符完全等价于"运算+赋值"的展开形式</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>字符串 +=</code>
+                                <p>对字符串使用 += 会进行拼接，如 s+="OK"</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>使用建议</code>
+                                <p>复合赋值简洁但不宜嵌套过深，初学者建议先展开理解</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改初始值 a=10, b=3，重新运行观察每步结果</li>
+                            <li>理解等价关系：将 <code>a+=b</code> 手动展开为 <code>a=a+b</code>，验证结果一致</li>
+                            <li>测试字符串拼接：<code>var s="Hello"; s+=" World"; alert(s);</code></li>
+                            <li>使用 <code>a%=b</code> 判断奇偶：<code>var n=7; alert(n%2===0?"偶数":"奇数")</code></li>
+                        </ul>
+                    <div class="challenge">
+    <div class="challenge-title">挑战练习</div>
+    <ul>
+        <li>用 <code>+=</code> 累加计算 1 到 100 的和：<code>var sum=0; for(var i=1;i&lt;=100;i++){ sum+=i; } alert(sum)</code></li>
+        <li>用 <code>*=</code> 计算 2 的 10 次方：<code>var p=1; for(var i=0;i&lt;10;i++){ p*=2; } alert(p)</code></li>
+    </ul>
+</div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul><li>复合赋值运算符是"运算+赋值"的简写。在 HBuilderX 中，输入 <code>a+=</code> 后会有智能提示。建议初学者先将复合赋值展开理解，熟练后再使用简写形式。</li></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-11 -->
+            <div class="example-card" data-example="ex-11">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-11</span>
+                        <h4>条件运算符</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握三元条件运算符 <code>? :</code> 的语法，理解其与 <code>if...else</code> 的对应关系。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-11">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;条件运算符&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;pre&gt;
+&lt;script type="text/javascript"&gt;  
+   var a=5;  
+   var b=5; 
+   alert((a==b)?true:false);   
+&lt;/script&gt; 
+&lt;/pre&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-11"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>? : 语法</code>
+                                <p>条件 ? 表达式1 : 表达式2，条件为 true 返回表达式1</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>与 if...else 对比</code>
+                                <p>三目运算符适合简单条件赋值，if...else 适合复杂逻辑</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>简洁性</code>
+                                <p>三目运算符可以用一行代码替代简单的 if...else 结构</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>嵌套限制</code>
+                                <p>不要嵌套使用三目运算符，会严重降低代码可读性</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改 a 和 b 为不同值，观察三元运算符返回 false 的情况</li>
+                            <li>实现成绩判断：<code>var score=85; alert(score&gt;=60?"及格":"不及格")</code></li>
+                            <li>用 if...else 重写相同逻辑，体会两种写法的区别</li>
+                        </ul>
+                    <div class="challenge">
+    <div class="challenge-title">挑战练习</div>
+    <ul>
+        <li>用三元运算符判断闰年：<code>var year=2024; alert(year%4===0 && year%100!==0 || year%400===0 ? "闰年" : "平年")</code></li>
+        <li>根据分数输出等级：<code>var score=85; alert(score>=90?"A":score>=80?"B":score>=70?"C":score>=60?"D":"F")</code></li>
+    </ul>
+</div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul><li>三元运算符适合简单的条件赋值，但不要嵌套使用（如 <code>a?b?c:d:e</code>），会严重降低可读性。复杂逻辑请用 if...else。</li></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-12 -->
+            <div class="example-card" data-example="ex-12">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-12</span>
+                        <h4>运算符优先级</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>理解运算符优先级规则——乘法优先于加法，括号可以改变优先级。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-12">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;运算符优先级&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type="text/javascript"&gt;
+	var a=1+2*3;
+	var b=(1+2)*3;
+	alert("a="+a+"\nb="+b);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-12"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>括号优先级最高</code>
+                                <p>(1+2)*3 先算括号内，结果为 9；1+2*3 先算乘法，结果为 7</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>算术 &gt; 比较 &gt; 逻辑</code>
+                                <p>优先级：算术运算符 &gt; 比较运算符 &gt; 逻辑运算符 &gt; 赋值运算符</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>结合性</code>
+                                <p>多数运算符从左向右结合；=、?= 等从右向左结合</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>记忆口诀</code>
+                                <p>括号最高，逗号最低；算术 &gt; 比较 &gt; 逻辑 &gt; 赋值。有疑问时加括号</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>测试 <code>alert(true || false &amp;&amp; false)</code> — &amp;&amp; 优先于 ||</li>
+                            <li>添加括号改变优先级：<code>alert((true || false) &amp;&amp; false)</code></li>
+                            <li>计算 <code>var r = 2 + 3 * 4 &gt; 10 &amp;&amp; true; alert(r)</code>，逐步分析优先级</li>
+                        </ul>
+                    <div class="challenge">
+    <div class="challenge-title">挑战练习</div>
+    <ul>
+        <li>分析 <code>var a=5; var b=10; alert(a &lt; b &amp;&amp; a + 5 &gt;= b)</code>，逐步写出计算过程</li>
+        <li>不依赖括号完成表达式 <code>1+2*3==7 || 4*2==6 && 5-3==2</code>，验证与预期是否一致</li>
+    </ul>
+</div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul><li>运算符优先级不需要死记硬背。在 HBuilderX 中写代码时，如果不确定优先级，<strong>加括号</strong>是最安全的做法——既清晰又不会出错。</li></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-13 -->
+            <div class="example-card" data-example="ex-13">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-13</span>
+                        <h4>单向判断语句</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>演示 <code>if</code> 语句的基本用法——条件成立执行，不成立则跳过整个 if 块。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-13">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;单向判断语句&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type="text/javascript"&gt;
+	var num1=100;
+	var num2=200;
+	if(num1&gt;num2)
+	{
+	alert('成立');
+	}
+	alert('对不起，条件不成立');
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-13"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>if 语法</code>
+                                <p>if(条件){ 语句 }，条件为 true 时执行花括号内的语句</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>条件表达式</code>
+                                <p>结果为 true 或 false，可以是比较运算、逻辑运算或布尔变量</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>花括号使用</code>
+                                <p>只有一条语句时花括号可省略，但强烈建议始终加上</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>执行流程</code>
+                                <p>条件 true → 执行 if 块 → 继续；条件 false → 直接跳过 if 块</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>将 num1 改为 300，使条件成立，观察是否弹出"成立"</li>
+                            <li>在 if 后添加 else 分支：<code>else { alert('不成立'); }</code></li>
+                            <li>去掉 if 的花括号，测试单条语句是否可以省略（不推荐）</li>
+                        </ul>
+                    <div class="challenge">
+    <div class="challenge-title">挑战练习</div>
+    <ul>
+        <li>用 <code>prompt()</code> 获取年龄并用 <code>if</code> 判断是否成年（>=18），分别弹出不同提示</li>
+        <li>实现密码验证：<code>if(prompt("密码")==="123"){ alert("登录成功"); }</code></li>
+    </ul>
+</div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul><li>即使 if 后面只有一条语句，也<strong>强烈建议</strong>加上花括号 <code>{}</code>。在 HBuilderX 中输入 <code>if</code> 后按 Tab 会自动生成带花括号的 if 语句模板，既规范又高效。</li></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-14 -->
+            <div class="example-card" data-example="ex-14">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-14</span>
+                        <h4>双向判断语句</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>演示 <code>if...else</code> 语句——条件成立执行 if 块，不成立则执行 else 块。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-14">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;双向判断语句&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type="text/javascript"&gt;
+ var num1=100;
+ var num2=200;
+ if(num1&gt;num2){
+	alert('成立');
+ }
+ else{
+	alert('对不起，条件不成立');
+ }
+ alert('演示完成');
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-14"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>if...else 语法</code>
+                                <p>if(条件){ 语句1 } else{ 语句2 }，二选一执行</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>else 分支</code>
+                                <p>当 if 条件为 false 时，执行 else 块内的语句</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>执行流程</code>
+                                <p>true → 执行 if 块；false → 执行 else 块；之后都执行后续代码</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>花括号规范</code>
+                                <p>始终加上花括号，避免因缩进误导而产生的逻辑错误</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改 num1=300，观察 if 和 else 哪个分支被执行</li>
+                            <li>添加 else if 分支：<code>else if(num1==num2){ alert('相等'); }</code></li>
+                            <li>用三元运算符重写：<code>alert(num1&gt;num2 ? '成立' : '对不起，条件不成立')</code></li>
+                        </ul>
+                    <div class="challenge">
+    <div class="challenge-title">挑战练习</div>
+    <ul>
+        <li>用 <code>prompt()</code> 获取成绩（0-100），用 <code>if...else</code> 实现及格/不及格判断并给出不同提示</li>
+        <li>实现商品打折计算：<code>var price=100; if(price&gt;=200){ alert(price*0.8); }else{ alert(price); }</code></li>
+    </ul>
+</div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul><li>在 HBuilderX 中，选中代码块后按 <code>Ctrl+Shift+F</code> 可以格式化代码，自动对齐 if...else 的缩进，使逻辑结构更清晰。</li></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-15 -->
+            <div class="example-card" data-example="ex-15">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-15</span>
+                        <h4>多向判断语句</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>演示 <code>if...else if...else if</code> 语句——多个条件依次判断，匹配则执行对应语句。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-15">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;多向判断语句&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type="text/javascript"&gt;
+	var car = '房车';
+	if(car == '跑车')
+	{ 
+		alert('奖品:跑车');
+	}
+	else if(car == '马车')
+	{              
+		alert('奖品：马车');
+	}
+	else if(car == '房车')
+	{              
+		alert('奖品：房车');
+	}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-15"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>if...else if 语法</code>
+                                <p>依次判断各条件，匹配成功则执行对应块并跳出整个结构</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>执行流程</code>
+                                <p>判断条件1 → true 执行语句1 → 结束；false → 判断条件2 → ...</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>条件匹配后跳出</code>
+                                <p>一旦某个条件匹配成功，执行对应语句后立即跳出，不再判断后续条件</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>与 switch 对比</code>
+                                <p>多向判断适合范围判断；switch 适合变量等于固定值的场景</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改 car 的值为"跑车"或"马车"，观察不同分支的执行</li>
+                            <li>在最后添加 else 分支：<code>else{ alert('无此奖品'); }</code></li>
+                            <li>用 switch 语句重写相同逻辑，体会两种写法的区别</li>
+                        </ul>
+                    <div class="challenge">
+    <div class="challenge-title">挑战练习</div>
+    <ul>
+        <li>添加更多车型选项（轿车、SUV、卡车），用 <code>if...else if</code> 实现完整的奖品系统</li>
+        <li>实现成绩等级系统：A(90-100)、B(80-89)、C(70-79)、D(60-69)、F(&lt;60)，用 <code>score=prompt()</code> 获取分数</li>
+    </ul>
+</div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul><li>当条件是判断变量等于某个固定值时，switch 比 if...else if 更清晰。在 HBuilderX 中输入 <code>switch</code> 后按 Tab 可快速生成 switch 语句模板。</li></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-16 -->
+            <div class="example-card" data-example="ex-16">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-16</span>
+                        <h4>switch条件语句</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>演示 <code>switch</code> 多分支语句——根据变量值匹配不同的 case，注意 <code>break</code> 防止穿透。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-16">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;switch条件语句&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type="text/javascript"&gt;
+ var name="王丽";
+ switch (name) {                                  
+ 	case "小明":
+ 		document.write("第一名：小明:657分");
+ 		break;
+ 	case "小丽":
+ 		document.write("第二名：小丽:621分");
+ 		break;
+ 	case "小乔":
+ 		document.write("第三名：小乔:590分");
+ 		break;	
+ 	default:
+ 		alert("只限前三名分数查询");
+ 		break;	
+ }
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-16"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>switch 语法</code>
+                                <p>switch(表达式){ case 值: 语句; break; default: 语句; }</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>case 匹配</code>
+                                <p>使用 === 严格比较，类型和值都必须相等才匹配</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>break 防止穿透</code>
+                                <p>忘记写 break 会导致"穿透"——继续执行后续 case，即使条件不匹配</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>default 默认分支</code>
+                                <p>所有 case 都不匹配时执行，相当于 if...else if 中的 else</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改 name 为"小明"，观察 case 匹配效果</li>
+                            <li>删除某个 case 的 break，观察"穿透"现象——后续 case 也会被执行</li>
+                            <li>用 switch 实现星期判断：<code>var day=new Date().getDay(); switch(day){ case 0: alert("周日"); break; ... }</code></li>
+                        </ul>
+                    <div class="challenge">
+    <div class="challenge-title">挑战练习</div>
+    <ul>
+        <li>添加更多名次（4-10名），给每个名次设置不同的奖品，并测试缺少 <code>break</code> 时的穿透效果</li>
+        <li>用 switch 实现简易计算器：根据运算符变量（+、-、*、/）对两个数执行对应运算并输出结果</li>
+    </ul>
+</div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul><li>switch 语句最常见的 Bug 就是忘记写 break 导致穿透。在 HBuilderX 中，建议每写一个 case 就立即写好 break，再填充 case 体，避免遗漏。</li></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-17 -->
+            <div class="example-card" data-example="ex-17">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-17</span>
+                        <h4>限时秒杀（综合案例）</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>综合运用 <code>Date</code> 对象、<code>setInterval</code> 定时器、条件语句等，实现电商"限时秒杀"倒计时效果。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-17">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;限时秒杀&lt;/title&gt;
+&lt;style type="text/css"&gt;
+body{font-size:20px; color:#fff; font-family: microsoft yahei,arial; background:#c00; padding:20px;}
+.img-box{
+position:relative; 
+width:702px; 
+height:378px;
+margin:0 auto;
+background:#333;
+border-radius:8px;
+}
+.img-box span{
+position:absolute;
+text-align:center; 
+line-height:26px; 
+margin:4px 0 0;
+font-size:24px;
+color:#ff0;
+font-weight:bold;
+}
+.img-box #hour{left:50.6%;top:68.35%}
+.img-box #munite{left:55.2%;top:68.35%;}
+.img-box #second{left:59.6%; top:68.35%;}
+#bot-box{
+position:absolute; 
+z-index:1; 
+top:250px; 
+display:none; 
+width:702px; 
+height:51px; 
+line-height:40px;
+text-align:center; 
+color:#666; 
+font-size:28px;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body onload="fresh()"&gt;
+&lt;div class="img-box"&gt;
+	&lt;span id="hour"&gt;&lt;/span&gt;
+     &lt;span id="munite"&gt;&lt;/span&gt;
+	&lt;span id="second"&gt;&lt;/span&gt;
+	&lt;div id="bot-box"&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+function fresh()
+{
+	var endtime=new Date("2026/12/31,23:59:59");
+	var nowtime = new Date();
+	var leftsecond=parseInt((endtime.getTime()-nowtime.getTime())/1000);
+	h=parseInt(leftsecond/3600);
+	m=parseInt((leftsecond/60)%60);
+	s=parseInt(leftsecond%60);
+	if(h&lt;10) h= "0"+h;
+	if(m&lt;10 &amp;&amp; m&gt;=0) m= "0"+m; else if(m&lt;0) m="00";
+	if(s&lt;10 &amp;&amp; s&gt;=0) s= "0"+s; else if(s&lt;0) s="00";   
+	document.getElementById("hour").innerHTML=h;
+	document.getElementById("munite").innerHTML=m;
+	document.getElementById("second").innerHTML=s;
+	if(leftsecond&lt;=0){
+		document.getElementById("bot-box").style.display="block";
+		document.getElementById("bot-box").style.background="#ff6600";
+		document.getElementById("bot-box").innerHTML="秒杀已结束";
+		clearInterval(sh);
+	}	
+}
+var sh=setInterval(fresh,1000);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-17"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>Date 对象</code>
+                                <p>new Date() 获取当前时间；getTime() 获取时间戳（毫秒）</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>setInterval()</code>
+                                <p>循环定时器，每 N 毫秒执行一次，返回定时器 ID</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>clearInterval()</code>
+                                <p>清除定时器，需传入 setInterval 返回的 ID</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>innerHTML</code>
+                                <p>设置或读取元素的 HTML 内容，会解析 HTML 标签</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>parseInt()</code>
+                                <p>将字符串或数字转为整数，用于秒数转小时/分钟</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>补零技巧</code>
+                                <p>if(h&lt;10) h="0"+h，使单位数显示为 01、02...09 格式</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改 endtime 为一个即将到来的时间（如当前时间1小时后），观察实时倒计时</li>
+                            <li>将倒计时精度改为毫秒：使用 <code>setInterval(fresh, 100)</code> 每 100ms 更新一次</li>
+                            <li>添加"天"的显示：在 h 计算前添加 <code>d=parseInt(leftsecond/86400);</code> 并显示</li>
+                            <li>尝试将 <code>&lt;body onload="fresh()"&gt;</code> 改为 JS 方式：<code>window.onload = fresh;</code></li>
+                        </ul>
+                    <div class="challenge">
+    <div class="challenge-title">挑战练习</div>
+    <ul>
+        <li>添加"天"的倒计时显示：在 h 计算前添加 <code>d=parseInt(leftsecond/86400)</code>，修改页面显示 <code>XX天 XX:XX:XX</code> 格式</li>
+        <li>实现自定义目标时间的倒计时：用 <code>prompt()</code> 获取目标时间并在页面上动态显示倒计时</li>
+    </ul>
+</div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul><li>调试定时器相关代码时，可以在 HBuilderX 的控制台中输入 <code>clearInterval(sh)</code> 手动停止定时器。使用 <code>console.log()</code> 在 fresh() 函数中打印变量值，可以实时观察倒计时计算过程。</li></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 拓展练习 -->
+            <div class="challenge-box">
+                <h5>拓展练习 · 智能倒计时器</h5>
+                <p class="challenge-desc">综合运用本节学习的运算符、条件语句、Date 对象和 setInterval 定时器，制作一个功能更丰富的智能倒计时器。支持自定义目标时间、显示天时分秒、倒计时结束自动提示。</p>
+                <div class="code-split-container">
+                    <div class="code-editor-panel">
+                        <label>修改代码，预览即时更新</label>
+                        <textarea class="code-editor" id="code-challenge-33">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;智能倒计时器&lt;/title&gt;
+&lt;style type="text/css"&gt;
+/* 请在这里添加样式 */
+/* 1. 倒计时容器样式 */
+/* 2. 时间数字的样式 */
+/* 3. 结束提示的样式 */
+body{font-family:microsoft yahei,arial;background:#1a1a2e;color:#fff;text-align:center;padding:50px;}
+.countdown-box{background:#16213e;border-radius:15px;padding:30px;display:inline-block;min-width:400px;}
+.countdown-box h2{margin-bottom:20px;color:#e94560;}
+.time-display{font-size:48px;font-weight:bold;letter-spacing:5px;color:#0f3460;background:#e94560;padding:15px 30px;border-radius:10px;}
+.end-msg{display:none;margin-top:20px;padding:15px;background:#e94560;border-radius:10px;font-size:24px;}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="countdown-box"&gt;
+    &lt;h2&gt;⏰ 新年倒计时&lt;/h2&gt;
+    &lt;div class="time-display" id="timer"&gt;加载中...&lt;/div&gt;
+    &lt;div class="end-msg" id="endMsg"&gt;🎉 新年快乐！&lt;/div&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+/* 请在这里添加JavaScript代码 */
+/* 1. 设置目标时间 new Date("2027/01/01 00:00:00") */
+/* 2. 创建倒计时函数 */
+/* 3. 计算剩余天、时、分、秒 */
+/* 4. 用 if 语句补零（小于10时前面加0） */
+/* 5. 用 innerHTML 更新显示 */
+/* 6. 判断是否倒计时结束，显示结束提示 */
+/* 7. 用 setInterval 每秒执行一次 */
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                    </div>
+                    <div class="preview-panel">
+                        <label>实时预览效果</label>
+                        <iframe class="preview-frame" id="preview-challenge-33"></iframe>
+                    </div>
+                </div>
+                <ul class="challenge-task">
+                    <li>任务一：设置目标时间为 2027年1月1日，实现基本倒计时显示（时:分:秒）</li>
+                    <li>任务二：添加"天"的显示，格式为 <code>XX天 XX:XX:XX</code></li>
+                    <li>任务三：倒计时结束后显示"🎉 新年快乐！"提示，停止定时器</li>
+                    <li>任务四（挑战）：添加 <code>prompt()</code> 让用户自定义倒计时目标，实现通用倒计时器</li>
+                </ul>
+            </div>
+
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务三十四：Tab栏切换 - HTML+CSS网页设计实训</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .code-split-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .code-editor-panel { display: flex; flex-direction: column; }
+        .code-editor-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .code-editor-panel label::before { content: '🔧'; }
+        .code-editor { width: 100%; min-height: 280px; padding: 1rem; background: #0d1117; border: 1px solid #30363d; border-radius: 0.75rem; color: #e6edf3; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.6; resize: vertical; outline: none; }
+        .code-editor:focus { border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15); }
+        .preview-panel label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; margin-bottom: 0.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+        .preview-panel label::before { content: '👁️'; }
+        .preview-frame { width: 100%; height: 280px; background: #ffffff; border: 1px solid #30363d; border-radius: 0.75rem; }
+        .example-desc { margin: 1rem 0; padding: 1rem; background: #1a2332; border-radius: 0.75rem; border-left: 3px solid #22c55e; }
+        .example-desc p { color: #94a3b8; line-height: 1.7; }
+        .example-desc strong { color: #22c55e; }
+        .knowledge-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.02) 100%); border: 1px solid rgba(34, 197, 94, 0.2); border-radius: 0.75rem; }
+        .knowledge-box h5 { font-size: 0.875rem; font-weight: 600; color: #22c55e; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .knowledge-box h5::before { content: '💡'; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
+        .knowledge-item { padding: 0.75rem; background: #1a2332; border-radius: 0.5rem; border: 1px solid #2d3748; }
+        .knowledge-item code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #22c55e; margin-bottom: 0.25rem; background: #0d1117; padding: 0.125rem 0.5rem; border-radius: 0.25rem; }
+        .knowledge-item p { font-size: 0.8125rem; color: #94a3b8; line-height: 1.4; }
+        .practice-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.02) 100%); border: 1px solid rgba(34, 197, 94, 0.2); border-radius: 0.75rem; }
+        .practice-box h5 { font-size: 0.875rem; font-weight: 600; color: #22c55e; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box h5::before { content: '✏️'; }
+        .practice-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .practice-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .practice-box li::before { content: '→'; color: #22c55e; flex-shrink: 0; }
+        .practice-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #f97316; font-size: 0.8125rem; }
+        .example-card { margin-bottom: 1rem; }
+        .example-header { cursor: pointer; user-select: none; }
+        .example-body { display: none; }
+        .example-card.expanded .example-body { display: block; }
+        .example-card.expanded .example-toggle svg { transform: rotate(180deg); }
+        .hbuilder-tips-box { margin: 1.5rem 0; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.02) 100%); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 0.75rem; }
+        .hbuilder-tips-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .hbuilder-tips-box h5::before { content: '💻'; }
+        .hbuilder-tips-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .hbuilder-tips-box li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.7; }
+        .hbuilder-tips-box li::before { content: '→'; color: #3b82f6; flex-shrink: 0; }
+        .hbuilder-tips-box code { font-family: 'JetBrains Mono', monospace; background: #0d1117; padding: 0.125rem 0.375rem; border-radius: 0.25rem; color: #a855f7; font-size: 0.8125rem; }
+        .practice-box .challenge { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(59, 130, 246, 0.3); }
+        .practice-box .challenge-title { font-size: 0.8125rem; font-weight: 600; color: #f59e0b; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .practice-box .challenge-title::before { content: '🔥'; }
+        .challenge-box { margin-top: 1.5rem; padding: 1.25rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0.02) 100%); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 0.75rem; }
+        .challenge-box h5 { font-size: 0.875rem; font-weight: 600; color: #a855f7; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .challenge-box h5::before { content: '🚀'; }
+        .challenge-box .challenge-desc { font-size: 0.875rem; color: #94a3b8; line-height: 1.7; margin-bottom: 1rem; }
+        .challenge-box .challenge-task { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .challenge-box .challenge-task li { font-size: 0.8125rem; color: #f59e0b; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.5; }
+        .challenge-box .challenge-task li::before { content: '⭐'; color: #a855f7; flex-shrink: 0; }
+        @media (max-width: 768px) { .code-split-container { grid-template-columns: 1fr; } .code-editor, .preview-frame { min-height: 200px; height: 200px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="bg-gradient"></div>
+    <aside class="sidebar">
+        <div class="logo"><a href="index.html" class="logo-link"><div class="logo-icon"><span class="logo-bracket">&lt;</span><span class="logo-text">/&gt;</span></div><h1>HTML+CSS 实训</h1></a></div>
+        <nav class="nav-section">
+            <div class="nav-label">实训任务</div>
+            <ul class="nav-list">
+                <li class="nav-item" data-task="task1"><span class="nav-number">01</span><div class="nav-content"><span class="nav-title">文字Logo</span><span class="nav-desc">CSS基础与选择器</span></div></li>
+                <li class="nav-item" data-task="task2"><span class="nav-number">02</span><div class="nav-content"><span class="nav-title">美食专题栏目</span><span class="nav-desc">字体与文本样式</span></div></li>
+                <li class="nav-item" data-task="task3"><span class="nav-number">03</span><div class="nav-content"><span class="nav-title">搜索页面</span><span class="nav-desc">选择器与层叠性</span></div></li>
+                <li class="nav-item" data-task="task4"><span class="nav-number">04</span><div class="nav-content"><span class="nav-title">音乐盒</span><span class="nav-desc">盒子模型基础</span></div></li>
+                <li class="nav-item" data-task="task5"><span class="nav-number">05</span><div class="nav-content"><span class="nav-title">用户中心</span><span class="nav-desc">内边距与外边距</span></div></li>
+                <li class="nav-item" data-task="task6"><span class="nav-number">06</span><div class="nav-content"><span class="nav-title">咖啡店banner</span><span class="nav-desc">背景属性</span></div></li>
+                <li class="nav-item" data-task="task7"><span class="nav-number">07</span><div class="nav-content"><span class="nav-title">图标导航栏</span><span class="nav-desc">display属性</span></div></li>
+                <li class="nav-item" data-task="task8"><span class="nav-number">08</span><div class="nav-content"><span class="nav-title">创意画框</span><span class="nav-desc">渐变与阴影</span></div></li>
+                <li class="nav-item" data-task="task9"><span class="nav-number">09</span><div class="nav-content"><span class="nav-title">拼图效果</span><span class="nav-desc">圆角与多背景</span></div></li>
+                <li class="nav-item" data-task="task11"><span class="nav-number">11</span><div class="nav-content"><span class="nav-title">精美悬浮框</span><span class="nav-desc">无序与有序列表</span></div></li>
+                <li class="nav-item" data-task="task12"><span class="nav-number">12</span><div class="nav-content"><span class="nav-title">二维码名片</span><span class="nav-desc">定义列表</span></div></li>
+                <li class="nav-item" data-task="task13"><span class="nav-number">13</span><div class="nav-content"><span class="nav-title">电商团购悬浮框</span><span class="nav-desc">list-style属性</span></div></li>
+                <li class="nav-item" data-task="task14"><span class="nav-number">14</span><div class="nav-content"><span class="nav-title">唱吧导航栏</span><span class="nav-desc">超链接与锚点</span></div></li>
+                <li class="nav-item" data-task="task17"><span class="nav-number">17</span><div class="nav-content"><span class="nav-title">简历表</span><span class="nav-desc">表格标签与合并</span></div></li>
+                <li class="nav-item" data-task="task18"><span class="nav-number">18</span><div class="nav-content"><span class="nav-title">用户登录界面</span><span class="nav-desc">form表单</span></div></li>
+                <li class="nav-item" data-task="task19"><span class="nav-number">19</span><div class="nav-content"><span class="nav-title">趣味选择题</span><span class="nav-desc">input全类型</span></div></li>
+                <li class="nav-item" data-task="task20"><span class="nav-number">20</span><div class="nav-content"><span class="nav-title">空间日志</span><span class="nav-desc">多行文本与下拉菜单</span></div></li>
+                <li class="nav-item" data-task="task21"><span class="nav-number">21</span><div class="nav-content"><span class="nav-title">员工档案</span><span class="nav-desc">表单美化综合</span></div></li>
+                <li class="nav-item" data-task="task22"><span class="nav-number">22</span><div class="nav-content"><span class="nav-title">世界杯梦幻阵容</span><span class="nav-desc">浮动布局</span></div></li>
+                <li class="nav-item" data-task="task23"><span class="nav-number">23</span><div class="nav-content"><span class="nav-title">商品专栏</span><span class="nav-desc">清除浮动</span></div></li>
+                <li class="nav-item" data-task="task24"><span class="nav-number">24</span><div class="nav-content"><span class="nav-title">移动端电商界面</span><span class="nav-desc">overflow属性</span></div></li>
+                <li class="nav-item" data-task="task25"><span class="nav-number">25</span><div class="nav-content"><span class="nav-title">违停查询</span><span class="nav-desc">定位属性</span></div></li>
+                <li class="nav-item" data-task="task26"><span class="nav-number">26</span><div class="nav-content"><span class="nav-title">网页布局</span><span class="nav-desc">DIV+CSS综合</span></div></li>
+                <li class="nav-item" data-task="task27"><span class="nav-number">27</span><div class="nav-content"><span class="nav-title">电影播放界面</span><span class="nav-desc">音视频嵌入</span></div></li>
+                <li class="nav-item" data-task="task28"><span class="nav-number">28</span><div class="nav-content"><span class="nav-title">导航栏悬浮特效</span><span class="nav-desc">过渡属性</span></div></li>
+                <li class="nav-item" data-task="task29"><span class="nav-number">29</span><div class="nav-content"><span class="nav-title">翻牌动画</span><span class="nav-desc">变形属性</span></div></li>
+                <li class="nav-item" data-task="task30"><span class="nav-number">30</span><div class="nav-content"><span class="nav-title">宝石旋转</span><span class="nav-desc">动画属性</span></div></li>
+                <li class="nav-item" data-task="task31"><span class="nav-number">31</span><div class="nav-content"><span class="nav-title">身份验证</span><span class="nav-desc">JavaScript对话框</span></div></li>
+                <li class="nav-item" data-task="task32"><span class="nav-number">32</span><div class="nav-content"><span class="nav-title">商城下拉菜单</span><span class="nav-desc">DOM与事件</span></div></li>
+                <li class="nav-item" data-task="task33"><span class="nav-number">33</span><div class="nav-content"><span class="nav-title">限时秒杀</span><span class="nav-desc">运算符与条件语句</span></div></li>
+                <li class="nav-item active" data-task="task34"><span class="nav-number">34</span><div class="nav-content"><span class="nav-title">Tab栏切换</span><span class="nav-desc">循环与数组</span></div></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">HTML+CSS 网页设计实训平台</div>
+    </aside>
+    <button class="mobile-menu-btn" aria-label="打开菜单">
+        <svg viewBox="0 0 24 24" width="24" height="24"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="sidebar-overlay"></div>
+    <main class="main-content">
+        <header class="task-header">
+            <div class="task-badge">任务 34</div>
+            <h1>Tab栏切换效果</h1>
+            <p class="task-subtitle">掌握 JavaScript 的 while、do...while、for 循环语句和 break/continue 控制语句，综合运用循环、事件和定时器实现 Tab 栏的鼠标悬浮切换和自动轮播效果。</p>
+            <div class="task-meta">
+                <span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 60分钟</span>
+                <span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> 6个示例</span>
+            </div>
+        </header>
+
+        <div class="task-content">
+            <div class="info-box">
+                <h4>💡 本节核心目标</h4>
+                <p>循环是让代码重复执行的利器。本任务你将学习 while、do...while 和 for 三种循环语句，掌握 break 和 continue 的使用，了解数组的基本操作，最终综合运用循环、事件绑定和定时器实现 Tab 栏的鼠标悬浮切换和自动轮播效果。</p>
+            </div>
+
+            <!-- HBuilderX 使用技巧 - 任务34专属 -->
+            <div class="hbuilder-tips-section">
+                <div class="hts-header">
+                    <span class="hts-icon">⚡</span>
+                    <span class="hts-title">HBuilderX 使用技巧 · 本节专属</span>
+                    <span class="hts-badge">循环 &amp; 数组</span>
+                </div>
+                <div class="hbuilder-tips-grid">
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔄</span>
+                        <div class="tip-body">
+                            <span class="tip-key">for 代码片段</span>
+                            <p class="tip-desc">输入 <code>for</code> 后按 Tab 可快速生成循环模板，注意三部分用分号分隔</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🐛</span>
+                        <div class="tip-body">
+                            <span class="tip-key">死循环安全退出</span>
+                            <p class="tip-desc">测试循环前加入 <code>if(a&gt;100) break;</code> 作为安全退出机制</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">📝</span>
+                        <div class="tip-body">
+                            <span class="tip-key">switch 代码片段</span>
+                            <p class="tip-desc">输入 <code>switch</code> 后按 Tab 生成模板，每写一个 case 立即写好 break</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🔍</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Ctrl+D 复制行</span>
+                            <p class="tip-desc">快速复制代码行，测试循环中不同的条件值</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">⏱️</span>
+                        <div class="tip-body">
+                            <span class="tip-key">setInterval/clearInterval</span>
+                            <p class="tip-desc">在控制台输入 <code>clearInterval(timer)</code> 可手动停止自动轮播</p>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tip-item">
+                        <span class="tip-icon">🎨</span>
+                        <div class="tip-body">
+                            <span class="tip-key">Alt+点击 多光标</span>
+                            <p class="tip-desc">同时修改多个 Tab 项的样式，大幅提高开发效率</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-18 -->
+            <div class="example-card" data-example="ex-18">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-18</span>
+                        <h4>while循环语句</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>while</code> 循环的基本用法——当条件为 <code>true</code> 时重复执行循环体，注意更新循环变量避免死循环。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-18">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;while循环语句&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type="text/javascript"&gt;
+	var a = 1;
+	while(a &lt; 5){
+		document.write("轻松学习JavaScript课程。"&lt;br /&gt;);
+		a++;
+	}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-18"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>while 语法</code>
+                                <p>while(条件){ 循环体 }，先判断后执行，条件为true时重复执行</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>循环变量</code>
+                                <p>必须在循环体内更新，使条件趋向false，否则造成死循环</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>循环条件</code>
+                                <p>每次循环开始前判断，为false时退出循环</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>死循环警告</code>
+                                <p>忘记写 a++ 会导致浏览器卡死，测试前建议加安全退出条件</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>执行流程</code>
+                                <p>初始化 → 判断条件 → true执行循环体 → 更新变量 → 再判断</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>最少执行次数</code>
+                                <p>while 循环最少执行 0 次（条件一开始就为false时）</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改循环条件为 <code>a &lt; 10</code>，观察输出次数的变化</li>
+                            <li>删除 <code>a++</code>，观察浏览器是否卡死（死循环）——注意先保存其他工作！</li>
+                            <li>用 while 计算 1+2+3+...+100 的和：<code>var sum=0, i=1; while(i&lt;=100){ sum+=i; i++; }</code></li>
+                            <li>用 while 倒序输出 5~1：修改初始值和条件</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>用 while 循环输出 1~20 中所有偶数，并计算偶数的个数</li>
+                                <li>用 while 实现猜数字游戏：随机生成 1~100 的数，循环让用户输入直到猜对</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul>
+                            <li>如果不小心写了死循环导致浏览器卡死，可以按 <code>Esc</code> 键或关闭浏览器标签页来终止</li>
+                            <li>在测试循环前，建议先在循环体中加入 <code>if(a&gt;100) break;</code> 作为安全退出机制</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-19 -->
+            <div class="example-card" data-example="ex-19">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-19</span>
+                        <h4>do...while循环语句</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>do...while</code> 循环——先执行一次循环体，再判断条件，至少执行一次。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-19">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;do...while循环语句&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type="text/javascript"&gt;
+	var a = 100;
+	do{
+		a++;
+		document.write(a);
+	}while(a &lt; 10);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-19"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>do...while 语法</code>
+                                <p>do{ 循环体 }while(条件); 注意末尾有分号</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>先执行后判断</code>
+                                <p>无论条件是否满足，至少执行一次循环体</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>末尾分号</code>
+                                <p>while(条件) 后面的分号不能省略，这是常见语法错误</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>与 while 对比</code>
+                                <p>while 可能执行0次，do...while 至少执行1次</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>适用场景</code>
+                                <p>至少需要执行一次的场景，如菜单显示后判断用户选择</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>执行流程</code>
+                                <p>执行循环体 → 判断条件 → true继续 → false退出</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改 a=1，观察循环执行多次的效果</li>
+                            <li>将 do...while 改为 while，设置 a=100，观察 while 是否执行（不会）</li>
+                            <li>在 <code>while(a &lt; 10)</code> 后去掉分号，观察语法错误</li>
+                            <li>用 do...while 实现菜单选择：先显示菜单，再判断用户选择是否有效</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>用 do...while 实现输入验证：要求用户必须输入 1~5 之间的数字，否则重新输入</li>
+                                <li>对比 while 和 do...while：用两种循环分别实现"输出 1~10 的和"，分析区别</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul>
+                            <li>do...while 末尾的 <code>while(条件);</code> —— <strong>分号不能省略</strong>！这是常见的语法错误</li>
+                            <li>HBuilderX 会在此处标记语法警告，注意查看编辑器左侧的提示标记</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-20 -->
+            <div class="example-card" data-example="ex-20">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-20</span>
+                        <h4>for循环语句</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>for</code> 循环的三部分结构（初始化、条件、更新），使用 for 循环计算 100 以内所有奇数的和。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-20">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;for循环语句&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type="text/javascript"&gt;
+	var sum = 0;
+	for(var i = 1; i &lt; 100; i+=2){
+		sum=sum+i;
+	}
+	alert("100以内所有奇数和："+sum);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-20"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>for 三部分</code>
+                                <p>for(初始化; 条件; 更新){ 循环体 }，三部分用分号分隔</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>初始化表达式</code>
+                                <p>循环开始前执行1次，声明并初始化循环变量</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>循环条件</code>
+                                <p>每次循环开始前判断，决定是否继续循环</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>操作表达式</code>
+                                <p>每次循环体执行完后执行，更新循环变量</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>与 while 对比</code>
+                                <p>循环次数已知时优先用for，次数未知时用while</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>i+=2</code>
+                                <p>每次加2，实现只取奇数（1,3,5...99）</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改为计算偶数和：将 <code>i=1</code> 改为 <code>i=0</code>，<code>i+=2</code> 保持不变</li>
+                            <li>计算 1+2+3+...+100 的和：<code>for(var i=1; i&lt;=100; i++)</code></li>
+                            <li>输出 1~100 中所有能被 3 整除的数：<code>if(i%3===0) document.write(i+"&lt;br&gt;")</code></li>
+                            <li>用 for 输出九九乘法表的前 5 行（需要嵌套循环）</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>用 for 循环实现完整的九九乘法表输出（嵌套循环）</li>
+                                <li>用 for 循环找出 1~1000 中第一个能被 7 和 13 同时整除的数（配合 break）</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul>
+                            <li>在 HBuilderX 中，输入 <code>for</code> 后按 Tab 可快速生成循环模板</li>
+                            <li>注意 <code>for(var i=0; i&lt;arr.length; i++)</code> 中的三个部分用分号分隔，不是逗号</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-21 -->
+            <div class="example-card" data-example="ex-21">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-21</span>
+                        <h4>break语句</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>break</code> 语句——在循环中满足条件时立即跳出整个循环，不再执行后续迭代。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-21">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;break语句&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type="text/javascript"&gt;
+	var sum = 0;
+	for(var i = 0; i &lt; 100; i++){
+		sum=sum+i;
+	    if(sum&gt;10)break;
+	}
+	alert("求0-99的自然数之和："+sum);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-21"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>break 作用</code>
+                                <p>立即结束整个循环，执行循环后面的语句</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>在 switch 中</code>
+                                <p>跳出当前 case，防止穿透</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>在循环中</code>
+                                <p>只跳出当前所在的那一层循环，不会影响外层循环</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>与 continue 对比</code>
+                                <p>break 结束整个循环；continue 只跳过本次循环的剩余语句</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改条件为 <code>if(sum&gt;50)break</code>，观察跳出时的累加结果</li>
+                            <li>在嵌套循环中测试 break：外层循环是否被跳出？（不会，只跳出内层）</li>
+                            <li>查找数组中第一个大于 5 的元素：<code>var arr=[1,3,7,2,9]; for(...){ if(arr[i]&gt;5){ alert(arr[i]); break; } }</code></li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>用 for + break 在数组 <code>[3,7,2,9,1,5,8]</code> 中找到第一个大于 6 的数，输出其索引和值</li>
+                                <li>用嵌套循环 + break 实现质数判断：对 2~50 的每个数判断是否为质数</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul>
+                            <li>break 常用于"找到就停"的场景——在数组中查找元素、找到满足条件的值后立即退出</li>
+                            <li>避免不必要的迭代，提高程序效率</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-22 -->
+            <div class="example-card" data-example="ex-22">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-22</span>
+                        <h4>continue语句</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>掌握 <code>continue</code> 语句——跳过本次循环的剩余语句，直接进入下一次循环迭代。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-22">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;continue语句&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type="text/javascript"&gt;
+for(var i=1;i&lt;10;i++){
+	if(i==3||i==5)
+	continue;
+	document.write(i+"&lt;br /&gt;")
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-22"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>continue 作用</code>
+                                <p>跳过本次循环的剩余语句，直接进入下一次循环的条件判断</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>与 break 对比</code>
+                                <p>break 结束整个循环；continue 只跳过本轮，继续下一轮</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>形象比喻</code>
+                                <p>break 是"紧急出口"——直接离开；continue 是"跳过这一轮"——继续下一轮</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>执行流程</code>
+                                <p>遇到 continue → 跳过后续语句 → 回到循环条件判断 → 继续或退出</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改跳过条件为 <code>if(i%2===0) continue</code>，只输出奇数</li>
+                            <li>将 continue 改为 break，观察区别——break 直接结束整个循环</li>
+                            <li>输出 1~50 中所有不能被 7 整除的数：<code>if(i%7===0) continue;</code></li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>用 continue 输出 1~100 中所有个位不为 3 且不能被 3 整除的数</li>
+                                <li>对比实验：将同一个程序中的 continue 替换为 break，记录输出的差异并分析原因</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul>
+                            <li>continue 的形象比喻是"跳过这一轮，继续下一轮"，它不会结束循环，只是跳过当前迭代的剩余代码</li>
+                            <li>在 HBuilderX 中调试时，可以在 continue 前后设置断点，观察变量的变化</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 例 9-23 -->
+            <div class="example-card" data-example="ex-23">
+                <div class="example-header">
+                    <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+                        <span class="example-number">9-23</span>
+                        <h4>Tab栏切换效果（综合案例）</h4>
+                    </div>
+                    <div class="example-toggle"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                </div>
+                <div class="example-body">
+                    <div class="example-desc">
+                        <p><strong>实训目标：</strong>综合运用 for 循环、事件绑定、定时器、className 操作，实现 Tab 栏的鼠标悬浮切换和自动轮播效果。</p>
+                    </div>
+                    <div class="code-split-container">
+                        <div class="code-editor-panel">
+                            <label>修改代码，预览即时更新</label>
+                            <textarea class="code-editor" id="code-ex-23">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;Tab栏切换&lt;/title&gt;
+&lt;style type="text/css"&gt;
+body{ font-size:14px; font-family:"宋体";}
+body,ul,li{list-style:none; margin:0; padding:0; }
+.tab-box{width:383px;margin:10px;border:1px solid #ccc;border-top:2px solid #206F96;}
+.tab-head{height:31px;}
+.tab-head-div{width:95px;height:30px;float:left;border-bottom:1px solid #ccc;border-right:1px solid #ccc;background:#eee;line-height:30px;text-align:center;cursor:pointer;}
+.tab-head .current{background:#fff;border-bottom:1px solid #fff;}
+.tab-head-r{border-right:0;}
+.tab-body-ul{display:none;margin:20px 10px;}
+.tab-body-ul li{margin:5px;}
+.tab-body .current{display:block;}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;div class="tab-box"&gt;
+		&lt;div class="tab-head" id="tab-head"&gt;
+			&lt;div class="tab-head-div current"&gt;网页设计&lt;/div&gt;
+			&lt;div class="tab-head-div"&gt;前端开发&lt;/div&gt;
+			&lt;div class="tab-head-div"&gt;人工智能&lt;/div&gt;
+			&lt;div class="tab-head-div tab-head-r"&gt;电商运营&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;div class="tab-body" id="tab-body"&gt;
+			&lt;ul class="tab-body-ul current"&gt;
+				&lt;li&gt;HTML5+CSS3网页设计与制作&lt;/li&gt;
+				&lt;li&gt;互联网产品设计思维与实践&lt;/li&gt;
+				&lt;li&gt;Photoshop CS6图像设计案例教程&lt;/li&gt;
+				&lt;li&gt;跨平台UI设计宝典&lt;/li&gt;
+			&lt;/ul&gt;
+			&lt;ul class="tab-body-ul"&gt;
+				&lt;li&gt;JavaScript+jQuery交互式Web前端开发&lt;/li&gt;
+				&lt;li&gt;Vue.js前端开发实战&lt;/li&gt;
+				&lt;li&gt;微信小程序开发实战&lt;/li&gt;
+				&lt;li&gt;JavaScript前端开发案例教程&lt;/li&gt;
+			&lt;/ul&gt;
+			&lt;ul class="tab-body-ul"&gt;
+				&lt;li&gt;Python程序开发案例教程&lt;/li&gt;
+				&lt;li&gt;Python数据分析与应用&lt;/li&gt;
+				&lt;li&gt;Python实战编程:从零学Python&lt;/li&gt;
+				&lt;li&gt;Python快速编程入门&lt;/li&gt;
+			&lt;/ul&gt;
+			&lt;ul class="tab-body-ul"&gt;
+				&lt;li&gt;数据分析思维与可视化&lt;/li&gt;
+				&lt;li&gt;淘宝天猫店美工设计实操&lt;/li&gt;
+				&lt;li&gt;淘宝天猫店一本通&lt;/li&gt;
+				&lt;li&gt;网络营销文案策划&lt;/li&gt;
+			&lt;/ul&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+window.onload = function(){
+	var head_divs = document.getElementById("tab-head").getElementsByTagName("div");
+	var current_index=0;
+	var timer = window.setInterval(autoChange, 5000);
+
+	for(var i=0;i&lt;head_divs.length;i++){
+		head_divs[i].onmouseover = function(){
+			clearInterval(timer);
+			var body_uls = document.getElementById("tab-body").getElementsByTagName("ul");
+			for(var j=0;j&lt;body_uls.length;j++){
+				body_uls[j].className = body_uls[j].className.replace(" current","");
+				head_divs[j].className = head_divs[j].className.replace(" current","");
+				if(head_divs[j] == this){
+					this.className += " current";
+					body_uls[j].className += " current";
+				}
+			}
+		}
+		head_divs[i].onmouseout = function(){
+			timer = setInterval(autoChange,5000);
+		}
+	}
+	function autoChange(){
+		++current_index;
+		if (current_index == head_divs.length) {
+			current_index=0;
+		}
+		for(var i=0;i&lt;head_divs.length;i++){
+			if(i == current_index){
+				head_divs[i].style.backgroundColor = '#fff';
+				head_divs[i].style.borderBottom = '1px solid #fff';
+			}else{
+				head_divs[i].style.backgroundColor = '';
+				head_divs[i].style.borderBottom = '';
+			}
+		}
+		var body_uls = document.getElementById("tab-body").getElementsByTagName("ul");
+		for(var i=0;i&lt;body_uls.length;i++){
+			body_uls[i].className = body_uls[i].className.replace(" current","");
+			head_divs[i].className = head_divs[i].className.replace(" current","");
+			if(head_divs[i] == head_divs[current_index]){
+				head_divs[i].className += " current";
+				body_uls[i].className += " current";
+			}
+		}
+	}
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                        </div>
+                        <div class="preview-panel">
+                            <label>实时预览效果</label>
+                            <iframe class="preview-frame" id="preview-ex-23"></iframe>
+                        </div>
+                    </div>
+                    <div class="knowledge-box">
+                        <h5>关键知识点</h5>
+                        <div class="knowledge-grid">
+                            <div class="knowledge-item">
+                                <code>for 循环遍历</code>
+                                <p>用 for 循环遍历所有 Tab 头部和内容元素，统一绑定事件</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>onmouseover 事件</code>
+                                <p>鼠标移入 Tab 头部时触发，显示对应内容并暂停自动轮播</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>className 操作</code>
+                                <p>通过添加/移除 "current" 类名控制 Tab 头部和内容的显示状态</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>setInterval 自动轮播</code>
+                                <p>每 5 秒自动切换到下一个 Tab，clearInterval 暂停轮播</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>闭包特性</code>
+                                <p>内部函数 autoChange 访问外部变量 current_index，实现状态共享</p>
+                            </div>
+                            <div class="knowledge-item">
+                                <code>数组基础</code>
+                                <p>var arr = []; arr.length; arr[i]; arr.push(); arr.pop()</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="practice-box">
+                        <h5>动手练练</h5>
+                        <ul>
+                            <li>修改自动切换间隔：将 <code>setInterval(autoChange, 5000)</code> 中的 5000 改为 2000（2秒）</li>
+                            <li>为 Tab 头部添加悬浮变色效果：在CSS中添加 <code>.tab-head-div:hover{background:#ddd;}</code></li>
+                            <li>添加第 5 个 Tab 选项卡和对应内容</li>
+                            <li>尝试将自动轮播改为点击切换：去掉 setInterval，改为 onclick 事件</li>
+                        </ul>
+                        <div class="challenge">
+                            <div class="challenge-title">挑战练习</div>
+                            <ul>
+                                <li>重构 Tab 切换逻辑：用数组存储 Tab 数据，用 for 循环动态生成 Tab 头部和内容</li>
+                                <li>为 Tab 添加 fade 过渡动画：切换时先淡出再淡入，提升用户体验</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hbuilder-tips-box">
+                        <h5>HBuilderX 开发技巧</h5>
+                        <ul>
+                            <li>Tab 栏是网页中非常常见的组件，开发时建议先确保静态 HTML 和 CSS 效果正确，再添加 JS 交互</li>
+                            <li>在 HBuilderX 中可以使用"多光标编辑"（Alt+点击）同时修改多个 Tab 项的样式，提高开发效率</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 拓展练习 -->
+            <div class="challenge-box">
+                <h5>拓展练习 · 图片轮播器</h5>
+                <p class="challenge-desc">综合运用本节学习的 while/for 循环、事件绑定、className 操作和定时器，制作一个带自动轮播和手动切换功能的图片轮播器。</p>
+                <div class="code-split-container">
+                    <div class="code-editor-panel">
+                        <label>修改代码，预览即时更新</label>
+                        <textarea class="code-editor" id="code-challenge-34">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;图片轮播器&lt;/title&gt;
+&lt;style type="text/css"&gt;
+/* 请在这里添加样式 */
+*{margin:0;padding:0;box-sizing:border-box;}
+.carousel{width:400px;margin:30px auto;position:relative;border:2px solid #333;border-radius:10px;overflow:hidden;}
+.carousel-slides{position:relative;height:250px;}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;font-size:80px;}
+.slide.active{display:flex;}
+.slide:nth-child(1){background:#e74c3c;}
+.slide:nth-child(2){background:#3498db;}
+.slide:nth-child(3){background:#2ecc71;}
+.slide:nth-child(4){background:#f39c12;}
+.carousel-btns{text-align:center;padding:10px;background:#333;}
+.carousel-btns button{padding:8px 15px;margin:0 5px;cursor:pointer;border:none;border-radius:5px;background:#555;color:#fff;}
+.carousel-btns button:hover{background:#777;}
+.carousel-btns button.active-btn{background:#e74c3c;}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="carousel"&gt;
+    &lt;div class="carousel-slides"&gt;
+        &lt;div class="slide active"&gt;🌸&lt;/div&gt;
+        &lt;div class="slide"&gt;🌺&lt;/div&gt;
+        &lt;div class="slide"&gt;🌻&lt;/div&gt;
+        &lt;div class="slide"&gt;🌹&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="carousel-btns"&gt;
+        &lt;button class="active-btn" data-index="0"&gt;1&lt;/button&gt;
+        &lt;button data-index="1"&gt;2&lt;/button&gt;
+        &lt;button data-index="2"&gt;3&lt;/button&gt;
+        &lt;button data-index="3"&gt;4&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+/* 请在这里添加JavaScript代码 */
+/* 1. 获取所有 slide 和 button 元素 */
+/* 2. 创建切换函数 function showSlide(index) */
+/* 3. 用 for 循环移除所有 active 类名 */
+/* 4. 为当前索引添加 active 类名 */
+/* 5. 用 setInterval 实现自动轮播 */
+/* 6. 为按钮绑定点击事件 */
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+                    </div>
+                    <div class="preview-panel">
+                        <label>实时预览效果</label>
+                        <iframe class="preview-frame" id="preview-challenge-34"></iframe>
+                    </div>
+                </div>
+                <ul class="challenge-task">
+                    <li>任务一：实现 <code>showSlide(index)</code> 函数，用 for 循环切换 active 类名</li>
+                    <li>任务二：用 <code>setInterval</code> 实现每3秒自动切换到下一张</li>
+                    <li>任务三：为按钮绑定 onclick 事件，点击切换到对应图片</li>
+                    <li>任务四（挑战）：鼠标悬浮时暂停自动轮播，移出时恢复；添加左右箭头按钮</li>
+                </ul>
+            </div>
+
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

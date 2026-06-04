@@ -1,0 +1,38 @@
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Git
+.git/
+
+# Local configs
+*.local
+
+# WorkBuddy AI memory (internal)
+.workbuddy/
+
+# Misc
+*.log
+*.tmp
+
+# 临时文档扫描文件
+doc_scan*.txt
+doc_source_content.txt
+
+# Word解包临时目录
+task_word_unpacked/
+ch*_unpacked/
+
+# 任务书原始Word文件
+*.docx
+
+# docx提取的原始文本
+ch*_text.txt
+ch*_docx_raw.txt
